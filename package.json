@@ -1,5 +1,1 @@
-{
-	"devDependencies": {
-		"@sveltejs/adapter-netlify": "^2.0.8"
-	}
-}
+{}
