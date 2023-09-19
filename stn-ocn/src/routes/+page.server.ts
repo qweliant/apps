@@ -1,5 +1,3 @@
-// src/routes/+page.server.ts
-
 import prisma from '$lib/prisma';
 import type { PageServerLoad } from './$types';
 
