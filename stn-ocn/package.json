@@ -20,6 +20,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
 		"@types/cookie": "^0.5.1",
+		"@types/node": "^20.6.2",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"eslint": "^8.28.0",
@@ -27,10 +28,13 @@
 		"eslint-plugin-svelte": "^2.30.0",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
+		"prisma": "^5.3.1",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
+		"ts-node": "^10.9.1",
 		"tslib": "^2.4.1",
-		"typescript": "^5.0.0",
+		"tsx": "^3.12.10",
+		"typescript": "^5.2.2",
 		"vite": "^4.4.2",
 		"vitest": "^0.32.2"
 	},
@@ -39,6 +43,10 @@
 		"@editorjs/editorjs": "^2.28.0",
 		"@editorjs/header": "^2.7.0",
 		"@editorjs/list": "^1.8.0",
-		"@editorjs/simple-image": "^1.5.1"
+		"@editorjs/simple-image": "^1.5.1",
+		"@prisma/client": "^5.3.1"
+	},
+	"prisma": {
+		"seed": "tsx prisma/seed.ts"
 	}
 }

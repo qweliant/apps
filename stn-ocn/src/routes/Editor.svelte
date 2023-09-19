@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  import EditorJS from "@editorjs/editorjs";
+  import EditorJS, { type OutputData } from "@editorjs/editorjs";
   import SimpleImage from "@editorjs/simple-image";
   import Header from "@editorjs/header";
   import List from "@editorjs/list";
