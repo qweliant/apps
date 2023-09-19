@@ -7,7 +7,7 @@ async function main() {
 
 	await prisma.noteData.create({
 		data: {
-			time: new Date().getTime(),
+			time: String(new Date().getTime()),
 			blocks: [
 				{
 					id: 'Gx-BfAS80s',

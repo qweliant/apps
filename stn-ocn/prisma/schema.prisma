@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Block {
-  id        BigInt   @id @default(sequence())
+  id        String   @id @default(uuid())
   type      String
   data      Json
   createdAt DateTime @default(now())
@@ -19,8 +19,8 @@ model Block {
 }
 
 model NoteData {
-  id        BigInt   @id @default(sequence())
-  time      BigInt
+  id        String   @id @default(uuid())
+  time      String
   blocks    Json
   version   String
   createdAt DateTime @default(now())

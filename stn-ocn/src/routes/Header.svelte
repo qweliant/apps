@@ -5,11 +5,11 @@
 </script>
 
 <header>
-	<div class="corner">
+	<!-- <div class="corner">
 		<a href="https://kit.svelte.dev">
 			<img src={logo} alt="SvelteKit" />
 		</a>
-	</div>
+	</div> -->
 
 	<nav>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -19,11 +19,11 @@
 			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
 				<a href="/">Home</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
+			<li aria-current={$page.url.pathname === '/stats' ? 'page' : undefined}>
+				<a href="/stats">stats</a>
 			</li>
-			<li aria-current={$page.url.pathname.startsWith('/strong') ? 'page' : undefined}>
-				<a href="/strong">Strong clone</a>
+			<li aria-current={$page.url.pathname.startsWith('/workouts') ? 'page' : undefined}>
+				<a href="/strong">workouts</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -31,11 +31,11 @@
 		</svg>
 	</nav>
 
-	<div class="corner">
+	<!-- <div class="corner">
 		<a href="https://github.com/sveltejs/kit">
 			<img src={github} alt="GitHub" />
 		</a>
-	</div>
+	</div> -->
 </header>
 
 <style>
