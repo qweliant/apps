@@ -39,7 +39,6 @@
 				},
 				body: JSON.stringify({ id: data.id, outputData })
 			});
-			console.log('react to the clicks bitch');
 			console.log($editorStore);
 		} catch (e) {
 			console.log(e);
@@ -57,26 +56,30 @@
 	<meta name="description" content="note" />
 </svelte:head>
 
-<h1>The Only Note</h1>
-<section>
-	<button on:click={() => saveNewContent()}>Save</button>
-</section>
-{#if $editorStore}
-	<!-- <div on:input={async () => await saveNewContent()} id="editor" /> -->
-	<div>
-		<p on:input={async () => await saveNewContent()} id="editor" />
-	</div>
-{/if}
-<section>
-	<button on:click={() => saveNewContent()}>Save</button>
-</section>
+<div>
+	<h1>The Only Note</h1>
+	<section>
+		<button on:click={() => saveNewContent()}>Save</button>
+	</section>
+	<section>
+		{#if $editorStore}
+			<!-- <div on:input={async () => await saveNewContent()} id="editor" /> -->
+			<div>
+				<div on:input={async () => await saveNewContent()} id="editor" />
+			</div>
+		{/if}
+	</section>
+	<section>
+		<button on:click={() => saveNewContent()}>Save</button>
+	</section>
+</div>
 
 <style>
 	section {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
 		flex: 0.6;
 	}
 
