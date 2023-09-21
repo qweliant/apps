@@ -61,14 +61,14 @@
 	<section>
 		<button on:click={() => saveNewContent()}>Save</button>
 	</section>
-	<section>
+	<div>
 		{#if $editorStore}
 			<!-- <div on:input={async () => await saveNewContent()} id="editor" /> -->
 			<div>
 				<div on:input={async () => await saveNewContent()} id="editor" />
 			</div>
 		{/if}
-	</section>
+	</div>
 	<section>
 		<button on:click={() => saveNewContent()}>Save</button>
 	</section>
@@ -80,6 +80,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: center;
 		flex: 0.6;
 	}
 
@@ -90,6 +91,5 @@
 	#editor {
 		border: 1px solid #ccc;
 		padding: 10px;
-		text-align: left;
 	}
 </style>
