@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import EditorJS, { type OutputBlockData } from '@editorjs/editorjs';
-	import SimpleImage from '@editorjs/simple-image';
+	import EditorJS from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import List from '@editorjs/list';
+	import SimpleImage from '@editorjs/simple-image';
+	import { onDestroy, onMount } from 'svelte';
+	import { editorStore } from '../store';
 
 	export let data;
 	let editor: EditorJS;
-
 	onMount(async () => {
 		editor = new EditorJS({
 			holder: 'editor',
@@ -25,12 +25,13 @@
 			},
 			data: data.editorData as any
 		});
+		$editorStore = editor;
 	});
 
-	async function onSave() {
-		const outputData = await editor.save();
-		console.log('Siving data: ', outputData);
+	async function saveNewContent() {
 		try {
+			$editorStore = editor;
+			const outputData = await $editorStore.save();
 			await fetch('/api/note', {
 				method: 'PUT',
 				headers: {
@@ -38,7 +39,8 @@
 				},
 				body: JSON.stringify({ id: data.id, outputData })
 			});
-			console.log('saved');
+			console.log('react to the clicks bitch');
+			console.log($editorStore);
 		} catch (e) {
 			console.log(e);
 		}
@@ -46,7 +48,7 @@
 
 	// Destroy the editor instance when the component is unmounted
 	onDestroy(() => {
-		editor?.destroy();
+		$editorStore?.destroy();
 	});
 </script>
 
@@ -55,12 +57,18 @@
 	<meta name="description" content="note" />
 </svelte:head>
 
+<h1>The Only Note</h1>
 <section>
-	<h1>The Only Note</h1>
-	<section>
-		<button on:click={async () => await onSave()}>Save</button>
-	</section>
-	<div id="editor" />
+	<button on:click={() => saveNewContent()}>Save</button>
+</section>
+{#if $editorStore}
+	<!-- <div on:input={async () => await saveNewContent()} id="editor" /> -->
+	<div>
+		<p on:input={async () => await saveNewContent()} id="editor" />
+	</div>
+{/if}
+<section>
+	<button on:click={() => saveNewContent()}>Save</button>
 </section>
 
 <style>

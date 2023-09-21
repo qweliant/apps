@@ -4,9 +4,7 @@ import type { RequestEvent } from './$types';
 
 export async function PUT(event: RequestEvent) {
 	const data = await event.request.json();
-	console.log(data);
 	try {
-		console.log('Updating db..');
 		await prisma.noteData.update({
 			where: {
 				id: data.id
@@ -17,7 +15,6 @@ export async function PUT(event: RequestEvent) {
 				version: data.outputData.version
 			}
 		});
-		console.log('Updated db..');
 	} catch (e) {
 		console.log(e);
 	}
