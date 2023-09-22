@@ -4,96 +4,136 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@editorjs/editorjs':
-    specifier: ^2.28.0
-    version: 2.28.0
-  '@editorjs/header':
-    specifier: ^2.7.0
-    version: 2.7.0
-  '@editorjs/list':
-    specifier: ^1.8.0
-    version: 1.8.0
-  '@editorjs/simple-image':
-    specifier: ^1.5.1
-    version: 1.5.1
-  '@prisma/client':
-    specifier: ^5.3.1
-    version: 5.3.1(prisma@5.3.1)
+importers:
 
-devDependencies:
-  '@fontsource/fira-mono':
-    specifier: ^4.5.10
-    version: 4.5.10
-  '@neoconfetti/svelte':
-    specifier: ^1.0.0
-    version: 1.0.0
-  '@playwright/test':
-    specifier: ^1.28.1
-    version: 1.37.1
-  '@sveltejs/adapter-auto':
-    specifier: ^2.0.0
-    version: 2.1.0(@sveltejs/kit@1.24.0)
-  '@sveltejs/adapter-netlify':
-    specifier: ^2.0.8
-    version: 2.0.8(@sveltejs/kit@1.24.0)
-  '@sveltejs/kit':
-    specifier: ^1.20.4
-    version: 1.24.0(svelte@4.2.0)(vite@4.4.9)
-  '@types/cookie':
-    specifier: ^0.5.1
-    version: 0.5.1
-  '@types/node':
-    specifier: ^20.6.2
-    version: 20.6.2
-  '@typescript-eslint/eslint-plugin':
-    specifier: ^5.45.0
-    version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.48.0)(typescript@5.2.2)
-  '@typescript-eslint/parser':
-    specifier: ^5.45.0
-    version: 5.62.0(eslint@8.48.0)(typescript@5.2.2)
-  eslint:
-    specifier: ^8.28.0
-    version: 8.48.0
-  eslint-config-prettier:
-    specifier: ^8.5.0
-    version: 8.10.0(eslint@8.48.0)
-  eslint-plugin-svelte:
-    specifier: ^2.30.0
-    version: 2.33.0(eslint@8.48.0)(svelte@4.2.0)(ts-node@10.9.1)
-  prettier:
-    specifier: ^2.8.0
-    version: 2.8.8
-  prettier-plugin-svelte:
-    specifier: ^2.10.1
-    version: 2.10.1(prettier@2.8.8)(svelte@4.2.0)
-  prisma:
-    specifier: ^5.3.1
-    version: 5.3.1
-  svelte:
-    specifier: ^4.0.5
-    version: 4.2.0
-  svelte-check:
-    specifier: ^3.4.3
-    version: 3.5.1(postcss@8.4.29)(svelte@4.2.0)
-  ts-node:
-    specifier: ^10.9.1
-    version: 10.9.1(@types/node@20.6.2)(typescript@5.2.2)
-  tslib:
-    specifier: ^2.4.1
-    version: 2.6.2
-  tsx:
-    specifier: ^3.12.10
-    version: 3.12.10
-  typescript:
-    specifier: ^5.2.2
-    version: 5.2.2
-  vite:
-    specifier: ^4.4.2
-    version: 4.4.9(@types/node@20.6.2)
-  vitest:
-    specifier: ^0.32.2
-    version: 0.32.4
+  .:
+    dependencies:
+      '@calumk/editorjs-nested-checklist':
+        specifier: ^1.1.0
+        version: 1.1.0
+      '@editorjs/delimiter':
+        specifier: ^1.3.0
+        version: 1.3.0
+      '@editorjs/editorjs':
+        specifier: ^2.28.0
+        version: 2.28.0
+      '@editorjs/header':
+        specifier: ^2.7.0
+        version: 2.7.0
+      '@editorjs/link':
+        specifier: ^2.5.0
+        version: 2.5.0
+      '@editorjs/list':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@editorjs/marker':
+        specifier: ^1.3.0
+        version: 1.3.0
+      '@editorjs/quote':
+        specifier: ^2.5.0
+        version: 2.5.0
+      '@editorjs/simple-image':
+        specifier: ^1.5.1
+        version: 1.5.1
+      '@editorjs/text-variant-tune':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@editorjs/underline':
+        specifier: ^1.1.0
+        version: 1.1.0
+      '@prisma/client':
+        specifier: ^5.3.1
+        version: 5.3.1(prisma@5.3.1)
+      editorjs-drag-drop:
+        specifier: ^1.1.13
+        version: 1.1.13
+      editorjs-html:
+        specifier: ^3.4.3
+        version: 3.4.3
+      editorjs-inline-spoiler-tool:
+        specifier: ^1.0.1
+        version: 1.0.1
+      editorjs-undo:
+        specifier: ^2.0.23
+        version: 2.0.23
+      turndown:
+        specifier: ^7.1.2
+        version: 7.1.2
+    devDependencies:
+      '@fontsource/fira-mono':
+        specifier: ^4.5.10
+        version: 4.5.10
+      '@neoconfetti/svelte':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@playwright/test':
+        specifier: ^1.28.1
+        version: 1.37.1
+      '@sveltejs/adapter-auto':
+        specifier: ^2.0.0
+        version: 2.1.0(@sveltejs/kit@1.24.0)
+      '@sveltejs/adapter-netlify':
+        specifier: ^2.0.8
+        version: 2.0.8(@sveltejs/kit@1.24.0)
+      '@sveltejs/kit':
+        specifier: ^1.20.4
+        version: 1.24.0(svelte@4.2.0)(vite@4.4.9)
+      '@types/cookie':
+        specifier: ^0.5.1
+        version: 0.5.1
+      '@types/node':
+        specifier: ^20.6.2
+        version: 20.6.2
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^5.45.0
+        version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.48.0)(typescript@5.2.2)
+      '@typescript-eslint/parser':
+        specifier: ^5.45.0
+        version: 5.62.0(eslint@8.48.0)(typescript@5.2.2)
+      eslint:
+        specifier: ^8.28.0
+        version: 8.48.0
+      eslint-config-prettier:
+        specifier: ^8.5.0
+        version: 8.10.0(eslint@8.48.0)
+      eslint-plugin-svelte:
+        specifier: ^2.30.0
+        version: 2.33.0(eslint@8.48.0)(svelte@4.2.0)(ts-node@10.9.1)
+      prettier:
+        specifier: ^2.8.0
+        version: 2.8.8
+      prettier-plugin-svelte:
+        specifier: ^2.10.1
+        version: 2.10.1(prettier@2.8.8)(svelte@4.2.0)
+      prisma:
+        specifier: ^5.3.1
+        version: 5.3.1
+      svelte:
+        specifier: ^4.0.5
+        version: 4.2.0
+      svelte-check:
+        specifier: ^3.4.3
+        version: 3.5.1(postcss@8.4.29)(svelte@4.2.0)
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.6.2)(typescript@5.2.2)
+      tslib:
+        specifier: ^2.4.1
+        version: 2.6.2
+      tsx:
+        specifier: ^3.12.10
+        version: 3.12.10
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+      vite:
+        specifier: ^4.4.2
+        version: 4.4.9(@types/node@20.6.2)
+      vitest:
+        specifier: ^0.32.2
+        version: 0.32.4
+
+  ..: {}
 
 packages:
 
@@ -109,6 +149,17 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
     dev: true
+
+  /@babel/runtime@7.22.15:
+    resolution: {integrity: sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.0
+    dev: false
+
+  /@calumk/editorjs-nested-checklist@1.1.0:
+    resolution: {integrity: sha512-dNNQnpoP+gf+1hvkIl/MzrkVuVeIkT/R2pKfOkkLqUHgpan7UpKjaW43W0+tj2Ct85PzhoJV3wMIbTo1qVvFlg==}
+    dev: false
 
   /@codexteam/icons@0.0.4:
     resolution: {integrity: sha512-V8N/TY2TGyas4wLrPIFq7bcow68b3gu8DfDt1+rrHPtXxcexadKauRJL6eQgfG7Z0LCrN4boLRawR4S9gjIh/Q==}
@@ -129,6 +180,12 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
+  /@editorjs/delimiter@1.3.0:
+    resolution: {integrity: sha512-/qz+3yRSPmx6dJpBcwnDfgKtCjOrCsQRoDhXR+wLWirGOchOifhYwQ/6JZyTvcgmY84UEoYY29/dgdWOGVPEEQ==}
+    dependencies:
+      '@codexteam/icons': 0.0.5
+    dev: false
+
   /@editorjs/editorjs@2.28.0:
     resolution: {integrity: sha512-v0KxSoX4MSZR5HyEbCo0vBri+qdThasABH9u1O1wC3ZxNMO7FiPJ580rp6uTPeFSDSQBmOL3VmRm7ZMfI3iKAg==}
     dev: false
@@ -139,14 +196,43 @@ packages:
       '@codexteam/icons': 0.0.5
     dev: false
 
+  /@editorjs/link@2.5.0:
+    resolution: {integrity: sha512-3Oa1VweBY7Sscjzw8pv1QcWGyP+XdPl6+yu+gXnSETyjz9TQRZUjved0qw2OomYOjMZ3RumrdDJXxoALlZdvuQ==}
+    dependencies:
+      '@babel/runtime': 7.22.15
+      '@codexteam/icons': 0.0.4
+    dev: false
+
   /@editorjs/list@1.8.0:
     resolution: {integrity: sha512-Vq6cjyTXBzgegYv/MtTfuDdiz59yGhDEc/yAVXr6lmvoWAFs9cJ4TLuh4/9SbrbhIptcQLDvUjMDKmRrV6v2NQ==}
     dependencies:
       '@codexteam/icons': 0.0.4
     dev: false
 
+  /@editorjs/marker@1.3.0:
+    resolution: {integrity: sha512-RYWYDnFPjNBJgR7KIGjB9gPnUwGvn2aIoRevAm422Wx1mg5eT4gcvwc0T5V76pYPSoD2Z0T2GPkzl9d1hl398w==}
+    dependencies:
+      '@codexteam/icons': 0.0.5
+    dev: false
+
+  /@editorjs/quote@2.5.0:
+    resolution: {integrity: sha512-24Mu8cESaj34a0kg1Enj7qiZ3yiCOsZI59+8xpfXLO/NkO7hBYWNForVcBy5yIWs/VLlEZK11FP37f/mHrKugQ==}
+    dependencies:
+      '@codexteam/icons': 0.0.5
+    dev: false
+
   /@editorjs/simple-image@1.5.1:
     resolution: {integrity: sha512-eXfNzYMOPE7I/HllX00XvEO1MGiFu34lzOIyQzxQ3GdD+GlEJgIN9IhLGN7glsyAhCVmNyxNXGa9kUHzWQ9c5Q==}
+    dependencies:
+      '@codexteam/icons': 0.0.6
+    dev: false
+
+  /@editorjs/text-variant-tune@1.0.1:
+    resolution: {integrity: sha512-uVRbiMeJ14XjlP4cLqHxgQpdqbQnuQgUhlMQUFDLi7yanbEqWmb0gguZjmbdl6gnBYeUYRv9IbyOva3Iaif6ZQ==}
+    dev: false
+
+  /@editorjs/underline@1.1.0:
+    resolution: {integrity: sha512-vQj2ROW1KreD31QHlhaPikmDJGWYzRBusN4Zyfwl9nIIQCByt4S8fZQpsrRvH4sct5mkirsHllNT00rJlqHK7Q==}
     dependencies:
       '@codexteam/icons': 0.0.6
     dev: false
@@ -1140,6 +1226,28 @@ packages:
       esutils: 2.0.3
     dev: true
 
+  /domino@2.1.6:
+    resolution: {integrity: sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==}
+    dev: false
+
+  /editorjs-drag-drop@1.1.13:
+    resolution: {integrity: sha512-/82RIXP8/zix6Y8/Mnonk1z7XljFvKmsIFbCrP6JTbdWztqoApyUCsnouHTZ4tF51/BTszYV3Z9ennQrXrHCzA==}
+    dev: false
+
+  /editorjs-html@3.4.3:
+    resolution: {integrity: sha512-HMqQ3BCE98uhSpJsbfH0c3CoMctUMCHlap2Eq/7/VjaHas+g3IJqyf+ERtMByoQCzvcW22ISYaZEeE7rGkd8Xg==}
+    dev: false
+
+  /editorjs-inline-spoiler-tool@1.0.1:
+    resolution: {integrity: sha512-WMsIKbHhOZ5fgZzjizl/N3K9Pig/gAknlICOyyeGLN114Y9KOrU2hjHPmxn/K/79QU6GVI+iJZ6+KWCwg6ZLLA==}
+    dev: false
+
+  /editorjs-undo@2.0.23:
+    resolution: {integrity: sha512-lT3ixt5aZMrcEfv3bHSxc7vuEAA13m1jF2xSftHfgcT6CXHXkNR184CojFJPaNkNmMAdsbFCR6GcUdST7Yi4Dw==}
+    dependencies:
+      vanilla-caret-js: 1.1.0
+    dev: false
+
   /es6-promise@3.3.1:
     resolution: {integrity: sha512-SOp9Phqvqn7jtEUxPWdWfWoLmyt2VaJ6MpvP9Comy1MceMXqE6bxvaTu4iaxpYYPzhny28Lc+M87/c2cPK6lDg==}
     dev: true
@@ -1967,6 +2075,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /regenerator-runtime@0.14.0:
+    resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
+    dev: false
+
   /resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -2356,6 +2468,12 @@ packages:
       fsevents: 2.3.3
     dev: true
 
+  /turndown@7.1.2:
+    resolution: {integrity: sha512-ntI9R7fcUKjqBP6QU8rBK2Ehyt8LAzt3UBT9JR9tgo6GtuKvyUzpayWmeMKJw1DPdXzktvtIT8m2mVXz+bL/Qg==}
+    dependencies:
+      domino: 2.1.6
+    dev: false
+
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -2403,6 +2521,10 @@ packages:
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
     dev: true
+
+  /vanilla-caret-js@1.1.0:
+    resolution: {integrity: sha512-vl3R4Xjqb+xnM0gYyg+wcqWGYwKKnkz58Yj29/FQB+w+yP7R8IR1DGoJnDIs05moEZiGlQUTabPMoEtnQNcrpQ==}
+    dev: false
 
   /vite-node@0.32.4(@types/node@20.6.2):
     resolution: {integrity: sha512-L2gIw+dCxO0LK14QnUMoqSYpa9XRGnTTTDjW2h19Mr+GR0EFj4vx52W41gFXfMLqpA00eK4ZjOVYo1Xk//LFEw==}

@@ -20,6 +20,8 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
+		color: gold;
+		background-color: #29ab87;
 	}
 
 	main {

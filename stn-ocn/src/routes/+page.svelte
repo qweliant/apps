@@ -3,12 +3,31 @@
 	import Header from '@editorjs/header';
 	import List from '@editorjs/list';
 	import SimpleImage from '@editorjs/simple-image';
+	import Delimeter from '@editorjs/delimiter';
+	// import LinkTool from '@editorjs/link' need to make url fetch api;
+	import Marker from '@editorjs/marker';
+	import Underline from '@editorjs/underline';
+	import TextSpolier from 'editorjs-inline-spoiler-tool';
+	import TextVariantTune from '@editorjs/text-variant-tune';
+	import Undo from 'editorjs-undo';
+	import Quote from '@editorjs/quote';
+	import DragDrop from 'editorjs-drag-drop';
+	import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist';
+	import edjsHTML from 'editorjs-html';
 	import { onDestroy, onMount } from 'svelte';
 	import { editorStore } from '../store';
+	import TurndownService from 'turndown';
 
 	export let data;
 	let editor: EditorJS;
+
 	onMount(async () => {
+		const config = {
+			shortcuts: {
+				undo: 'CMD+X',
+				redo: 'CMD+ALT+C'
+			}
+		};
 		editor = new EditorJS({
 			holder: 'editor',
 			// Configure the desired tools
@@ -21,8 +40,24 @@
 				image: {
 					class: SimpleImage,
 					inlineToolbar: true
-				}
+				},
+				delimiter: Delimeter,
+				Marker: {
+					class: Marker,
+					shortcut: 'CMD+SHIFT+M'
+				},
+				textVariant: TextVariantTune,
+				TextSpolier: TextSpolier,
+				underline: Underline,
+				quote: Quote,
+				nestedchecklist: editorjsNestedChecklist
 			},
+			onReady: () => {
+				const undo = new Undo({ editor, config });
+				new DragDrop(editor);
+				undo.initialize(data.editorData as any);
+			},
+
 			data: data.editorData as any
 		});
 		$editorStore = editor;
@@ -39,15 +74,41 @@
 				},
 				body: JSON.stringify({ id: data.id, outputData })
 			});
-			console.log($editorStore);
 		} catch (e) {
 			console.log(e);
 		}
 	}
 
+	let html: string[];
+	let markdown: any;
+	async function downloadContent() {
+		const outputData = await $editorStore.save();
+		const edjsParser = edjsHTML();
+
+		html = edjsParser.parse(outputData);
+		try {
+			const turndownService = new TurndownService();
+			markdown = await turndownService.turndown(html.toString());
+
+			var file = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+			var a = document.createElement('a'),
+				url = URL.createObjectURL(file);
+			a.href = url;
+			// a.download = 'oupuit.md';
+			document.body.appendChild(a);
+			a.click();
+			setTimeout(function () {
+				document.body.removeChild(a);
+				window.URL.revokeObjectURL(url);
+			}, 0);
+		} catch (e) {
+			alert(e);
+		}
+	}
+
 	// Destroy the editor instance when the component is unmounted
 	onDestroy(() => {
-		$editorStore?.destroy();
+		// $editorStore?.destroy();
 	});
 </script>
 
@@ -60,6 +121,7 @@
 	<h1>The Only Note</h1>
 	<section>
 		<button on:click={() => saveNewContent()}>Save</button>
+		<button on:click={() => downloadContent()}>Export To Markdown</button>
 	</section>
 	<div>
 		{#if $editorStore}
@@ -82,8 +144,12 @@
 		justify-content: center;
 		align-items: center;
 		flex: 0.6;
+		padding: 20px;
 	}
-
+	button {
+		padding: 5px;
+		margin: 10px;
+	}
 	h1 {
 		width: 100%;
 	}
