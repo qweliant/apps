@@ -13,3 +13,4 @@ declare module 'editorjs-undo';
 declare module 'editorjs-drag-drop';
 declare module '@calumk/editorjs-nested-checklist';
 declare module 'turndown';
+declare module '@sotaproject/strikethrough';

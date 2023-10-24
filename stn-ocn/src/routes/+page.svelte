@@ -1,22 +1,23 @@
 <script lang="ts">
+	import Delimeter from '@editorjs/delimiter';
 	import EditorJS from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import List from '@editorjs/list';
 	import SimpleImage from '@editorjs/simple-image';
-	import Delimeter from '@editorjs/delimiter';
+	import Strikethrough from '@sotaproject/strikethrough';
 	// import LinkTool from '@editorjs/link' need to make url fetch api;
-	import Marker from '@editorjs/marker';
-	import Underline from '@editorjs/underline';
-	import TextSpolier from 'editorjs-inline-spoiler-tool';
-	import TextVariantTune from '@editorjs/text-variant-tune';
-	import Undo from 'editorjs-undo';
-	import Quote from '@editorjs/quote';
-	import DragDrop from 'editorjs-drag-drop';
 	import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist';
+	import Marker from '@editorjs/marker';
+	import Quote from '@editorjs/quote';
+	import TextVariantTune from '@editorjs/text-variant-tune';
+	import Underline from '@editorjs/underline';
+	import DragDrop from 'editorjs-drag-drop';
 	import edjsHTML from 'editorjs-html';
+	import TextSpolier from 'editorjs-inline-spoiler-tool';
+	import Undo from 'editorjs-undo';
 	import { onDestroy, onMount } from 'svelte';
-	import { editorStore } from '../store';
 	import TurndownService from 'turndown';
+	import { editorStore } from '../store';
 
 	export let data;
 	let editor: EditorJS;
@@ -50,7 +51,8 @@
 				TextSpolier: TextSpolier,
 				underline: Underline,
 				quote: Quote,
-				nestedchecklist: editorjsNestedChecklist
+				nestedchecklist: editorjsNestedChecklist,
+				strikethrough: Strikethrough
 			},
 			onReady: () => {
 				const undo = new Undo({ editor, config });
