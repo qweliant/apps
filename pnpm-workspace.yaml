@@ -1,4 +1,4 @@
 packages:
-  - "editorjs-lib"
-  - "stn-ocn"
-  
+  - editorjs-lib
+  - stn-ocn
+  - note

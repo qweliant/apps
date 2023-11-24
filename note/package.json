@@ -1,0 +1,6 @@
+{
+    "name": "note",
+    "dependencies": {
+        "editorjs-preconfigured": "workspace:^"
+    }
+}
