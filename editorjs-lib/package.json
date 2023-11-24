@@ -1,4 +1,12 @@
 {
+  "name": "editorjs-preconfigured",
+  "version": "1.0.0",
+  "description": "Preconfigured EditorJS with plugins",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@calumk/editorjs-nested-checklist": "^1.1.0",
     "@editorjs/delimiter": "^1.4.0",
