@@ -1,1 +1,16 @@
-{}
+{
+    "scripts": {
+        "build": "pnpm p:build",
+        "dev": "pnpm p:dev",
+        "p:dev": "preconstruct dev",
+        "p:build": "preconstruct build"
+    },
+    "devDependencies": {
+        "@preconstruct/cli": "^2.8.1"
+    },
+    "preconstruct": {
+        "packages": [
+            "editorjs-lib/*"
+        ]
+    }
+}
