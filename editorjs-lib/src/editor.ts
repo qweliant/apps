@@ -11,14 +11,19 @@ import Quote from "@editorjs/quote";
 import TextVariantTune from "@editorjs/text-variant-tune";
 import Underline from "@editorjs/underline";
 import DragDrop from "editorjs-drag-drop";
-import edjsHTML from "editorjs-html";
+// import edjsHTML from "editorjs-html";
 import TextSpolier from "editorjs-inline-spoiler-tool";
 import Undo from "editorjs-undo";
-import TurndownService from "turndown";
+// import TurndownService from "turndown";
+
+
+export function HelloNewWorld() {
+  console.log("hello new world");
+}
 
 export class BlockEditor {
   protected data: any;
-  public editor: EditorJS;
+  public editor: any;
 
   constructor(data: any) {
     this.data = data;
@@ -73,34 +78,34 @@ export class BlockEditor {
     return savedData;
   }
 
-  /**
-   *
-   * @returns {Promise<void>} - returns a promise that resolves to a markdown blob file
-   */
-  public async exportToMarkdown() {
-    const outputData = await this.saveData();
-    const edjsParser = edjsHTML();
-    let html: string[];
-    let markdown: any;
-    html = edjsParser.parse(outputData);
+  // /**
+  //  *
+  //  * @returns {Promise<void>} - returns a promise that resolves to a markdown blob file
+  //  */
+  // public async exportToMarkdown() {
+  //   const outputData = await this.saveData();
+  //   const edjsParser = edjsHTML();
+  //   let html: string[];
+  //   let markdown: any;
+  //   html = edjsParser.parse(outputData);
 
-    try {
-      const turndownService = new TurndownService();
-      markdown = await turndownService.turndown(html.toString());
+  //   try {
+  //     const turndownService = new TurndownService();
+  //     markdown = await turndownService.turndown(html.toString());
 
-      var file = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
-      var a = document.createElement("a"),
-        url = URL.createObjectURL(file);
-      a.href = url;
-      // a.download = 'oupuit.md';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }, 0);
-    } catch (e) {
-      alert(e);
-    }
-  }
+  //     var file = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+  //     var a = document.createElement("a"),
+  //       url = URL.createObjectURL(file);
+  //     a.href = url;
+  //     // a.download = 'oupuit.md';
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     setTimeout(function () {
+  //       document.body.removeChild(a);
+  //       window.URL.revokeObjectURL(url);
+  //     }, 0);
+  //   } catch (e) {
+  //     alert(e);
+  //   }
+  // }
 }

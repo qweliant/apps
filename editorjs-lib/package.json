@@ -1,6 +1,6 @@
 {
   "name": "editorjs-preconfigured",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Preconfigured EditorJS with plugins",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
