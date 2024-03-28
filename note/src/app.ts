@@ -63,8 +63,8 @@ const ed = new BlockEditor({
 });
 
 let btnSaves = document.getElementById("user-saved");
-btnSaves!.addEventListener("click", () => {
-  const savedData = ed.saveData();
+btnSaves!.addEventListener("click", async () => {
+  const savedData = await ed.saveData();
   console.log(savedData);
 });
 
