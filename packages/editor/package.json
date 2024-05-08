@@ -1,0 +1,24 @@
+{
+  "name": "editor",
+  "version": "1.0.0",
+  "description": "collaborative local first editor",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blocksuite/blocks": "^0.13.0",
+    "@blocksuite/presets": "^0.13.0",
+    "@blocksuite/store": "^0.13.0",
+    "idb": "^8.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "y-indexeddb": "^9.0.12"
+  }
+}

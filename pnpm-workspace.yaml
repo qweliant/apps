@@ -1,0 +1,3 @@
+packages:
+  - stn-ocn
+  - packages/*
