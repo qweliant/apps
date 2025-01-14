@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+:root {
+  --background-light: #ffffff; /* Light background for light mode */
+  --foreground-light: #171717; /* Dark text for light mode */
+
+  --background-dark: #1a1a1a; /* Darker background for dark mode */
+  --foreground-dark: #f1f1f1; /* Lighter text for dark mode */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--background-dark);
+    --foreground: var(--foreground-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: var(--background-light);
+    --foreground: var(--foreground-light);
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", "Arial", Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+/* Styling links */
+a {
+  color: #6089e9cf; /* Purple for links */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #3b63a6; /* Darker purple on hover */
+  text-decoration: underline;
+}
+
+/* Blockquote styling */
+blockquote {
+  padding-left: 1rem;
+  border-left: 4px solid #d1e1e8;
+  font-style: italic;
+  color: #4a4a4a; /* Softer gray for readability */
+}
+
+/* Styling headers to ensure contrast */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--foreground); /* Ensure headers match the foreground */
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+h6 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+/* Increased contrast for text */
+p,
+li {
+  color: var(--foreground);
+}
+
+/* Increase contrast on dark background for all text */
+body,
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote {
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
