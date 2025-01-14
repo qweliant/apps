@@ -8,8 +8,11 @@ export async function generateStaticParams() {
   return filenames.map((name) => ({ slug: name.replace(/\.mdx$/, "") }));
 }
 
-export default async function Post({ params }: { params: { slug: string } }) {
-  const filePath = path.join(process.cwd(), "content", `${params.slug}.mdx`);
+type PostParams = Promise<{ slug: string }>;
+
+export default async function Page({ params }: { params: PostParams }) {
+  const { slug } = await params;
+  const filePath = path.join(process.cwd(), "content", `${slug}.mdx`);
   const fileContent = fs.readFileSync(filePath, "utf8");
   const { content, frontmatter } = await compileMDX<{ date: string }>({
     source: fileContent,
