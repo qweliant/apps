@@ -2,11 +2,6 @@ import fs from "fs";
 import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 
-export async function generateStaticParams() {
-  const postsDir = path.join(process.cwd(), "content");
-  const filenames = fs.readdirSync(postsDir);
-  return filenames.map((name) => ({ slug: name.replace(/\.mdx$/, "") }));
-}
 
 type PostParams = Promise<{ slug: string }>;
 

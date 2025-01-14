@@ -1,0 +1,218 @@
+---
+title: "Deploying Transformer Models"
+date: "2025-01-14"
+---
+
+# Deploying Language Models with GCP, FastAPI, Docker, and HuggingFace
+
+I have found using more than 2 models for the API is too large for most deployment procedures. If you know a way around this, let me know.
+
+## Initial Set Up
+
+This stack will use FastAPI to serve an endpoint to our model. FastAPI requires `uvicorn` for serving, and `pydantic` to handle typing of the request messages. The HuggingFace `transformers` library specializes in bundling state-of-the-art NLP models in a Python library that can be fine-tuned for many NLP tasks, like Google’s BERT model for named entity recognition or the OpenAI GPT-2 model for text generation.
+
+Using your preferred package manager, install the following:
+
+- `transformers`
+- `FastAPI`
+- `uvicorn`
+- `pydantic`
+
+As the packages install, create a folder named `app`, and add the files `nlp.py` and `main.py` to it. In the top level of your directory, add the `Dockerfile` and the `docker-compose.yml` file.
+
+After the packages are installed, create a folder named `requirements`. Add the `requirements.txt` to the folder. Since I used `pipenv` to manage the Python environment, I had to run:
+
+```bash
+pipenv run pip freeze > requirements/requirements.txt
+```
+
+You will need this folder later for building the Docker container. While we are on the topic, be sure you have installed Docker and check to be sure your Docker daemon has started. [Link to the setup guide here](https://docs.docker.com/get-docker/).
+
+In addition, be sure to install [Docker Compose](https://docs.docker.com/compose/install/) and the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install). You now have everything needed to proceed to the next step.
+
+The work directory should look similar to this:
+
+```
+app/
+  main.py
+  nlp.py
+requirements/
+  requirements.txt
+docker-compose.yml
+Dockerfile
+Pipfile
+```
+
+---
+
+## NLP
+
+HuggingFace makes it easy to implement and serve state-of-the-art transformer models. Using their `transformers` library, we will implement an API capable of text generation and sentiment analysis. This code has been adapted from their documentation, so we will not dive into the transformer architecture in this article for time’s sake. This also means our models are not fine-tuned for a specific task. Please see my next article on fine-tuning and deploying conversational agents in the future.
+
+With that disclaimer out of the way, let’s look at a snippet of the code responsible for our NLP task:
+
+```python
+from transformers import (
+    pipeline, GPT2LMHeadModel, GPT2Tokenizer
+)
+
+class NLP:
+    def __init__(self):
+        self.gen_model = GPT2LMHeadModel.from_pretrained('gpt2')
+        self.gen_tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+
+    def generate(self, prompt="The epistemological limit"):
+        inputs = self.gen_tokenizer.encode(
+            prompt, add_special_tokens=False, return_tensors="pt"
+        )
+        prompt_length = len(self.gen_tokenizer.decode(
+            inputs[0], skip_special_tokens=True, clean_up_tokenization_spaces=True
+        ))
+        outputs = self.gen_model.generate(
+            inputs, max_length=200, do_sample=True, top_p=0.95, top_k=60
+        )
+        generated = prompt + self.gen_tokenizer.decode(outputs[0])[prompt_length:]
+        return generated
+
+    def sentiments(self, text: str):
+        nlp = pipeline("sentiment-analysis")
+        result = nlp(text)[0]
+        return f"label: {result['label']}, with score: {round(result['score'], 4)}"
+```
+
+This is a very simple class that abstracts the code for text generation and sentiment analysis. The prompt is tokenized, the length of the encoded sequence is captured, and output is generated. We then receive the decoded output and return it as the generated text.
+
+Example output for text generation:
+
+```
+The epistemological limit is very well understood if we accept the notion that all things are equally good. This is not merely an axiom, but an axiomatical reality of propositions...
+```
+
+Sentiment analysis is even simpler due to the pipeline HuggingFace provides:
+
+```python
+from nlp import NLP
+nlp = NLP()
+print(nlp.sentiments("A bee sting is not cool"))
+# Output: 'label: NEGATIVE, with score: 0.9998'
+```
+
+---
+
+## API
+
+FastAPI is one of the fastest API frameworks to build and serve requests in Python. It can be scaled and deployed on a Docker image they provide or you can create your own from a Python image. If you have ever written a Flask API, this should not be difficult.
+
+Here’s an example:
+
+```python
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from app.nlp import NLP
+
+class Message(BaseModel):
+    input: str
+    output: str = None
+
+app = FastAPI()
+nlp = NLP()
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["POST"],
+    allow_headers=["*"],
+)
+
+@app.post("/generative/")
+async def generate(message: Message):
+    message.output = nlp.generate(prompt=message.input)
+    return {"output": message.output}
+
+@app.post("/sentiment/")
+async def sentiment_analysis(message: Message):
+    message.output = str(nlp.sentiments(message.input))
+    return {"output": message.output}
+```
+
+Run the server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Visit `http://127.0.0.1:8001/docs` to test the API.
+
+---
+
+## Containerization
+
+Edit the `Dockerfile` as follows:
+
+```dockerfile
+FROM python:3.7
+
+COPY ./requirements/requirements.txt ./requirements/requirements.txt
+RUN pip3 install -r requirements/requirements.txt
+
+COPY ./app /app
+RUN useradd -m myuser
+USER myuser
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+```
+
+Use `docker-compose.yml` to simplify the process:
+
+```yaml
+version: "3"
+services:
+  app:
+    build: .
+    container_name: "nlp_api"
+    ports:
+      - "8000:8080"
+    volumes:
+      - ./app/:/app
+```
+
+Run:
+
+```bash
+docker-compose build
+docker-compose up -d
+```
+
+---
+
+## Deployment
+
+To deploy on GCP:
+
+1. Tag your Docker image:
+
+```bash
+docker tag nlp_api gcr.io/fast_hug/nlp_api:latest
+```
+
+2. Push to Google Container Registry:
+
+```bash
+docker push gcr.io/fast_hug/nlp_api:latest
+```
+
+3. Deploy via Cloud Run from the GCR dashboard.
+
+---
+
+## Conclusion
+
+In this post, we used HuggingFace’s state-of-the-art NLP models to power a FastAPI service, containerized for scalability. Stay tuned for more on fine-tuning and deploying conversational agents!
