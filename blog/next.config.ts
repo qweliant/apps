@@ -6,7 +6,9 @@ const mdx = withMDX({
 });
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"], // Enable MDX alongside TS/TSX
-  
+  images: {
+    domains: ["images.unsplash.com"],
+  },
 };
 
 export default mdx(nextConfig);

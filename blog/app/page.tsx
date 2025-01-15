@@ -47,11 +47,6 @@ export default function Home() {
           ))}
         </ul>
       </main>
-      <div className="flex items-center justify-center">
-        <footer className="mt-12 text-center text-gray-500 text-sm ">
-          <p>© {new Date().getFullYear()} My Website. All rights reserved.</p>
-        </footer>
-      </div>
     </div>
   );
 }

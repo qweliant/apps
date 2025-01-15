@@ -34,12 +34,12 @@ body {
 
 /* Styling links */
 a {
-  color: #6089e9cf; /* Purple for links */
+  /* color: #a855f7; */
   text-decoration: none;
 }
 
 a:hover {
-  color: #3b63a6; /* Darker purple on hover */
+  /* color: #a855f780; */
   text-decoration: underline;
 }
 

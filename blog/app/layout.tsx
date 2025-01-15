@@ -30,38 +30,31 @@ export default function RootLayout({
       >
         <header>
           <nav className="container mx-auto flex flex-wrap items-center justify-between p-4">
-            <Link href="/" className="text-2xl font-bold text-black">
+            <Link href="/" className="text-2xl font-bold ">
               Optimal Frequencies
             </Link>
             <div className="flex space-x-8">
               <Link
-                href="/"
-                className="text-lg font-medium hover:underline text-purple-500"
-              >
-                Home
-              </Link>
-
-              <Link
                 href="/fotos"
-                className="text-lg font-medium hover:underline text-purple-500"
+                className="text-lg font-medium hover:underline"
               >
                 Fotos
               </Link>
               <Link
                 href="mailto:qwelian@tutanota.com"
-                className="text-lg font-medium hover:underline text-purple-500"
+                className="text-lg font-medium hover:underline "
               >
                 Contact
               </Link>
               <Link
                 href="/posts"
-                className="text-lg font-medium hover:underline text-purple-500"
+                className="text-lg font-medium hover:underline "
               >
                 Archive
               </Link>
               <Link
                 href="/about"
-                className="text-lg font-medium hover:underline text-purple-500"
+                className="text-lg font-medium hover:underline"
               >
                 About
               </Link>
@@ -69,13 +62,11 @@ export default function RootLayout({
           </nav>
         </header>
         <main className="">{children}</main>
-        <footer className="mt-12 text-center text-gray-600">
-          <p className="italic">
+        <footer className="mt-12 text-center ">
+          <p className="italic text-cyan-50">
             Stay passionate, stay chill, and never stop exploring what life can
             be.
           </p>
-        </footer>
-        <footer className="py-4 text-center text-sm text-gray-600">
           © {new Date().getFullYear()} My Blog. All rights reserved.
         </footer>
       </body>
