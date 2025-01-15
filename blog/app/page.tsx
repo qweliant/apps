@@ -6,7 +6,7 @@ export default function Home() {
   const postsDir = path.join(process.cwd(), "content");
   const filenames = fs.readdirSync(postsDir);
 
-  const formatTitle = (slug) => {
+  const formatTitle = (slug: string) => {
     return slug
       .replace(/\.mdx$/, "") // Remove .mdx extension
       .replace(/_/g, " ") // Replace underscores with spaces
@@ -26,12 +26,12 @@ export default function Home() {
   }));
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8 font-[var(--font-geist-sans)] bg-gray-50">
+    <div className="min-h-screen flex flex-col items-center p-8 font-[var(--font-geist-sans)]">
       <main className="max-w-3xl w-full">
         <h1 className="text-4xl font-bold text-center mb-8">
           Welcome to My Blog
         </h1>
-        <p className="text-center text-gray-700 mb-12">
+        <p className="text-center mb-12">
           Exploring ideas, sharing knowledge, and documenting experiences
           through technology and design.
         </p>
@@ -40,7 +40,7 @@ export default function Home() {
           {posts.map((post) => (
             <li
               key={post.slug}
-              className="bg-white shadow-md border rounded-lg p-6"
+              className=" shadow-md border rounded-lg p-6"
             >
               <Link
                 href={`/posts/${post.slug}`}
@@ -48,7 +48,7 @@ export default function Home() {
               >
                 <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
               </Link>
-              <p className="text-sm text-gray-500">Posted on: {post.date}</p>
+              <p className="text-sm ">Posted on: {post.date}</p>
             </li>
           ))}
         </ul>
