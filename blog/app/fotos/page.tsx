@@ -132,31 +132,19 @@ export default function Home() {
       >
         <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
           <Image
-            src="/images/_DSC3814.jpg"
+            src="/images/_DSC2366.jpeg"
             alt="Featured Image"
             fill
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-30" />
         </motion.div>
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-5xl md:text-7xl font-bold text-center text-white drop-shadow-lg"
-          >
-            Your Photo Blog
-          </motion.h1>
-        </div>
       </motion.section>
 
       {/* Camera Collection Section */}
       <section className="px-4 py-24 md:px-16 bg-black">
         <FadeInSection>
-          <h2 className="text-4xl font-bold text-center mb-16">
+          <h2 className="text-4xl font-bold text-center mb-16 text-white">
             My Camera Collection
           </h2>
         </FadeInSection>
@@ -185,13 +173,6 @@ export default function Home() {
           </div>
         </section>
       </ParallaxSection>
-
-      {/* Footer */}
-      <footer className="text-center py-8 bg-black">
-        <p className="text-gray-500">
-          © {new Date().getFullYear()} Your Photo Blog
-        </p>
-      </footer>
     </main>
   );
 }

@@ -63,7 +63,7 @@ export default function RootLayout({
         </header>
         <main className="">{children}</main>
         <footer className="mt-12 text-center ">
-          <p className="italic text-cyan-50">
+          <p className="italic">
             Stay passionate, stay chill, and never stop exploring what life can
             be.
           </p>
