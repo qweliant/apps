@@ -20,190 +20,69 @@ interface Photo {
   blurDataUrl?: string; // For blur placeholder
 }
 
-const photos: Photo[] = [
-  // Flora category
-  {
-    src: "/images/flora/DSC_0724.jpeg",
-    alt: "Flora Image", // Replace with descriptive alt text
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/DSC_1990.jpeg",
-    alt: "Flora Image", // Replace with descriptive alt text
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/DSC_2039.jpeg",
-    alt: "Flora Image",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/DSC_2072.jpeg",
-    alt: "Flora Image",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/DSCF0332.jpeg",
-    alt: "Flora Image", // Replace with descriptive alt text
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/Hibiscus.jpeg",
-    alt: "Flora Image",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/orchids.jpeg",
-    alt: "Flora Image",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/Untitled.jpeg",
-    alt: "Flora Image",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/zelia_export.jpeg",
-    alt: "Flora Image", // Replace with descriptive alt text
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/flora/zelia???.jpeg",
-    alt: "Flora Image",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
+const floraImages = [
+  "_DSC2657.jpeg",
+  "_DSC3453.jpeg",
+  "_DSC3455.jpeg",
+  "_DSC3814.jpg",
+  "000015390011.jpeg",
+  "DSC_0724.jpeg",
+  "DSC_0815.jpeg",
+  "DSC_0866.jpeg",
+  "DSC_1790.jpeg",
+  "DSC_1824.jpeg",
+  "DSC_1834.jpeg",
+  "DSC_1990.jpeg",
+  "DSC_2039.jpeg",
+  "DSC_2072.jpeg",
+  "DSCF0332.jpeg",
+  "Hibiscus.jpeg",
+  "orchids.jpeg",
+  "Untitled.jpeg",
+  "zelia_export.jpeg",
+  "zelia.jpeg",
+];
 
-  // Travel category
-  {
-    src: "/images/travel/000366550011.jpeg",
-    alt: "Travel Image", // Replace with descriptive alt text
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/000554650007.jpeg",
-    alt: "Travel Image", // Replace with descriptive alt text
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/000701500014.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/000701500035.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/035330006511-R1-017-7.jpeg",
-    alt: "Travel Image", // Replace with descriptive alt text
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_0515.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_0615.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_1968.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2114.jpeg",
-    alt: "Travel Image", // Replace with descriptive alt text
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2160.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2168.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2251.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2278.jpeg",
-    alt: "Travel Image", // Replace with descriptive alt text
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2317.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2326.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_2345.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_3556.jpeg",
-    alt: "Travel Image", // Replace with descriptive alt text
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_3559.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_8178.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
-  {
-    src: "/images/travel/IMG_8572.jpeg",
-    alt: "Travel Image",
-    category: "travel",
-    blurDataUrl: "data:image/jpeg;base64,/9j...",
-  },
+const travelImages = [
+  "000366550011.jpeg",
+  "000554650007.jpeg",
+  "000701500014.jpeg",
+  "000701500035.jpeg",
+  "035330006511-R1-017-7.jpeg",
+  "IMG_0515.jpeg",
+  "IMG_0615.jpeg",
+  "IMG_1968.jpeg",
+  "IMG_2114.jpeg",
+  "IMG_2160.jpeg",
+  "IMG_2168.jpeg",
+  "IMG_2251.jpeg",
+  "IMG_2278.jpeg",
+  "IMG_2317.jpeg",
+  "IMG_2326.jpeg",
+  "IMG_2345.jpeg",
+  "IMG_3556.jpeg",
+  "IMG_3559.jpeg",
+  "IMG_8178.jpeg",
+  "IMG_8572.jpeg",
+];
+
+const createPhotoStructure = (
+  category: PhotoCategory,
+  images: string[]
+): Photo[] => {
+  return images.map((image) => ({
+    src: `/images/${category}/${image}`,
+    alt: `${
+      category.charAt(0).toUpperCase() + category.slice(1) + image
+    } Image`,
+    category,
+    blurDataUrl: "data:image/jpeg;base64,/9j...", // Replace with actual blurDataUrl
+  }));
+};
+
+const photos: Photo[] = [
+  ...createPhotoStructure("flora", floraImages),
+  ...createPhotoStructure("travel", travelImages),
 ];
 
 // Modal component
@@ -445,7 +324,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="text-5xl md:text-6xl text-white text-center tracking-wide"
             >
-              Fotos
+              {""}
             </motion.h1>
 
             <div className="space-y-8 text-center">
@@ -501,10 +380,17 @@ export default function Home() {
                       About My Photography
                     </h2>
                     <p className="text-lg leading-relaxed text-foreground opacity-90">
-                      Through my lens, I capture the subtle interplay of light
-                      and shadow, seeking to reveal the extraordinary in the
-                      ordinary. My work focuses on finding beauty in both
-                      natural landscapes and urban environments.
+                      I often find myself alone, immersed in the process of
+                      capturing images. Photography, for me, isn&apos;t just
+                      about technical skill; it&apos;s a way to make sense of
+                      things and search for meaning in moments that might
+                      otherwise go unnoticed. While photos may lack an immediate
+                      sense of place, over time they evoke a sense of
+                      familiarity, prompting reflection. Sometimes, I regret not
+                      capturing certain memories, but I&apos;ve learned that
+                      meaning often emerges later. Photography has taught me
+                      that being still and present, even in solitude, can reveal
+                      beauty in the simplest moments.
                     </p>
                   </FadeInSection>
                 </div>
