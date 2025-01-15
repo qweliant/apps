@@ -40,12 +40,7 @@ export default function RootLayout({
               >
                 Home
               </Link>
-              <Link
-                href="/posts"
-                className="text-lg font-medium hover:underline text-purple-500"
-              >
-                Archive
-              </Link>
+
               <Link
                 href="/fotos"
                 className="text-lg font-medium hover:underline text-purple-500"
@@ -53,15 +48,33 @@ export default function RootLayout({
                 Fotos
               </Link>
               <Link
-                href="/fotos"
+                href="mailto:qwelian@tutanota.com"
                 className="text-lg font-medium hover:underline text-purple-500"
               >
                 Contact
+              </Link>
+              <Link
+                href="/posts"
+                className="text-lg font-medium hover:underline text-purple-500"
+              >
+                Archive
+              </Link>
+              <Link
+                href="/about"
+                className="text-lg font-medium hover:underline text-purple-500"
+              >
+                About
               </Link>
             </div>
           </nav>
         </header>
         <main className="">{children}</main>
+        <footer className="mt-12 text-center text-gray-600">
+          <p className="italic">
+            Stay passionate, stay chill, and never stop exploring what life can
+            be.
+          </p>
+        </footer>
         <footer className="py-4 text-center text-sm text-gray-600">
           © {new Date().getFullYear()} My Blog. All rights reserved.
         </footer>
