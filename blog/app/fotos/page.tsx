@@ -23,62 +23,188 @@ interface Photo {
 const photos: Photo[] = [
   // Flora category
   {
-    src: "/images/fleur.jpg",
-    alt: "Purple flower close-up",
-    category: "flora",
-    blurDataUrl: "data:image/jpeg;base64,/9j...", // You'll need to generate these
-  },
-  {
-    src: "/images/flower.jpg",
-    alt: "White flower",
+    src: "/images/flora/DSC_0724.jpeg",
+    alt: "Flora Image", // Replace with descriptive alt text
     category: "flora",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
   {
-    src: "/images/pink.jpg",
-    alt: "Pink flower",
+    src: "/images/flora/DSC_1990.jpeg",
+    alt: "Flora Image", // Replace with descriptive alt text
     category: "flora",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
   {
-    src: "/images/rose.jpg",
-    alt: "Rose",
+    src: "/images/flora/DSC_2039.jpeg",
+    alt: "Flora Image",
     category: "flora",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
+  {
+    src: "/images/flora/DSC_2072.jpeg",
+    alt: "Flora Image",
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/flora/DSCF0332.jpeg",
+    alt: "Flora Image", // Replace with descriptive alt text
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/flora/Hibiscus.jpeg",
+    alt: "Flora Image",
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/flora/orchids.jpeg",
+    alt: "Flora Image",
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/flora/Untitled.jpeg",
+    alt: "Flora Image",
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/flora/zelia_export.jpeg",
+    alt: "Flora Image", // Replace with descriptive alt text
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/flora/zelia???.jpeg",
+    alt: "Flora Image",
+    category: "flora",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+
   // Travel category
   {
-    src: "/images/bridge.jpg",
-    alt: "Bridge view",
+    src: "/images/travel/000366550011.jpeg",
+    alt: "Travel Image", // Replace with descriptive alt text
     category: "travel",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
   {
-    src: "/images/city.jpg",
-    alt: "City landscape",
+    src: "/images/travel/000554650007.jpeg",
+    alt: "Travel Image", // Replace with descriptive alt text
     category: "travel",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
   {
-    src: "/images/coast.jpg",
-    alt: "Coastal view",
+    src: "/images/travel/000701500014.jpeg",
+    alt: "Travel Image",
     category: "travel",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
   {
-    src: "/images/sunset.jpg",
-    alt: "Sunset scene",
+    src: "/images/travel/000701500035.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/035330006511-R1-017-7.jpeg",
+    alt: "Travel Image", // Replace with descriptive alt text
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_0515.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_0615.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_1968.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2114.jpeg",
+    alt: "Travel Image", // Replace with descriptive alt text
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2160.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2168.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2251.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2278.jpeg",
+    alt: "Travel Image", // Replace with descriptive alt text
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2317.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2326.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_2345.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_3556.jpeg",
+    alt: "Travel Image", // Replace with descriptive alt text
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_3559.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_8178.jpeg",
+    alt: "Travel Image",
+    category: "travel",
+    blurDataUrl: "data:image/jpeg;base64,/9j...",
+  },
+  {
+    src: "/images/travel/IMG_8572.jpeg",
+    alt: "Travel Image",
     category: "travel",
     blurDataUrl: "data:image/jpeg;base64,/9j...",
   },
 ];
-
-// Loading component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center w-full h-full">
-    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-foreground"></div>
-  </div>
-);
 
 // Modal component
 const ImageModal = ({
@@ -249,6 +375,7 @@ export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [currentCategory, setCurrentCategory] = useState<PhotoCategory>("all");
   const heroRef = useRef(null);
+  const aboutRef = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -281,6 +408,13 @@ export default function Home() {
     setSelectedPhoto(photos[previousIndex]);
   };
 
+  const handleExploreMoreClick = () => {
+    if (aboutRef.current) {
+      aboutRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    setShowMore(true);
+  };
+
   return (
     <PageTransition>
       <main className="relative min-h-screen bg-background">
@@ -292,7 +426,7 @@ export default function Home() {
         >
           <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
             <Image
-              src="/images/_DSC3814.jpg"
+              src="/images/_DSC2366.jpeg"
               alt="Featured landscape"
               fill
               priority
@@ -309,22 +443,12 @@ export default function Home() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl font-bold text-white text-center"
+              className="text-5xl md:text-6xl text-white text-center tracking-wide"
             >
-              Your Photo Blog
+              Fotos
             </motion.h1>
 
             <div className="space-y-8 text-center">
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                onClick={() => setShowMore(true)}
-                className="px-6 py-3 bg-white bg-opacity-20 text-white rounded-full backdrop-blur-sm hover:bg-opacity-30 transition-all duration-300"
-              >
-                Explore More
-              </motion.button>
-
               {/* Scroll indicator */}
               <motion.div
                 ref={scrollIndicatorRef}
@@ -332,7 +456,17 @@ export default function Home() {
                 animate={{ opacity: scrollIndicatorInView ? 1 : 0 }}
                 className="flex flex-col items-center space-y-2"
               >
-                <span className="text-white text-sm">Scroll to discover</span>
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  onClick={() => {
+                    handleExploreMoreClick();
+                  }}
+                  className="px-6 py-3 bg-white bg-opacity-20 text-white rounded-full backdrop-blur-sm hover:bg-opacity-30 transition-all duration-300"
+                >
+                  Explore More
+                </motion.button>
                 <motion.div
                   animate={{ y: [0, 10, 0] }}
                   transition={{
@@ -357,7 +491,10 @@ export default function Home() {
               exit={{ opacity: 0 }}
             >
               {/* About Photography Section - Now using FadeInSection */}
-              <section className="px-4 py-24 md:px-16 bg-background">
+              <section
+                ref={aboutRef}
+                className="px-4 py-24 md:px-16 bg-background"
+              >
                 <div className="max-w-4xl mx-auto">
                   <FadeInSection>
                     <h2 className="text-4xl font-bold mb-8 text-foreground">
