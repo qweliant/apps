@@ -311,7 +311,7 @@ export default function Home() {
               priority
               className="object-cover"
               placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j..."
+              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-black bg-opacity-30" />
           </motion.div>
