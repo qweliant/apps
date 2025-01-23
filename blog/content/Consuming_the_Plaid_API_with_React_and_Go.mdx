@@ -1,320 +1,517 @@
----
+\-\-\-
 title: "Consuming the Plaid API with React and Go"
-date: "2025-01-14T22:14:53.412Z"
----
+date: "2025-01-23T00:41:01.559Z"
+type: "5c421d8f-fbf0-44a3-9a05-dfe9eb164c76"
+pinned: false
+pageCustomization:
+ backgroundColor: ""
+ backgroundImage: ""
+ defaultFont: "ui-sans-serif"
+ freeDrag: false
+\-\-\-
 
-# Consuming the Plaid API with React and Go
+\# Consuming the Plaid API with React and Go
 
-## Contents
+\## Contents
 
-### Content ID: b5de0dd7-27bf-46ba-a0c2-a71d36268e0c
+\### Content ID: \`200b7173-6079-4b72-a16c-02b7ec5d16c9\`
 
-### A Modern Full Stack REST Application
+\## Contents
 
-Plaid is a popular API that exposes a user's banking information through REST endpoints. We will make use of their service to create a REST API to create authorization information. We will then create a React application that consumes the API to create auth tokens for a user. Remember, you can click on the **View Raw** button to copy any code you need. This tutorial assumes familiarity with React and full-stack development. The repo for this can be found here:  
-**A quickstart for setting up Plaid server and React client - qweliant/BetterPlaidQuickstart**
+\\### Content ID: b5de0dd7-27bf-46ba-a0c2-a71d36268e0c
+
+\### A Modern Full Stack REST Application
+
+Plaid is a popular API that exposes a user's banking information through REST endpoints. We will make use of their service to create a REST API to create authorization information. We will then create a React application that consumes the API to create auth tokens for a user. Remember, you can click on the \\\*\_View Raw\_\* button to copy any code you need. This tutorial assumes familiarity with React and full-stack development. The repo for this can be found here:
+
+\*\_A quickstart for setting up Plaid server and React client - qweliant/BetterPlaidQuickstart\_\*
 
 To get started, we need to head over to Plaid for our API keys.
 
-#### Landing page after login to Plaid
+\#### Landing page after login to Plaid
 
-Navigate to the **Settings** tab and click **Keys** to view your API keys.
+Navigate to the \\\*\_Settings tab and click Keys\_\* to view your API keys.
 
-#### Creds from Plaid
+\#### Creds from Plaid
 
-We will use the sandbox environment, which uses a different key for testing than development. Notice on the left sidebar a tab that says **API**. Click on that and you will see the section about Plaid's redirect URI. Click on **Add New URI** and add `http://localhost:80` and `http://localhost:3000`. This will control where the redirect after linking happens. If you click on the **Test in Sandbox** button seen on the landing page, you will be taken to a page showing the test user credentials.
+We will use the sandbox environment, which uses a different key for testing than development. Notice on the left sidebar a tab that says \\\*\_API. Click on that and you will see the section about Plaid's redirect URI. Click on Add New URI and add\_ \`http://localhost:80\` \_and\_ \`http://localhost:3000\`\_. This will control where the redirect after linking happens. If you click on the Test in Sandbox\_\* button seen on the landing page, you will be taken to a page showing the test user credentials.
 
 Quickstart repos exist for multiple languages. You can use your language of choice for this project since the client is backend agnostic.
 
-We won't necessarily run the exact setup they have, but next, we will walk through setting up the backend via the **Go Not So Quickstart Repo**.
+We won't necessarily run the exact setup they have, but next, we will walk through setting up the backend via the \*\_Go Not So Quickstart Repo\_\*.
 
-### Backend
+\### Backend
 
-1. Create a project directory for your project. Then run:
+1\\. Create a project directory for your project. Then run:
 
-```bash
-git clone https://github.com/plaid/quickstart.git
-```
+\\\`\\\`\\\`bash
 
-2. Delete the **Makefile**, **README**, and every folder except the **go** one.
+git clone \[https://github.com/plaid/quickstart.git\](https://github.com/plaid/quickstart.git)
 
-#### Before
+\\\`\\\`\\\`
 
-_files present_
+2\\. Delete the \\\*\_Makefile, README, and every folder except the go\_\* one.
 
-#### After
+\#### Before
 
-_files remaining_
+\_files present\_
+
+\#### After
+
+\_files remaining\_
 
 These come preconfigured with a Dockerfile to make deployment easy. We won't be covering deployment of Docker containers, but we will be spinning them up using Docker for Desktop. If you need to install, check out Docker for installation instructions per your OS. This will be a simple Docker setup, so you should be able to understand the basics following along.
 
-The next thing we should do is edit the **docker-compose.yml** file. We need to remove the container setup procedures for the other examples and make environment variables available from a `.env` file. After the edits, the file should look like this:
+The next thing we should do is edit the \\\*\_docker-compose.yml\_\* file. We need to remove the container setup procedures for the other examples and make environment variables available from a \`.env\` file. After the edits, the file should look like this:
 
-```yaml
+\\\`\\\`\\\`yaml
+
 version: "3.4"
+
 services:
-  go:
-    build:
-      context: .
-      dockerfile: ./go/Dockerfile
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-```
+
+go:
+
+build:
+
+context: .
+
+dockerfile: ./go/Dockerfile
+
+ports:
+
+\\- "8000:8000"
+
+env\\\_file:
+
+\\- .env
+
+\\\`\\\`\\\`
 
 Running:
 
-```bash
+\\\`\\\`\\\`bash
+
 docker-compose up -d --build
-```
+
+\\\`\\\`\\\`
 
 will build the image and start a container. If we look at the Dockerfile, we can see how our application is being built. The Go version is specified for the official Go image. A directory is created that we copy everything into. After changing the root directory to the Go folder, we get the required packages and build the binary.
 
 Next, we pull the image that our binary will run on, copy the binary into the image, and expose the app via port 8000. By the way, you should delete the lines that copy HTML and static info over. Our Dockerfile should look like this:
 
-```dockerfile
+\\\`\\\`\\\`dockerfile
+
 FROM golang:1.12 AS build
+
 WORKDIR /opt/src
+
 COPY . .
+
 WORKDIR /opt/src/go
+
 RUN go get -d -v ./...
+
 RUN go build -o quickstart
 
-FROM gcr.io/distroless/base-debian10
+FROM \[gcr.io/distroless/base-debian10\](//gcr.io/distroless/base-debian10)
+
 COPY --from=build /opt/src/go/quickstart /
+
 EXPOSE 8000
-ENTRYPOINT ["/quickstart"]
-```
 
-If you ran the above **docker-compose** command, you should expect to see warnings about your env variables or errors if you have not already deleted the HTML and static copy. Let's create an **.env** file in the same folder as the **docker-compose** file. This file will define your Plaid credentials. The result should be something like this:
+ENTRYPOINT \\\["/quickstart"\\\]
 
-```env
-# Get your Plaid API keys from the dashboard: https://dashboard.plaid.com/account/keys
-PLAID_CLIENT_ID=CLIENT_ID
-PLAID_SECRET=SANDBOX_SECRET
-PLAID_ENV=sandbox
-PLAID_PRODUCTS=transactions
-PLAID_COUNTRY_CODES=US,CA
-PLAID_REDIRECT_URI=http://localhost:80
-```
+\\\`\\\`\\\`
 
-The last thing we should do before moving on to the frontend is edit some portions of the code in **server.go**. This is because the quickstart repo does not behave as one would expect. This may be due to my own ignorance, but following the steps in the official repo leads to an environment error.
+If you ran the above \\\*\_docker-compose command, you should expect to see warnings about your env variables or errors if you have not already deleted the HTML and static copy. Let's create an .env file in the same folder as the docker-compose\_\* file. This file will define your Plaid credentials. The result should be something like this:
 
-### Edit the following in **server.go**:
+\\\`\\\`\\\`env
 
-```go
+\\# Get your Plaid API keys from the dashboard: \[https://dashboard.plaid.com/account/keys\](https://dashboard.plaid.com/account/keys)
+
+PLAID\\\_CLIENT\\\_ID=CLIENT\\\_ID
+
+PLAID\\\_SECRET=SANDBOX\\\_SECRET
+
+PLAID\\\_ENV=sandbox
+
+PLAID\\\_PRODUCTS=transactions
+
+PLAID\\\_COUNTRY\\\_CODES=US,CA
+
+PLAID\\\_REDIRECT\\\_URI=\[http://localhost:80\](http://localhost:80)
+
+\\\`\\\`\\\`
+
+The last thing we should do before moving on to the frontend is edit some portions of the code in \*\_server.go\_\*. This is because the quickstart repo does not behave as one would expect. This may be due to my own ignorance, but following the steps in the official repo leads to an environment error.
+
+\\### Edit the following in \*\_server.go\_\*:
+
+\\\`\\\`\\\`go
+
 var (
-    PLAID_CLIENT_ID = os.Getenv("PLAID_CLIENT_ID")
-    PLAID_SECRET = os.Getenv("PLAID_SECRET")
-    PLAID_ENV = os.Getenv("PLAID_ENV")
-    PLAID_PRODUCTS = os.Getenv("PLAID_PRODUCTS")
-    PLAID_COUNTRY_CODES = os.Getenv("PLAID_COUNTRY_CODES")
-    PLAID_REDIRECT_URI = os.Getenv("PLAID_REDIRECT_URI")
-    APP_PORT = os.Getenv("APP_PORT")
+
+PLAID\\\_CLIENT\\\_ID = os.Getenv("PLAID\\\_CLIENT\\\_ID")
+
+PLAID\\\_SECRET = os.Getenv("PLAID\\\_SECRET")
+
+PLAID\\\_ENV = os.Getenv("PLAID\\\_ENV")
+
+PLAID\\\_PRODUCTS = os.Getenv("PLAID\\\_PRODUCTS")
+
+PLAID\\\_COUNTRY\\\_CODES = os.Getenv("PLAID\\\_COUNTRY\\\_CODES")
+
+PLAID\\\_REDIRECT\\\_URI = os.Getenv("PLAID\\\_REDIRECT\\\_URI")
+
+APP\\\_PORT = os.Getenv("APP\\\_PORT")
+
 )
 
-var environments = map[string]plaid.Environment{
-    "sandbox":     plaid.Sandbox,
-    "development": plaid.Development,
-    "production":  plaid.Production,
+var environments = map\\\[\\\_string\\\_\\\]plaid.Environment{
+
+"sandbox": plaid.Sandbox,
+
+"development": plaid.Development,
+
+"production": plaid.Production,
+
 }
 
 func init() {
-    // set defaults if
-    if PLAID_PRODUCTS == "" {
-        PLAID_PRODUCTS = "transactions"
-    }
-    if PLAID_COUNTRY_CODES == "" {
-        PLAID_COUNTRY_CODES = "US"
-    }
-    if PLAID_ENV == "" {
-        PLAID_ENV = "sandbox"
-    }
-    if APP_PORT == "" {
-        APP_PORT = "8000"
-    }
-    if PLAID_CLIENT_ID == "" {
-        log.Fatal("PLAID_CLIENT_ID is not set. Make sure to fill out the .env file")
-    }
-    if PLAID_SECRET == "" {
-        log.Fatal("PLAID_SECRET is not set. Make sure to fill out the .env file")
-    }
 
-    // create Plaid client
-    client, err = plaid.NewClient(plaid.ClientOptions{
-        PLAID_CLIENT_ID,
-        PLAID_SECRET,
-        environments[PLAID_ENV],
-        &http.Client{},
-    })
-    if err != nil {
-        panic(fmt.Errorf("unexpected error while initializing plaid client %w", err))
-    }
+\_// set defaults if\_
+
+if PLAID\\\_PRODUCTS == "" {
+
+PLAID\\\_PRODUCTS = "transactions"
+
 }
-```
+
+if PLAID\\\_COUNTRY\\\_CODES == "" {
+
+PLAID\\\_COUNTRY\\\_CODES = "US"
+
+}
+
+if PLAID\\\_ENV == "" {
+
+PLAID\\\_ENV = "sandbox"
+
+}
+
+if APP\\\_PORT == "" {
+
+APP\\\_PORT = "8000"
+
+}
+
+if PLAID\\\_CLIENT\\\_ID == "" {
+
+log.Fatal("PLAID\\\_CLIENT\\\_ID is not set. Make sure to fill out the .env file")
+
+}
+
+if PLAID\\\_SECRET == "" {
+
+log.Fatal("PLAID\\\_SECRET is not set. Make sure to fill out the .env file")
+
+}
+
+\_// create Plaid client\_
+
+client, err = plaid.NewClient(plaid.ClientOptions{
+
+PLAID\\\_CLIENT\\\_ID,
+
+PLAID\\\_SECRET,
+
+environments\\\[PLAID\\\_ENV\\\],
+
+&http.Client{},
+
+})
+
+if err != nil {
+
+panic(fmt.Errorf("unexpected error while initializing plaid client %w", err))
+
+}
+
+}
+
+\\\`\\\`\\\`
 
 Now we can proceed with the React setup.
 
-### React
+\### React
 
 Alright, we're back, refreshed, hydrated, and ready for the frontend. Start the app by running:
 
-```bash
+\\\`\\\`\\\`bash
+
 npx create-react-app plaid
-```
 
-The directory should be in the parent folder of your **go** folder.
+\\\`\\\`\\\`
 
-Let's add the client service to the **docker-compose** file. Add it after the **go** section. The file will change to look something like this:
+The directory should be in the parent folder of your \\\*\_go\_\* folder.
 
-```yaml
+Let's add the client service to the \\\*\_docker-compose file. Add it after the go\_\* section. The file will change to look something like this:
+
+\\\`\\\`\\\`yaml
+
 version: "3.8"
+
 services:
-  go:
-    env_file:
-      - .env
-    build:
-      context: .
-      dockerfile: ./go/Dockerfile
-    ports:
-      - "8000:8000"
-    restart: on-failure
-  client:
-    stdin_open: true
-    env_file:
-      - .env
-    build:
-      context: .
-      dockerfile: ./plaid/Dockerfile
-    ports:
-      - 80:80
-    restart: on-failure
-```
 
-Next, create a **Dockerfile** in the **plaid** directory. This Dockerfile defines steps for building the production React app and placing it on an Nginx web server. The Dockerfile for this will be:
+go:
 
-```dockerfile
-# STAGE 1 - build the react app
+env\\\_file:
+
+\\- .env
+
+build:
+
+context: .
+
+dockerfile: ./go/Dockerfile
+
+ports:
+
+\\- "8000:8000"
+
+restart: on-failure
+
+client:
+
+stdin\\\_open: true
+
+env\\\_file:
+
+\\- .env
+
+build:
+
+context: .
+
+dockerfile: ./plaid/Dockerfile
+
+ports:
+
+\\- 80:80
+
+restart: on-failure
+
+\\\`\\\`\\\`
+
+Next, create a \\\*\_Dockerfile in the plaid\_\* directory. This Dockerfile defines steps for building the production React app and placing it on an Nginx web server. The Dockerfile for this will be:
+
+\\\`\\\`\\\`dockerfile
+
+\_\\# STAGE 1 - build the react app\_
+
 FROM node:alpine as build
+
 WORKDIR /app
+
 COPY ./package.json /app/
+
 RUN yarn --silent
+
 COPY . /app
+
 RUN yarn build
 
-# STAGE 2 - build the final image using a nginx web server
+\_\\# STAGE 2 - build the final image using a nginx web server\_
+
 FROM nginx:alpine
+
 COPY --from=build /app/build /usr/share/nginx/html
+
 RUN rm /etc/nginx/conf.d/default.conf
+
 COPY nginx/nginx.conf /etc/nginx/conf.d
+
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
 
-Then, create a folder named **nginx** and add a file named **nginx.conf**. This file configures the server to serve the static build (HTML, JS, CSS, etc.) on port 80 in the container.
+CMD \\\["nginx", "-g", "daemon off;"\\\]
 
-```nginx
+\\\`\\\`\\\`
+
+Then, create a folder named \*\_nginx and add a file named nginx.conf\_\*. This file configures the server to serve the static build (HTML, JS, CSS, etc.) on port 80 in the container.
+
+\\\`\\\`\\\`nginx
+
 server {
-    listen 80;
-    location / {
-        root /usr/share/nginx/html;
-        index index.html index.htm;
-        try_files $uri $uri/ /index.html;
-    }
-    error_page 500 502 503 504 /50x.html;
-    location = /50x.html {
-        root /usr/share/nginx/html;
-    }
+
+listen 80;
+
+location / {
+
+root /usr/share/nginx/html;
+
+index index.html index.htm;
+
+try\\\_files $uri $uri/ /index.html;
+
 }
-```
 
-Now, run the **docker-compose** command to verify that the React app is being hosted on port 80. Since the redirect URI is needed for browser navigation after login, you'll need to resolve the URI for dev vs. container environments.
+error\\\_page 500 502 503 504 /50x.html;
 
-We now need to add **axios** and **react-plaid** to handle state and client/server communication. Inside the **plaid** directory, run:
+location = /50x.html {
 
-```bash
+root /usr/share/nginx/html;
+
+}
+
+}
+
+\\\`\\\`\\\`
+
+Now, run the \\\*\_docker-compose\_\* command to verify that the React app is being hosted on port 80. Since the redirect URI is needed for browser navigation after login, you'll need to resolve the URI for dev vs. container environments.
+
+We now need to add \\\*\_axios and react-plaid to handle state and client/server communication. Inside the plaid\_\* directory, run:
+
+\\\`\\\`\\\`bash
+
 yarn add axios react-plaid-link
-```
 
-Then, create a file named **Link.js** inside the **src** folder. This is where the logic for making the link will be created.
+\\\`\\\`\\\`
 
-```javascript
+Then, create a file named \\\*\_Link.js inside the src\_\* folder. This is where the logic for making the link will be created.
+
+\\\`\\\`\\\`javascript
+
 import React, { useState, useCallback, useEffect } from "react";
+
 import { usePlaidLink } from "react-plaid-link";
+
 import axios from "axios";
+
 import qs from "qs";
 
-const tokenURL = `http://localhost:8000/api/create_link_token`;
-const sendTokenURL = `http://localhost:8000/api/set_access_token`;
+\_const\_ tokenURL = \`http://localhost:8000/api/create\_link\_token\`;
 
-const Link = () => {
-    const [data, setData] = useState("");
+\_const\_ sendTokenURL = \`http://localhost:8000/api/set\_access\_token\`;
 
-    const fetchToken = useCallback(async () => {
-        const config = {
-            method: "post",
-            url: tokenURL,
-        };
-        const res = await axios(config);
-        console.log(res)
-        setData(res.data.link_token);
-    }, []);
+\_const\_ Link = () => {
 
-    useEffect(() => {
-        fetchToken();
-    }, [fetchToken]);
+\_const\_ \\\[data, setData\\\] = useState("");
 
-    const onSuccess = useCallback(async (token, metadata) => {
-        // send token to server
-        const config = {
-            method: "post",
-            url: sendTokenURL,
-            data: qs.stringify({ public_token: token }),
-            headers: { "content-type": "application/json" },
-        };
-        try {
-            const response = await axios(config);
-            console.log(response)
-        } catch (error) {
-            console.error(error);
-        }
-    }, []);
+\_const\_ fetchToken = useCallback(\_async\_ () => {
 
-    const config = {
-        token: data,
-        onSuccess,
-    };
+\_const\_ config = {
 
-    const { open, ready, err } = usePlaidLink(config);
+method: "post",
 
-    if (err) return "Error!";
+url: tokenURL,
 
-    return (
-        <button onClick={() => open()} disabled={!ready}>
-            Connect a bank account
+};
 
-    );
+\_const\_ res = await axios(config);
+
+console.log(res)
+
+setData(res.data.link\\\_token);
+
+}, \\\[\\\]);
+
+useEffect(() => {
+
+fetchToken();
+
+}, \\\[fetchToken\\\]);
+
+\_const\_ onSuccess = useCallback(\_async\_ (\_token\_, \_metadata\_) => {
+
+\_// send token to server\_
+
+\_const\_ config = {
+
+method: "post",
+
+url: sendTokenURL,
+
+data: qs.stringify({ public\\\_token: token }),
+
+headers: { "content-type": "application/json" },
+
+};
+
+try {
+
+\_const\_ response = await axios(config);
+
+console.log(response)
+
+} catch (error) {
+
+console.error(error);
+
+}
+
+}, \\\[\\\]);
+
+\_const\_ config = {
+
+token: data,
+
+onSuccess,
+
+};
+
+\_const\_ { open, ready, err } = usePlaidLink(config);
+
+if (err) return "Error!";
+
+return (
+
+ open()} \\\_disabled\\\_={!ready}>
+
+Connect a bank account
+
+);
+
 }
 
 export default Link;
-```
+
+\\\`\\\`\\\`
 
 After running:
 
-```bash
-docker-compose up
-```
+\\\`\\\`\\\`bash
 
-Your app should be running at `localhost:80`. Try it out and let me know if you encounter any issues!
+docker-compose up
+
+\\\`\\\`\\\`
+
+Your app should be running at \`localhost:80\`. Try it out and let me know if you encounter any issues!
 
 Congrats! You are now on your way to implementing a fintech banking as a service application. Kinda like...BaaS...Ok ok. Thank you for viewing. Feel free to reach out to me on my social, or connect via linkedin. Have a wonderful day!
 
-## Properties
+\## Properties
 
-- **Property ID**: 1d991476-3640-4bd0-a421-cf5b0cacbb00
-  - Boolean Value: false
+\\- \*\_Property ID\_\*: 1d991476-3640-4bd0-a421-cf5b0cacbb00
 
----
+\\- Boolean Value: false
+
+\\---
 
 Exported on 2025-01-14T22:14:53.412Z
+
+Position: x=0, y=0, w=12, h=12
+
+\## Properties
+
+\- \*\*Property ID\*\*: \`63535e81-2300-473f-bc15-f55b50eb7e60\`
+ \- Object ID: \`bce56f10-ad88-4cfa-bf82-82f26d76149c\`
+ \- Boolean Value: false
+ \- Date: 2025-01-21T22:50:17.529Z
+\- \*\*Property ID\*\*: \`8649a72f-a448-44f5-bc9e-395ac8057364\`
+ \- Object ID: \`bce56f10-ad88-4cfa-bf82-82f26d76149c\`
+ \- Value:
+ \- Boolean Value: false
+
+\-\-\-
+Exported on 2025-01-23T00:41:01.559Z

@@ -41,6 +41,12 @@ export default {
             p: {
               color: "var(--foreground)", // Ensure paragraph text color matches the foreground
             },
+            strong: {
+              color: "var(--foreground)", // Ensure paragraph text color matches the foreground
+            },
+            code: {
+              color: "var(--foreground)", // Ensure paragraph text color matches the foreground
+            },
           },
         },
       },
