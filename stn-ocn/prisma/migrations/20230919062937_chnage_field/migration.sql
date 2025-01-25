@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "NoteData" ALTER COLUMN "time" SET DATA TYPE STRING;

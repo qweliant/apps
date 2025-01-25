@@ -1,0 +1,151 @@
+---
+title: "Today I learned"
+date: "2022-09-03T04:00:00.000Z"
+type: "5c421d8f-fbf0-44a3-9a05-dfe9eb164c76"
+pinned: false
+pageCustomization: 
+   backgroundColor: ""
+   backgroundImage: ""
+   defaultFont: "ui-sans-serif"
+   freeDrag: false
+properties: 
+   63535e81-2300-473f-bc15-f55b50eb7e60: 
+      objectId: "b291832b-a484-4ee6-8744-91e0c6577e74"
+      boolean: false
+      date: "2022-09-03T04:00:00.000Z"
+   8649a72f-a448-44f5-bc9e-395ac8057364: 
+      objectId: "b291832b-a484-4ee6-8744-91e0c6577e74"
+      value: ""
+      boolean: false
+---
+
+# Today I learned
+
+\- Thursday, August 21st, we had our first lunch and learn at PubPub. It was held on JS runtimes. Before this meeting, I was pretty ignorant of the difference between node and the [V8 engine](https://v8.dev/), let alone did I have a basic understanding of a runtime.
+
+\- JS Runtime
+
+\-
+
+\- JavaScript runtime environments are a group of data structures and packages to run JS. What I find interesting about this design is that runtime environments \_include\_s useful packages out of the box! These are mostly WebApi standards that are implemented to be used in the JS runtime. Node.js even includes a package manager to use third party libraries in it’s runtime environment. Never did I consider all the things that are just there by default.
+
+\- There are 4 parts to a runtime. The engine, event loop, web API, and callback queue.
+
+\-
+
+\- JavaScript runtime environments are a group of data structures and packages to run JS. What I find interesting about this design is that runtime environments \_include\_s useful packages out of the box! These are mostly WebApi standards that are implemented to be used in the JS runtime. Node.js even includes a package manager to use third party libraries in it’s runtime environment. Never did I consider all the things that are just there by default.
+
+\- There are 4 parts to a runtime. The engine, event loop, web API, and callback queue.
+
+\- Javascript engines
+
+\- In JS the engine is responsible for calling functions from the stack and storing execution context.
+
+\-
+
+\- please excuse my horrible writing form
+
+\- taken from [Geeks\](https://www.geeksforgeeks.org/introduction-to-javascript-engines/">Geeks) for Geeks](%5Bhttps://www.geeksforgeeks.org/introduction-to-javascript-engines/)
+
+\- I’m not quite sure why each browser _needs_ its own JS runtime, but there are [quite\](https://en.wikipedia.org/wiki/Comparison\_of\_JavaScript\_engines">quite) a few implementations of web standards](%5Bhttps://en.wikipedia.org/wiki/Comparison_of_JavaScript_engines) so it makes sense because of the complexity of [browsers](https://web.dev/howbrowserswork/).
+
+\-
+
+\- In JS the engine is responsible for calling functions from the stack and storing execution context.
+
+\-
+
+\- please excuse my horrible writing form
+
+\- taken from [Geeks\](https://www.geeksforgeeks.org/introduction-to-javascript-engines/">Geeks) for Geeks](%5Bhttps://www.geeksforgeeks.org/introduction-to-javascript-engines/)
+
+\- I’m not quite sure why each browser _needs_ its own JS runtime, but there are [quite\](https://en.wikipedia.org/wiki/Comparison\_of\_JavaScript\_engines">quite) a few implementations of web standards](%5Bhttps://en.wikipedia.org/wiki/Comparison_of_JavaScript_engines) so it makes sense because of the complexity of [browsers](https://web.dev/howbrowserswork/).
+
+\-
+
+\- Web API’s
+
+\- We didn’t too much discuss Web API’s. [Node.js](%5Bhttps://nodejs.org/en/)\]([https://nodejs.org/en/">Node.js](https://nodejs.org/en/%22%3ENode.js)) is the most popular JavaScript runtime and [includes](%5Bhttps://nodejs.org/dist/latest-v16.x/docs/api/)\]([https://nodejs.org/dist/latest-v16.x/docs/api/">includes](https://nodejs.org/dist/latest-v16.x/docs/api/%22%3Eincludes)) a lot of packages out of the box. In the box? Whatever, what Node.js includes are a bunch of libraries that make using [web\](https://www.javascripttutorial.net/web-apis/">web) standards](%5Bhttps://www.javascripttutorial.net/web-apis/) easy. For instance, node includes an implementation of the [sockets\](https://nodejs.org/dist/latest-v16.x/docs/api/net.html#class-netsocket">sockets) API](%5Bhttps://nodejs.org/dist/latest-v16.x/docs/api/net.html#class-netsocket).
+
+\- We didn’t too much discuss Web API’s. [Node.js](%5Bhttps://nodejs.org/en/)\]([https://nodejs.org/en/">Node.js](https://nodejs.org/en/%22%3ENode.js)) is the most popular JavaScript runtime and [includes](%5Bhttps://nodejs.org/dist/latest-v16.x/docs/api/)\]([https://nodejs.org/dist/latest-v16.x/docs/api/">includes](https://nodejs.org/dist/latest-v16.x/docs/api/%22%3Eincludes)) a lot of packages out of the box. In the box? Whatever, what Node.js includes are a bunch of libraries that make using [web\](https://www.javascripttutorial.net/web-apis/">web) standards](%5Bhttps://www.javascripttutorial.net/web-apis/) easy. For instance, node includes an implementation of the [sockets\](https://nodejs.org/dist/latest-v16.x/docs/api/net.html#class-netsocket">sockets) API](%5Bhttps://nodejs.org/dist/latest-v16.x/docs/api/net.html#class-netsocket).
+
+\- Callback Queue
+
+\-
+
+\- basic event loop from [mdn](%5Bhttps://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#event_loop)\]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#event\_loop">mdn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#event_loop%22%3Emdn))
+
+\- The callback queue contains messages about when to call functions. In the sketch above I drew the basic handling of JS runtimes. The call stack keeps track of the execution context or frame to be called. At some point, a message is sent to the callback queue, and will run until the stack is empty. I’m still confused about this part because it seems the queue also reads from memory and uses the messages to execute functions in a single-threaded way. Mozilla included some links that I will leave here for future me(who reads this right).
+
+\- [https://stackoverflow.com/questions/2734025/is-javascript-guaranteed-to-be-single-threaded/2734311#2734311](https://stackoverflow.com/questions/2734025/is-javascript-guaranteed-to-be-single-threaded/2734311#2734311)
+
+\- [https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#what-is-the-event-loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#what-is-the-event-loop)
+
+\-
+
+\- basic event loop from [mdn](%5Bhttps://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#event_loop)\]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#event\_loop">mdn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#event_loop%22%3Emdn))
+
+\- The callback queue contains messages about when to call functions. In the sketch above I drew the basic handling of JS runtimes. The call stack keeps track of the execution context or frame to be called. At some point, a message is sent to the callback queue, and will run until the stack is empty. I’m still confused about this part because it seems the queue also reads from memory and uses the messages to execute functions in a single-threaded way. Mozilla included some links that I will leave here for future me(who reads this right).
+
+\- [https://stackoverflow.com/questions/2734025/is-javascript-guaranteed-to-be-single-threaded/2734311#2734311](https://stackoverflow.com/questions/2734025/is-javascript-guaranteed-to-be-single-threaded/2734311#2734311)
+
+\- [https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#what-is-the-event-loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#what-is-the-event-loop)
+
+\- Event Loops
+
+\-
+
+\- The event loop is what keeps track of calls to the stack, message queue, and memory. It’s interesting because [heaps](%5Bhttps://github.com/qweliant/GO-Practice/blob/master/algorithms/24_binary_heap_sort.go),\]([https://github.com/qweliant/GO-Practice/blob/master/algorithms/24\_binary\_heap\_sort.go">heaps](https://github.com/qweliant/GO-Practice/blob/master/algorithms/24_binary_heap_sort.go%22%3Eheaps),) [queues](%5Bhttps://github.com/qweliant/GO-Practice/blob/master/algorithms/18_queue.go),\]([https://github.com/qweliant/GO-Practice/blob/master/algorithms/18\_queue.go">queues](https://github.com/qweliant/GO-Practice/blob/master/algorithms/18_queue.go%22%3Equeues),) and [stacks](%5Bhttps://github.com/qweliant/GO-Practice/blob/master/algorithms/19_stack.go),\]([https://github.com/qweliant/GO-Practice/blob/master/algorithms/19\_stack.go">stacks](https://github.com/qweliant/GO-Practice/blob/master/algorithms/19_stack.go%22%3Estacks),) are the fundamentals of this architecture.
+
+\- event loop calling the queue
+
+\- That’s about all I’m aware of at current when it comes to runtimes. It’s my nature to compare things, so I will take a look in the future at different runtime environments to see if Frankensteining the best parts of each is something. Or at least to see the influences.
+
+\-
+
+\- The event loop is what keeps track of calls to the stack, message queue, and memory. It’s interesting because [heaps](%5Bhttps://github.com/qweliant/GO-Practice/blob/master/algorithms/24_binary_heap_sort.go),\]([https://github.com/qweliant/GO-Practice/blob/master/algorithms/24\_binary\_heap\_sort.go">heaps](https://github.com/qweliant/GO-Practice/blob/master/algorithms/24_binary_heap_sort.go%22%3Eheaps),) [queues](%5Bhttps://github.com/qweliant/GO-Practice/blob/master/algorithms/18_queue.go),\]([https://github.com/qweliant/GO-Practice/blob/master/algorithms/18\_queue.go">queues](https://github.com/qweliant/GO-Practice/blob/master/algorithms/18_queue.go%22%3Equeues),) and [stacks](%5Bhttps://github.com/qweliant/GO-Practice/blob/master/algorithms/19_stack.go),\]([https://github.com/qweliant/GO-Practice/blob/master/algorithms/19\_stack.go">stacks](https://github.com/qweliant/GO-Practice/blob/master/algorithms/19_stack.go%22%3Estacks),) are the fundamentals of this architecture.
+
+\- event loop calling the queue
+
+\- That’s about all I’m aware of at current when it comes to runtimes. It’s my nature to compare things, so I will take a look in the future at different runtime environments to see if Frankensteining the best parts of each is something. Or at least to see the influences.
+
+\- Runtime Flavors
+
+\- There are also flavors of JS runtimes. We discussed three of them: node, dino, and buns.
+
+\- [node](%5Bhttps://nodejs.org/en/)\]([https://nodejs.org/en/">node](https://nodejs.org/en/%22%3Enode))
+
+\- Node.js is the default runtime powering thousands of apps. A few [here](https://clockwise.software/blog/node-js-app-examples/). Node.js has an early mover advantage, being the first runtime presented to use the google invented v8 engine. The creator, Ryan Dahl, went on to create the next runtime we will discuss.
+
+\- [deno](https://deno.land/)
+
+\- deno is an early-stage runtime environment based on googles V8. Its goal is to provide a more conservative experience for using package modules while including TS support natively. Along with TS it [includes](https://dev.to/maxniederman/why-you-should-try-using-deno-11j), bundling, testing, and linting. deno also allows packages to be hosted [anywhere](%5Bhttps://www.jeremymorgan.com/blog/programming/what-is-deno/).\]([https://www.jeremymorgan.com/blog/programming/what-is-deno/">anywhere](https://www.jeremymorgan.com/blog/programming/what-is-deno/%22%3Eanywhere).)
+
+\- [buns](https://bun.sh/)
+
+\- Life begins and ends with buns. So does this post. buns is a spooky fast drop-in runtime replacement for node users. It’s based on Safari’s JS Core WebKit. They rewrote the runtime from scratch in [zig](%5Bhttps://ziglang.org/learn/overview/#small-simple-language).\]([https://ziglang.org/learn/overview/#small-simple-language">zig](https://ziglang.org/learn/overview/#small-simple-language%22%3Ezig).) According to them;
+
+\- bun also includes much out-of-the-box for developers including Web API and node package implementations.
+
+\- So, this is what I learned from our latest dev meet. It was really nice and I am looking forward to the next one.
+
+\-
+
+\- There are also flavors of JS runtimes. We discussed three of them: node, dino, and buns.
+
+\- [node](%5Bhttps://nodejs.org/en/)\]([https://nodejs.org/en/">node](https://nodejs.org/en/%22%3Enode))
+
+\- Node.js is the default runtime powering thousands of apps. A few [here](https://clockwise.software/blog/node-js-app-examples/). Node.js has an early mover advantage, being the first runtime presented to use the google invented v8 engine. The creator, Ryan Dahl, went on to create the next runtime we will discuss.
+
+\- [deno](https://deno.land/)
+
+\- deno is an early-stage runtime environment based on googles V8. Its goal is to provide a more conservative experience for using package modules while including TS support natively. Along with TS it [includes](https://dev.to/maxniederman/why-you-should-try-using-deno-11j), bundling, testing, and linting. deno also allows packages to be hosted [anywhere](%5Bhttps://www.jeremymorgan.com/blog/programming/what-is-deno/).\]([https://www.jeremymorgan.com/blog/programming/what-is-deno/">anywhere](https://www.jeremymorgan.com/blog/programming/what-is-deno/%22%3Eanywhere).)
+
+\- [buns](https://bun.sh/)
+
+\- Life begins and ends with buns. So does this post. buns is a spooky fast drop-in runtime replacement for node users. It’s based on Safari’s JS Core WebKit. They rewrote the runtime from scratch in [zig](%5Bhttps://ziglang.org/learn/overview/#small-simple-language).\]([https://ziglang.org/learn/overview/#small-simple-language">zig](https://ziglang.org/learn/overview/#small-simple-language%22%3Ezig).) According to them;
+
+\- bun also includes much out-of-the-box for developers including Web API and node package implementations.
+
+\- So, this is what I learned from our latest dev meet. It was really nice and I am looking forward to the next one.
+

@@ -1,0 +1,323 @@
+# Using GCP, FastAPI, Docker, and Huggingface to Deploy SOTA Language Models
+
+- I have found using more than 2 models for the API is too large for most deployment procedures. If you know a way around this let me know.
+
+Initial Set Up
+
+This stack will use FastAPI to serve an endpoint to our model. FastAPI requires uvicorn for serving, and pydantic to handle typing of the request messages. The [Huggingface Transformers library](https://chatbotslife.com/ultimate-guide-to-leveraging-nlp-machine-learning-for-you-chatbot-531ff2dd870c) specializes in bundling state of the art NLP models in a Python library that can be fine-tuned for many NLP tasks like Google's BERT model for named entity recognition or the OpenAI GPT2 model for text generation.
+
+Using your preferred package manager, install:
+
+- [transformers](https://github.com/huggingface/transformers)
+
+- [FastAPI](https://fastapi.tiangolo.com/)
+
+- uvicorn
+
+- pydantic
+
+As the packages install:
+
+1. Create a folder named app
+
+2. Add files nlp.py and main.py to it
+
+3. In the top-level directory, add Dockerfile and docker-compose.yml
+
+After installing packages, create a requirements folder and add requirements.txt:
+
+```bash
+
+pipenv run pip freeze > requirements/requirements.txt
+
+```
+
+Required Installations
+
+- [Install Docker](https://docs.docker.com/get-docker/)
+
+- [Install Docker Compose](https://docs.docker.com/compose/install/)
+
+- [Install Google Cloud SDK](https://cloud.google.com/sdk/install)
+
+Project Structure
+
+```
+
+app/
+
+    main.py
+
+    nlp.py
+
+requirements/
+
+    requirements.txt
+
+docker-compose.yml
+
+Dockerfile
+
+Pipfile
+
+```
+
+NLP Implementation
+
+Huggingface makes it easy to implement and serve SOTA transformer models. We'll create an API capable of text generation and sentiment analysis.
+
+Code Snippet
+
+```python
+
+from transformers import (
+
+    pipeline,
+
+    GPT2LMHeadModel,
+
+    GPT2Tokenizer
+
+)
+
+class NLP:
+
+    def __init__(self):
+
+        self.gen_model = GPT2LMHeadModel.from_pretrained('gpt2')
+
+        self.gen_tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+
+    def generate(self, prompt="The epistemelogical limit"):
+
+        inputs = self.gen_tokenizer.encode(
+
+            prompt,
+
+            add_special_tokens=False,
+
+            return_tensors="pt"
+
+        )
+
+        prompt_length = len(self.gen_tokenizer.decode(
+
+            inputs[0],
+
+            skip_special_tokens=True,
+
+            clean_up_tokenization_spaces=True
+
+        ))
+
+        outputs = self.gen_model.generate(
+
+            inputs,
+
+            max_length=200,
+
+            do_sample=True,
+
+            top_p=0.95,
+
+            top_k=60
+
+        )
+
+        generated = prompt + self.gen_tokenizer.decode(outputs[0])[prompt_length:]
+
+        return generated
+
+    def sentiments(self, text: str):
+
+        nlp = pipeline("sentiment-analysis")
+
+        result = nlp(text)[0]
+
+        return f"label: {result['label']}, with score: {round(result['score'], 4)}"
+
+```
+
+Example usage:
+
+```python
+
+nlp = NLP()
+
+print(nlp.sentiments("A bee sting is not cool"))
+
+# Output: 'label: NEGATIVE, with score: 0.9998'
+
+```
+
+API Implementation with FastAPI
+
+```python
+
+from fastapi import FastAPI
+
+from fastapi.middleware.cors import CORSMiddleware
+
+from pydantic import BaseModel
+
+from app.nlp import NLP
+
+class Message(BaseModel):
+
+    input: str
+
+    output: str = None
+
+app = FastAPI()
+
+nlp = NLP()
+
+origins = [
+
+    "http://localhost",
+
+    "http://localhost:3000",
+
+    "http://127.0.0.1:3000"
+
+]
+
+app.add_middleware(
+
+    CORSMiddleware,
+
+    allow_origins=origins,
+
+    allow_credentials=True,
+
+    allow_methods=["POST"],
+
+    allow_headers=["*"],
+
+)
+
+@app.post("/generative/")
+
+async def generate(message: Message):
+
+    message.output = nlp.generate(prompt=message.input)
+
+    return {"output": message.output}
+
+@app.post("/sentiment/")
+
+async def sentiment_analysis(message: Message):
+
+    message.output = str(nlp.sentiments(message.input))
+
+    return {"output": message.output}
+
+```
+
+To test the API:
+
+```bash
+
+uvicorn app.main:app --reload
+
+```
+
+Visit http://127.0.0.1:8001/docs to try out the API.
+
+Containerization
+
+Dockerfile
+
+```dockerfile
+
+FROM python:3.7
+
+COPY ./requirements/requirements.txt ./requirements/requirements.txt
+
+RUN pip3 install -r requirements/requirements.txt
+
+COPY ./app /app
+
+RUN useradd -m myuser
+
+USER myuser
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+
+```
+
+Docker Compose
+
+```yaml
+version: "3"
+
+services:
+  chatsume:
+    build: .
+
+    container_name: "chsme"
+
+    ports:
+      - "8000:8080"
+
+    volumes:
+      - ./app/:/app
+```
+
+Build and run:
+
+```bash
+
+docker-compose build
+
+docker-compose up -d
+
+```
+
+Deployment to Google Cloud Platform
+
+Tag the Docker image:
+
+```bash
+
+docker tag nlp_api gcr.io/fast_hug/nlp_api:latest
+
+```
+
+Push to Google Container Registry:
+
+```bash
+
+docker push gcr.io/fast_hug/nlp_api:latest
+
+```
+
+Cloud Run Deployment
+
+1. Navigate to Google Container Registry
+
+2. Find your latest image
+
+3. Click Deploy
+
+4. Select Deploy to Cloud Run
+
+5. Allow unauthenticated requests
+
+6. Set container port to 8080
+
+7. Set memory to 4GB
+
+8. Click Create
+
+Conclusion
+
+This post demonstrates how to use state-of-the-art NLP models from Huggingface to power a fast, scalable API. Containerization enables distributed deployment across various services.
+
+Connect with Me
+
+- [Twitter](https://twitter.com/Qwelian_Tanner)
+
+- [Github](https://github.com/qweliant)
+
+- [LinkedIn](https://www.linkedin.com/in/qdt/)
