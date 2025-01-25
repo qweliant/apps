@@ -37,7 +37,7 @@ export async function getSortedPosts() {
         return {
           slug: name.replace(/\.mdx$/, ""),
           title: formatTitle(name),
-          date: new Date(frontmatter.date).toLocaleDateString(),
+          date: new Date(frontmatter.date),
         };
       } catch (error) {
         console.error(`Error processing file ${name}:`, error);
@@ -49,7 +49,7 @@ export async function getSortedPosts() {
   // Sort posts by date (newest first)
   return posts
     .filter((post) => post !== null)
-    .sort((a, b) => new Date(b.date).getDate() - new Date(a.date).getDate());
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export default async function Home() {
@@ -74,7 +74,9 @@ export default async function Home() {
               >
                 <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
               </Link>
-              <p className="text-sm ">Posted on: {post.date}</p>
+              <p className="text-sm ">
+                Posted on: {post.date.toLocaleDateString()}
+              </p>
             </li>
           ))}
         </ul>
