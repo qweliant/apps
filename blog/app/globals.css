@@ -2,19 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global styles */
+/* Global styles with "unnatural" colors and gradients */
 :root {
-  --background-light: #ffffff; /* Light background for light mode */
-  --foreground-light: #171717; /* Dark text for light mode */
+  --background-light: #f0f0ff; /* Slightly off-white for a subtle shift */
+  --foreground-light: #1a033a; /* Deep violet for contrast */
 
-  --background-dark: #1a1a1a; /* Darker background for dark mode */
-  --foreground-dark: #f1f1f1; /* Lighter text for dark mode */
+  --background-dark: #0b08268e; /* Deep purple/black */
+  --foreground-dark: #d4c7ff; /* Light lavender */
+
+  --gradient-light: linear-gradient(
+    135deg,
+    #a855f720,
+    #e9d5ff20
+  ); /* Sheer violet/lavender gradient */
+  --gradient-dark: linear-gradient(
+    135deg,
+    #4c1d9540,
+    #1e1b4b40
+  ); /* Darker violet/indigo gradient */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: var(--background-dark);
     --foreground: var(--foreground-dark);
+    --gradient: var(--gradient-dark);
   }
 }
 
@@ -22,6 +34,7 @@
   :root {
     --background: var(--background-light);
     --foreground: var(--foreground-light);
+    --gradient: var(--gradient-light);
   }
 }
 
@@ -30,66 +43,77 @@ body {
   color: var(--foreground);
   font-family: "Inter", "Arial", Helvetica, sans-serif;
   line-height: 1.6;
+  background-image: var(--gradient); /* Apply gradient to the body */
+  background-attachment: fixed; /* Keep gradient fixed during scroll */
 }
 
-/* Styling links */
+/* Styling links with "unnatural" colors */
 a {
-  /* color: #a855f7; */
+  color: #bca8f7; /* Soft lavender */
   text-decoration: none;
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 a:hover {
-  /* color: #a855f780; */
+  color: #c084fc; /* Brighter lavender on hover */
   text-decoration: underline;
 }
 
 /* Blockquote styling */
 blockquote {
-  padding-left: 1rem;
-  border-left: 4px solid #d1e1e8;
+  padding-left: 1.5rem; /* Increased padding */
+  border-left: 6px double #a3a3a3; /* Double gray border */
   font-style: italic;
-  color: #4a4a4a; /* Softer gray for readability */
+  color: #71717a; /* Darker gray for more contrast */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.05
+  ); /* Very subtle background for emphasis */
+  border-radius: 4px;
 }
 
-/* Styling headers to ensure contrast */
+/* Styling headers */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--foreground); /* Ensure headers match the foreground */
+  color: var(--foreground);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow for depth */
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.75rem; /* Slightly larger */
+  font-weight: 800; /* Bolder */
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 2.25rem;
   font-weight: 700;
   line-height: 1.25;
 }
 
-h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
 h3 {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 
 h4 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
 }
 
 h5 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 500;
 }
 
 h6 {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 500;
 }
 
@@ -99,7 +123,7 @@ li {
   color: var(--foreground);
 }
 
-/* Increase contrast on dark background for all text */
+/* Smooth transitions for all elements */
 body,
 p,
 li,
@@ -109,6 +133,8 @@ h3,
 h4,
 h5,
 h6,
-blockquote {
-  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+blockquote,
+a {
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out,
+    text-shadow 0.3s ease-in-out;
 }
