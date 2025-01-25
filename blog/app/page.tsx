@@ -2,10 +2,13 @@ import Link from "next/link";
 import path from "path";
 import fs from "fs";
 
-export default function Home() {
-  const postsDir = path.join(process.cwd(), "content");
-  const filenames = fs.readdirSync(postsDir);
+import { compileMDX } from "next-mdx-remote/rsc";
 
+export async function getSortedPosts() {
+  const contentDir = path.join(process.cwd(), "content");
+  const filenames = fs.readdirSync(contentDir);
+
+  // Format title utility
   const formatTitle = (slug: string) => {
     return slug
       .replace(/\.mdx$/, "") // Remove .mdx extension
@@ -19,12 +22,38 @@ export default function Home() {
       .join(" ");
   };
 
-  const posts = filenames.map((name) => ({
-    slug: name.replace(/\.mdx$/, ""),
-    title: formatTitle(name),
-    date: new Date().toLocaleDateString(), // Mock date, replace with actual data if available
-  }));
+  // Extract frontmatter and create posts array
+  const posts = await Promise.all(
+    filenames.map(async (name) => {
+      const filePath = path.join(contentDir, name);
+      const fileContent = fs.readFileSync(filePath, "utf8");
 
+      try {
+        const { frontmatter } = await compileMDX<{ date: string }>({
+          source: fileContent,
+          options: { parseFrontmatter: true },
+        });
+
+        return {
+          slug: name.replace(/\.mdx$/, ""),
+          title: formatTitle(name),
+          date: new Date(frontmatter.date).toLocaleDateString(),
+        };
+      } catch (error) {
+        console.error(`Error processing file ${name}:`, error);
+        return null; // Skip the problematic file
+      }
+    })
+  );
+
+  // Sort posts by date (newest first)
+  return posts
+    .filter((post) => post !== null)
+    .sort((a, b) => new Date(b.date).getDate() - new Date(a.date).getDate());
+}
+
+export default async function Home() {
+  const posts = await getSortedPosts();
   return (
     <div className="min-h-screen flex flex-col items-center p-8 font-[var(--font-geist-sans)]">
       <main className="max-w-3xl w-full">
@@ -38,10 +67,7 @@ export default function Home() {
         <h2 className="text-2xl font-semibold mb-6">Blog Posts</h2>
         <ul className="grid gap-6">
           {posts.map((post) => (
-            <li
-              key={post.slug}
-              className=" shadow-md border rounded-lg p-6"
-            >
+            <li key={post.slug} className=" shadow-md border rounded-lg p-6">
               <Link
                 href={`/posts/${post.slug}`}
                 className="block hover:underline"
