@@ -15,9 +15,9 @@ export default async function Page({ params }: { params: PostParams }) {
       options: { parseFrontmatter: true },
     });
     return (
-      <article className="prose mx-auto px-4 sm:prose-lg lg:prose-xl">
+      <article className="prose lg:prose-xl mx-auto px-4">
         <div className="space-y-6">
-          <article className="border-l-4 pl-4 transition-all transform hover:scale-105 sm:hover:scale-105 sm:border-l-4">
+          <article className="border-l-4 pl-4 lg:transition-all lg:transform lg:hover:scale-105">
             {content}
           </article>
         </div>
