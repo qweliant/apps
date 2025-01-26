@@ -4,7 +4,9 @@ import { compileMDX } from "next-mdx-remote/rsc";
 
 export default async function PostsPage() {
   const postsDir = path.join(process.cwd(), "content");
-  const filenames = fs.readdirSync(postsDir);
+  const filenames = fs
+    .readdirSync(postsDir)
+    .filter((name) => name.endsWith(".mdx")); // Only include .mdx files
 
   // Helper to format the date
   const formatDate = (dateString: string) => {
@@ -19,16 +21,17 @@ export default async function PostsPage() {
   // Read and compile all posts
   const posts = await Promise.all(
     filenames.map(async (name) => {
-      const slug = name.replace(/\.mdx$/, "");
-      const filePath = path.join(postsDir, name);
-      const fileContent = fs.readFileSync(filePath, "utf8");
+      const slug = name.replace(/\.mdx$/, ""); // Remove the .mdx extension
+      const filePath = path.join(postsDir, name); // Construct the file path
+      const fileContent = fs.readFileSync(filePath, "utf8"); // Read the file content
       const { content, frontmatter } = await compileMDX<{
         // title: string;
         date: string;
       }>({
         source: fileContent,
-        options: { parseFrontmatter: true },
+        options: { parseFrontmatter: true }, // Parse frontmatter for metadata
       });
+
       return {
         slug,
         content,
