@@ -7,7 +7,9 @@ import { compileMDX } from "next-mdx-remote/rsc";
 export default async function Home() {
   async function getSortedPosts() {
     const contentDir = path.join(process.cwd(), "content");
-    const filenames = fs.readdirSync(contentDir);
+    const filenames = fs
+      .readdirSync(contentDir)
+      .filter((filename) => filename.endsWith(".mdx"));
 
     // Format title utility
     const formatTitle = (slug: string) => {
