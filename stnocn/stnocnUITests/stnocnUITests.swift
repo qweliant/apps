@@ -1,13 +1,13 @@
 //
-//  noteUITests.swift
-//  noteUITests
+//  stnocnUITests.swift
+//  stnocnUITests
 //
-//  Created by qwelian on 1/8/25.
+//  Created by qwelian on 1/30/25.
 //
 
 import XCTest
 
-final class noteUITests: XCTestCase {
+final class stnocnUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

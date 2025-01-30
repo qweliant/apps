@@ -1,13 +1,13 @@
 //
-//  noteUITestsLaunchTests.swift
-//  noteUITests
+//  stnocnUITestsLaunchTests.swift
+//  stnocnUITests
 //
-//  Created by qwelian on 1/8/25.
+//  Created by qwelian on 1/30/25.
 //
 
 import XCTest
 
-final class noteUITestsLaunchTests: XCTestCase {
+final class stnocnUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
