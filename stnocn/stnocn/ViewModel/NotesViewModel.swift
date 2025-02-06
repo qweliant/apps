@@ -9,11 +9,11 @@ import Foundation
 import CoreData
 
 class NotesViewModel: ObservableObject {
-
     let manager: CoreDataManager
     @Published var notes: [NoteEntity] = []
     @Published var isDataLoaded = false
-
+    @Published var loadError: String? = nil
+    
     init(manager: CoreDataManager) {
         self.manager = manager
         loadData()
@@ -22,61 +22,76 @@ class NotesViewModel: ObservableObject {
     func loadData() {
         manager.loadCoreData { [weak self] result in
             DispatchQueue.main.async {
-                self?.isDataLoaded = result
-                if result {
+                switch result {
+                case .success:
+                    self?.isDataLoaded = true
                     self?.fetchNotes()
+                case .failure(let error):
+                    self?.loadError = error.localizedDescription
+                    self?.isDataLoaded = false
                 }
             }
         }
     }
 
-    func fetchNotes(with searchText: String = "")  {
+    func fetchNotes(with searchText: String = "") {
         let request: NSFetchRequest<NoteEntity> = NoteEntity.fetchRequest()
+        
         request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+        request.fetchBatchSize = 20
         
         if !searchText.isEmpty {
-            request.predicate = NSPredicate(format: "title CONTAINS %@", searchText)
+            request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
         }
 
         do {
-            notes = try manager.container.viewContext.fetch(request)
+            notes = try manager.viewContext.fetch(request)
         } catch {
             print("Error fetching notes: \(error)")
         }
     }
 
     func createNote() -> NoteEntity {
-        let newNote = NoteEntity(context: manager.container.viewContext)
+        let newNote = NoteEntity(context: manager.viewContext)
         newNote.id = UUID()
         newNote.timestamp = Date()
+
         saveContext()
-        fetchNotes() // Refresh notes list
-        
+        notes.insert(newNote, at: 0) // Add the new note to the top of the list
         return newNote
     }
 
     func deleteNote(_ note: NoteEntity) {
-        manager.container.viewContext.delete(note)
+        manager.viewContext.delete(note)
         saveContext()
-        fetchNotes() // Refresh notes list
+        if let index = notes.firstIndex(of: note) {
+            notes.remove(at: index) // Remove the note from the array
+        }
     }
 
     func updateNote(_ note: NoteEntity, title: String, content: String) {
         note.title = title
         note.content = content
+        objectWillChange.send() // Notify SwiftUI to update
         saveContext()
-        fetchNotes() // Refresh notes list
     }
     
     func searchNotes(with searchText: String) {
         fetchNotes(with: searchText)
+        objectWillChange.send() // Notify SwiftUI to update
     }
 
     private func saveContext() {
-        do {
-            try manager.container.viewContext.save()
-        } catch {
-            print("Error saving context: \(error)")
+        let context = manager.backgroundContext
+        context.perform {
+            do {
+                try context.save()
+                DispatchQueue.main.async {
+                    self.objectWillChange.send() // Notify SwiftUI to update
+                }
+            } catch {
+                print("Error saving context: \(error)")
+            }
         }
     }
 }

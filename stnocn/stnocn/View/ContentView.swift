@@ -11,17 +11,23 @@ struct ContentView: View {
     @EnvironmentObject var notesViewModel: NotesViewModel
 
     var body: some View {
-        
         Group {
             if notesViewModel.isDataLoaded {
                 NotesView()
             } else {
-                ProgressView("Loading...")
+                VStack {
+                    ProgressView("Loading...")
+                    if let error = notesViewModel.loadError {
+                        Text("Error: \(error)")
+                            .foregroundColor(.red)
+                            .padding()
+                    }
+                }
             }
-        }
-    }
+        }    }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(NotesViewModel(manager: CoreDataManager.shared))
 }
