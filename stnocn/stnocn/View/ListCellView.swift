@@ -9,16 +9,31 @@ import SwiftUI
 
 struct ListCellView: View {
     var note: NoteEntity
-    
+
+    private var title: String {
+        note.title ?? "New Note"
+    }
+
+    private var content: String {
+        note.content ?? "No content available"
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(note.title ?? "New Note")
+            Text(title)
                 .lineLimit(1)
                 .font(.title3)
                 .fontWeight(.bold)
-            Text(note.content ?? "No context available")
+                .foregroundColor(.accent)
+            Text(content)
                 .lineLimit(1)
-                .fontWeight(.light)
+                .font(.subheadline)
+                .foregroundColor(.accent)
         }
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cornerRadius(8)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title), \(content)")
     }
 }

@@ -32,7 +32,8 @@ struct NotesView: View {
                 }
             }
             .id(UUID())
-            .navigationTitle("Notes")
+            .navigationTitle("Bitch U Betta Think 🫰🏾")
+            .foregroundColor(.pink)
             .searchable(text: $searchText)
             .onChange(of: searchText) { oldValue, newValue in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

@@ -7,12 +7,15 @@
 
 import Foundation
 import CoreData
+import SwiftUICore
 
 class NotesViewModel: ObservableObject {
     let manager: CoreDataManager
     @Published var notes: [NoteEntity] = []
     @Published var isDataLoaded = false
     @Published var loadError: String? = nil
+    
+    private var debouncer = Debouncer()
     
     init(manager: CoreDataManager) {
         self.manager = manager
@@ -35,19 +38,24 @@ class NotesViewModel: ObservableObject {
     }
 
     func fetchNotes(with searchText: String = "") {
-        let request: NSFetchRequest<NoteEntity> = NoteEntity.fetchRequest()
-        
-        request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
-        request.fetchBatchSize = 20
-        
-        if !searchText.isEmpty {
-            request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
-        }
+        let context = manager.backgroundContext
+        context.perform {
+            let request: NSFetchRequest<NoteEntity> = NoteEntity.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+            request.fetchBatchSize = 20
 
-        do {
-            notes = try manager.viewContext.fetch(request)
-        } catch {
-            print("Error fetching notes: \(error)")
+            if !searchText.isEmpty {
+                request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
+            }
+
+            do {
+                let notes = try context.fetch(request)
+                DispatchQueue.main.async {
+                    self.notes = notes
+                }
+            } catch {
+                print("Error fetching notes: \(error)")
+            }
         }
     }
 
@@ -72,14 +80,17 @@ class NotesViewModel: ObservableObject {
     func updateNote(_ note: NoteEntity, title: String, content: String) {
         note.title = title
         note.content = content
-        objectWillChange.send() // Notify SwiftUI to update
         saveContext()
     }
     
+   
+
     func searchNotes(with searchText: String) {
-        fetchNotes(with: searchText)
-        objectWillChange.send() // Notify SwiftUI to update
+        debouncer.debounce(delay: 0.5) {
+            self.fetchNotes(with: searchText)
+        }
     }
+
 
     private func saveContext() {
         let context = manager.backgroundContext
