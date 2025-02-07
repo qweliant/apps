@@ -18,7 +18,7 @@ struct EditNotesView: View {
     @State private var debouncer = Debouncer()
 
     @FocusState private var contentEditorInFocus: Bool
-
+    
     init(note: NoteEntity) {
         self.note = note
         _title = State(initialValue: note.title ?? "")
@@ -44,7 +44,7 @@ struct EditNotesView: View {
                 }
         }
         .padding(10)
-        .background(Color(.accent))
+        .background(Color.accent)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {

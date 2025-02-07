@@ -11,11 +11,11 @@ struct ListCellView: View {
     var note: NoteEntity
 
     private var title: String {
-        note.title ?? "New Note"
+        note.title ?? "Whats in a Name"
     }
 
     private var content: String {
-        note.content ?? "No content available"
+        note.content ?? "You aint write shit huh"
     }
 
     var body: some View {
@@ -24,11 +24,11 @@ struct ListCellView: View {
                 .lineLimit(1)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundColor(.accent)
+                .foregroundColor(.pink)
             Text(content)
                 .lineLimit(1)
                 .font(.subheadline)
-                .foregroundColor(.accent)
+                .foregroundColor(.accentColor)
         }
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity, alignment: .leading)
