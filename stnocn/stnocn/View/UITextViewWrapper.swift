@@ -12,7 +12,7 @@ struct UITextViewWrapper: UIViewRepresentable {
     @Binding var text: String
     var font: UIFont = UIFont.preferredFont(forTextStyle: .body)
     var onEditingChanged: (() -> Void)? = nil
-
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(text: $text, onEditingChanged: onEditingChanged)
     }

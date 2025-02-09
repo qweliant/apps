@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct EditNotesView: View {
     
@@ -16,7 +17,8 @@ struct EditNotesView: View {
     @State private var title: String
     @State private var content: String
     @State private var debouncer = Debouncer()
-
+    @State private var showDocumentPicker = false
+    
     @FocusState private var contentEditorInFocus: Bool
     
     init(note: NoteEntity) {
@@ -32,15 +34,36 @@ struct EditNotesView: View {
                 .foregroundColor(.pink)
                 .submitLabel(.next)
                 .onChange(of: title) { _, _ in
-                    debouncer.debounce(delay: 0.5) {
-                        vm.updateNote(note, title: title, content: content)
+                    debounceSave()
+                }
+            Spacer()
+            Button(
+                action:{
+                    showDocumentPicker.toggle()
+                })
+                {
+                    Text("Somebody Saaaaaaaayyyyyve meeeeeeeee")
+                        .font(.headline)
+                        .foregroundColor(.accent)
+                }
+                .fileExporter(
+                    isPresented: $showDocumentPicker,
+                    document: TextFile(initialText: content),
+                    contentType: .plainText,
+                    defaultFilename: "note.md"
+                ) { result in
+                    switch result {
+                    case .success(let url):
+                        print("Saved to: \(url)")
+                    case .failure(let error):
+                        print("Error saving: \(error)")
                     }
                 }
             
-            
+            Spacer()
             TextEditorView(text: $content)
                 .onChange(of: content) { _, _ in
-                    vm.updateNote(note, title: title, content: content)
+                    debounceSave()
                 }
         }
         .padding(10)
@@ -51,7 +74,7 @@ struct EditNotesView: View {
                    Spacer()
                    Button(action: {
                        hideKeyboard()
-                       saveChanges()
+                       debounceSave()
                    }) {
                        Text("Donezo")
                            .font(.headline)
@@ -68,9 +91,9 @@ struct EditNotesView: View {
             content = newNote.content ?? ""
         }
     }
-
+    
     private func debounceSave() {
-        debouncer.debounce(delay: 4.00) {
+        debouncer.debounce(delay: 0.40) {
             saveChanges()
         }
     }
@@ -80,3 +103,26 @@ struct EditNotesView: View {
     }
 }
 
+// MARK: - File Export Helper
+struct TextFile: FileDocument {
+    var text: String
+    
+    init(initialText: String) {
+        self.text = initialText
+    }
+    
+    static var readableContentTypes: [UTType] { [.plainText] }
+    
+    init(configuration: ReadConfiguration) throws {
+        if let data = configuration.file.regularFileContents {
+            self.text = String(decoding: data, as: UTF8.self)
+        } else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+    }
+    
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = text.data(using: .utf8) ?? Data()
+        return FileWrapper(regularFileWithContents: data)
+    }
+}
