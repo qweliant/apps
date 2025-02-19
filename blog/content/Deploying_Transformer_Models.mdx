@@ -1,6 +1,6 @@
 ---
 title: "Deploying Transformer Models"
-date: "2020-03-25T04:00:00.000Z"
+date: "2021-03-25T04:00:00.000Z"
 type: "5c421d8f-fbf0-44a3-9a05-dfe9eb164c76"
 pinned: false
 pageCustomization:
@@ -21,11 +21,11 @@ properties:
 
 # Using GCP, FastAPI, Docker, and Huggingface to Deploy SOTA Language Models
 
-- I have found using more than 2 models for the API is too large for most deployment procedures. If you know a way around this let me know.
+_I have found using more than 2 models is too large for most deployed containers. If you know a way around this let me know._
 
-Initial Set Up
+## Initial Set Up
 
-This stack will use FastAPI to serve an endpoint to our model. FastAPI requires uvicorn for serving, and pydantic to handle typing of the request messages. The [Huggingface Transformers library](https://chatbotslife.com/ultimate-guide-to-leveraging-nlp-machine-learning-for-you-chatbot-531ff2dd870c) specializes in bundling state of the art NLP models in a Python library that can be fine-tuned for many NLP tasks like Google's BERT model for named entity recognition or the OpenAI GPT2 model for text generation.
+This stack will use FastAPI to serve an endpoint to our model. FastAPI requires uvicorn for serving, and pydantic to handle typing of the request messages. The [Huggingface Transformers library](https://huggingface.co/docs/transformers/index) specializes in bundling state of the art NLP models in a Python library that can be fine-tuned for many NLP tasks like Google's BERT model for named entity recognition or the OpenAI GPT2 model for text generation.
 
 Using your preferred package manager, install:
 
@@ -41,11 +41,13 @@ As the packages install:
 
 1. Create a folder named app
 
-2. Add files nlp.py and main.py to it
+2. Add files `nlp.py` and `main.py` to it
 
 3. In the top-level directory, add Dockerfile and docker-compose.yml
 
-After installing packages, create a requirements folder and add requirements.txt:
+After installing packages, create a requirements folder and add `requirements.txt`:
+
+Since I used pipenv to manage the python environment, I had to run:
 
 ```bash
 
@@ -53,7 +55,7 @@ pipenv run pip freeze > requirements/requirements.txt
 
 ```
 
-Required Installations
+You will need this folder later for building the Docker container. While we are on the topic, be sure you have installed docker and check to be sure the following are installed.
 
 - [Install Docker](https://docs.docker.com/get-docker/)
 
@@ -61,10 +63,9 @@ Required Installations
 
 - [Install Google Cloud SDK](https://cloud.google.com/sdk/install)
 
-Project Structure
+The project structure should look like this:
 
 ```
-
 app/
 
     main.py
@@ -80,69 +81,45 @@ docker-compose.yml
 Dockerfile
 
 Pipfile
-
 ```
 
-NLP Implementation
+# NLP
 
-Huggingface makes it easy to implement and serve SOTA transformer models. We'll create an API capable of text generation and sentiment analysis.
-
+Hugging Face makes it really easy to implement and serve sota transformer models. Using their transformers library, we will implement an API capable of text generation and sentiment analysis. This code has been ripped straight from the site, so I will not be deep diving the transformer architecture in this article for times sake. This also means means our models are not fine tuned for a specific task. Please see my next article on fine tuning and deploying conversational agents in the future. With that disclaimer out of the way, lets look at a snippet of the code responsible for our NLP task.
 Code Snippet
 
 ```python
 
 from transformers import (
-
     pipeline,
-
     GPT2LMHeadModel,
-
     GPT2Tokenizer
-
 )
 
 class NLP:
-
     def __init__(self):
-
         self.gen_model = GPT2LMHeadModel.from_pretrained('gpt2')
-
         self.gen_tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
     def generate(self, prompt="The epistemelogical limit"):
-
         inputs = self.gen_tokenizer.encode(
-
             prompt,
-
             add_special_tokens=False,
-
             return_tensors="pt"
-
         )
 
         prompt_length = len(self.gen_tokenizer.decode(
-
             inputs[0],
-
             skip_special_tokens=True,
-
             clean_up_tokenization_spaces=True
-
         ))
 
         outputs = self.gen_model.generate(
-
             inputs,
-
             max_length=200,
-
             do_sample=True,
-
             top_p=0.95,
-
             top_k=60
-
         )
 
         generated = prompt + self.gen_tokenizer.decode(outputs[0])[prompt_length:]
@@ -150,43 +127,41 @@ class NLP:
         return generated
 
     def sentiments(self, text: str):
-
         nlp = pipeline("sentiment-analysis")
-
         result = nlp(text)[0]
-
         return f"label: {result['label']}, with score: {round(result['score'], 4)}"
 
 ```
 
-Example usage:
+This is a very simple class that abstracts the code for text gen and sentiment analysis. the prompt is tokenized, the length of the encoded sequence is captured, and output is generated. We then receive the decoded output and return it as the generated text. The text returned for generate() will look something like:
+
+> The epistemological limit is very well understood if we accept the notion that all things are equally good. This is not merely an axiom, but an axiomatical reality of propositions, including the notion that the things on the left of the triangle do not constitute a thing, such that that thing can neither be said to exist nor to exist as a thing apart from something on the right of that triangle, nor to be a thing apart from something else on the left of that triangle. Thus if we suppose that each thing must lie on the line of a triangle, as there is a line across this triangle, then each thing cannot lie on that line; but only as there are points beyond this point, so that nothing has a right angle to the triangle. Hence the proposition “the things on the right of a triangle do not constitute a thing” is a fact, which presupposes a fact, which can be the proposition that no thing exists. On the other hand, suppose that if
+
+Godel would be proud!
+
+Sentiment analysis is easier due to the pipeline huggingface provides. Simply pass in text to the pipeline and return it.
 
 ```python
-
 nlp = NLP()
-
 print(nlp.sentiments("A bee sting is not cool"))
 
 # Output: 'label: NEGATIVE, with score: 0.9998'
-
 ```
 
-API Implementation with FastAPI
+## API using FastAPI
+
+FastAPI is one of the fastest API frameworks to build and serve API request in python. It can be scaled and deployed on a docker image they provide or you can create your own from a python image. If you have ever written a Flask API then this should not be difficult at all. I advise going through the FastAPI documentation for more info on how to extend functionality of your API.
+
+Our server will look like this:
 
 ```python
-
 from fastapi import FastAPI
-
 from fastapi.middleware.cors import CORSMiddleware
-
 from pydantic import BaseModel
-
 from app.nlp import NLP
 
 class Message(BaseModel):
-
     input: str
-
     output: str = None
 
 app = FastAPI()
@@ -194,80 +169,58 @@ app = FastAPI()
 nlp = NLP()
 
 origins = [
-
     "http://localhost",
-
     "http://localhost:3000",
-
     "http://127.0.0.1:3000"
-
 ]
 
 app.add_middleware(
-
     CORSMiddleware,
-
     allow_origins=origins,
-
     allow_credentials=True,
-
     allow_methods=["POST"],
-
     allow_headers=["*"],
 
 )
 
 @app.post("/generative/")
-
 async def generate(message: Message):
-
     message.output = nlp.generate(prompt=message.input)
-
     return {"output": message.output}
 
 @app.post("/sentiment/")
-
 async def sentiment_analysis(message: Message):
-
     message.output = str(nlp.sentiments(message.input))
-
     return {"output": message.output}
 
 ```
+
+The API has four sections. The first part is setting up a pydantic object to handle typing for request messages. This means we get input validation and clear error messages for the wrong input. You should only be handling strings so this is perfect. We then create an instance of the endpoint and the NLP class. Next, set up the request origin URLs that you want your app to communicate with. If you do not have dedicated origin addresses, the code will still run, but anyone can access your API so be careful. After that, we set up the middleware to control the origins, request methods, headers, and cookies. I have taken most of the code from FastAPI but it is extensible to your particular security needs. The last part contains two async post request methods that handle the calls to the API and return the generated text or sentiment analysis.
 
 To test the API:
 
 ```bash
-
 uvicorn app.main:app --reload
-
 ```
 
-Visit http://127.0.0.1:8001/docs to try out the API.
+Visit `http://127.0.0.1:8001/docs` to try out the API.
+![FastAPI Response](/images/fastapinlp.png)
 
-Containerization
+## Containerization
 
-Dockerfile
+Remember that Dockerfile file we created? It’s finally time to edit that. The container I made uses a python:3.7 image. You are free to tweak this to fit your python image preference.
 
 ```dockerfile
-
 FROM python:3.7
-
 COPY ./requirements/requirements.txt ./requirements/requirements.txt
-
 RUN pip3 install -r requirements/requirements.txt
-
 COPY ./app /app
-
 RUN useradd -m myuser
-
 USER myuser
-
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
-
 ```
 
-Docker Compose
+The container will copy the requirements to the container, install them, copy over the files from the app directory, create a user (not necessary), and run the API on the container. Yes it is that simple. With regular docker commands we have to stop the container, rebuild the image, and start the container each time. To avoid this, add the following to your docker-compose.yml. Note that your container name can be whatever you want.
 
 ```yaml
 version: "3"
@@ -275,70 +228,45 @@ version: "3"
 services:
   chatsume:
     build: .
-
     container_name: "chsme"
-
     ports:
       - "8000:8080"
-
     volumes:
       - ./app/:/app
 ```
 
 Build and run:
 
-```bash
+This allows us to rebuild the image and container and spin it up in one line: `docker-compose build docker-compose up -d`
 
-docker-compose build
+## Google Cloud Platform Deployment
 
-docker-compose up -d
-
-```
-
-Deployment to Google Cloud Platform
-
-Tag the Docker image:
+After setting up the gcloud SDK you will be able to push docker images to your GCP project. The image will be pushed to the Google Container Registry in your project dashboard. To do so, we’ll tag our image with the gcloud region you want it stored in. For this example, the Docker image will be named nlp_api and the GCP project is fast_hug. The image will then be tagged as the latest one, which is great for keeping up with multiple pushes to your Google Container Registry Instance.
 
 ```bash
-
 docker tag nlp_api gcr.io/fast_hug/nlp_api:latest
-
 ```
 
 Push to Google Container Registry:
 
 ```bash
-
 docker push gcr.io/fast_hug/nlp_api:latest
-
 ```
 
 Cloud Run Deployment
 
 1. Navigate to Google Container Registry
-
 2. Find your latest image
-
 3. Click Deploy
-
 4. Select Deploy to Cloud Run
+5. Allow unauthenticated request (if you want a publically consumable API)
+6. Click next then advance settings.
+7. Set container port to 8080 (or whatever port value you mapped in the docker-compose yml)
+8. Set memory to 4GB
+9. Click Create
 
-5. Allow unauthenticated requests
+Success!!!! You have now set up and deployed a state of the art NLP model.
 
-6. Set container port to 8080
+## Conclusion
 
-7. Set memory to 4GB
-
-8. Click Create
-
-Conclusion
-
-This post demonstrates how to use state-of-the-art NLP models from Huggingface to power a fast, scalable API. Containerization enables distributed deployment across various services.
-
-Connect with Me
-
-- [Twitter](https://twitter.com/Qwelian_Tanner)
-
-- [Github](https://github.com/qweliant)
-
-- [LinkedIn](https://www.linkedin.com/in/qdt/)
+This post demonstrates how to use state-of-the-art NLP models from Huggingface to power a fast, scalable API. Containerization enables distributed deployment across various services and easy local development. In the future I will try deploying larger models for higher accuracy, at least until GPT3 is publically consumable. For now, you have all the tools needed to rapidly scale a service backed by the latest in available NLP tooling.

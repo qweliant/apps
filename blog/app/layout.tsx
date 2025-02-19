@@ -16,6 +16,16 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Optimal Frequencies",
   description: "A personal blog powered by Next.js",
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        {
+          title: "Optimal Frequencies",
+          url: "https://qwelian.com/blog/index.xml",
+        },
+      ],
+    },
+  },
 };
 
 export default function RootLayout({
@@ -58,11 +68,32 @@ export default function RootLayout({
               >
                 About
               </Link>
+              <Link
+                href="/blog/rss.xml"
+                className="text-lg font-medium hover:underline"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-rss"
+                >
+                  <path d="M4 11a9 9 0 0 1 9 9" />
+                  <path d="M4 4a16 16 0 0 1 16 16" />
+                  <circle cx="5" cy="19" r="1" />
+                </svg>
+              </Link>
             </div>
           </nav>
         </header>
         <main className="">{children}</main>
-        <footer className="mt-12 text-center ">
+        <footer className="mt-24 text-center relative z-10">
           <p className="italic">
             Stay passionate, stay chill, and never stop exploring what life can
             be.
