@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { getSortedPosts } from "@/lib/functions";
+import { getAllPosts } from "@/lib/functions";
 
 export default async function Home() {
-  const posts = await getSortedPosts();
+  const posts = await getAllPosts();
   return (
     <div className="min-h-screen flex flex-col items-center p-8 font-[var(--font-geist-sans)]">
       <main className="max-w-3xl w-full">
@@ -23,9 +23,7 @@ export default async function Home() {
               >
                 <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
               </Link>
-              <p className="text-sm ">
-                Posted on: {post.date.toLocaleDateString()}
-              </p>
+              <p className="text-sm  italic">{post.date}</p>
             </li>
           ))}
         </ul>

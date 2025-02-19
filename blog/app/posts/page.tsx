@@ -14,8 +14,8 @@ export default async function PostsPage() {
             key={post.slug}
             className="rounded-lg shadow-lg p-6 space-y-4"
           >
-            <p className="text-sm  italic">{post.date}</p>
-            <div className="prose max-w-none">{post.content}</div>
+            <p className="italic text-lg">{post.date}</p>
+            <div className="prose max-w-none">{post.mdxContent}</div>
           </article>
         ))}
       </main>

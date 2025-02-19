@@ -69,7 +69,7 @@ export default function RootLayout({
                 About
               </Link>
               <Link
-                href="/blog/rss.xml"
+                href="/posts/rss.xml"
                 className="text-lg font-medium hover:underline"
               >
                 <svg

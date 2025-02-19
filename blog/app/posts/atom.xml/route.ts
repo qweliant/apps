@@ -5,15 +5,15 @@ const feed = new Feed({
   title: "Optimal Frequencies",
   description: "This is my personal feed get fed!",
   id: "https://qwelian.com",
-  link: "https://qwelian.com/blog/rss.xml",
+  link: "https://qwelian.com/posts/atom.xml",
   copyright: "All rights reserved 2024, Qwelian Tanner",
+  feedLinks: {
+    rss: "https://qwelian.com/posts/rss.xml",
+  },
   author: {
     name: "Qwelian Tanner",
     email: "qwelian@tutanota.com",
     link: "https://qwelian.com/about",
-  },
-  feedLinks: {
-    atom: "https://qwelian.com/blog/atom",
   },
 });
 
@@ -24,12 +24,12 @@ export async function GET() {
       title: `${post.title ?? ""}`,
       link: `https://qwelian.com/posts/${post.slug}`,
       date: new Date(post.date),
-      description: `${post.content}`,
+      description: post.content,
     });
   });
-  return new Response(feed.rss2(), {
+  return new Response(feed.atom1(), {
     headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8",
+      "Content-Type": "application/atom+xml; charset=utf-8",
     },
   });
 }
