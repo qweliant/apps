@@ -1,6 +1,6 @@
 ---
 title: "Consuming the Plaid API with React and Go"
-date: "2023-03-25T04:00:00.000Z"
+date: "2020-03-25T04:00:00.000Z"
 type: "5c421d8f-fbf0-44a3-9a05-dfe9eb164c76"
 pinned: false
 pageCustomization:
@@ -19,11 +19,12 @@ properties:
     boolean: false
 ---
 
-A Modern Full Stack REST Application
-
 # A Modern Full Stack REST Application
 
-Plaid is a popular API that exposes a user's banking information through REST endpoints. We will make use of their service to create a REST API to create authorization information. We will then create a React application that consumes the API to create auth tokens for a user. Remember, you can click on the _View Raw_ button to copy any code you need. This tutorial assumes familiarity with React and full-stack development. The repo for this can be found here:
+Plaid is a popular API that exposes a user's banking information through REST endpoints.
+We will make use of their service to create a REST API to create authorization information.
+We will then create a React application that consumes the API to create auth tokens for a user.
+This tutorial assumes familiarity with React and full-stack development. The repo for this can be found here:
 
 A quickstart for setting up Plaid server and React client - [https://github.com/qweliant/BetterPlaidQuickstart](https://github.com/qweliant/BetterPlaidQuickstart)
 
@@ -31,13 +32,18 @@ A quickstart for setting up Plaid server and React client - [https://github.com/
 
 To get started, we need to head over to Plaid for our API keys.
 
-### Landing page after login to Plaid
+![delusional](/images/plaidreact1.png)
 
 Navigate to the _Settings_ tab and click _Keys_ to view your API keys.
 
+![delusional](/images/plaidreact2.png)
+
 ### Creds from Plaid
 
-We will use the sandbox environment, which uses a different key for testing than development. Notice on the left sidebar a tab that says _API_. Click on that and you will see the section about Plaid's redirect URI. Click on _Add New URI_ and add `http://localhost:80` and `http://localhost:3000`. This will control where the redirect after linking happens. If you click on the _Test in Sandbox_ button seen on the landing page, you will be taken to a page showing the test user credentials.
+We will use the sandbox environment, which uses a different key for testing than development. Notice on the left sidebar a tab that says _API_. Click on
+that and you will see the section about Plaid's redirect URI. Click on _Add New URI_ and add `http://localhost:80` and `http://localhost:3000`.
+This will control where the redirect after linking happens. If you click on the _Test in Sandbox_ button seen on the landing page, you will
+be taken to a page showing the test user credentials.
 
 Quickstart repos exist for multiple languages. You can use your language of choice for this project since the client is backend agnostic.
 
@@ -57,7 +63,11 @@ Delete the _Makefile, README, and every folder except the go_ one.
 
 ### Docker Configuration
 
-These come preconfigured with a Dockerfile to make deployment easy. We won't be covering deployment of Docker containers, but we will be spinning them up using Docker for Desktop.
+These come preconfigured with a Dockerfile to make deployment easy.
+We won't be covering deployment of Docker containers, but we will
+be spinning them up using Docker for Desktop. If you need to install, check out [Docker](https://www.docker.com/products/docker-desktop/) for
+installation instructions per your OS. This will be a pretty simple docker set up that
+is noob friendly, so you should be able to understand the basics following along.
 
 #### Edit docker-compose.yml
 
@@ -77,11 +87,23 @@ services:
 
 #### Build and Run
 
+Running:
+
 ```
 docker-compose up -d --build
 ```
 
-### Dockerfile Configuration
+will build the image and start a container. If we look at
+the Dockerfile we can see how our application is being built.
+The go version is specified for the official go image.
+A directory is then created that we copy everything into.
+After changing the root directory to the go folder,
+we get the required packages and build the binary.
+Next we pull the image that our binary will run on, copy the binary into the
+image, and expose the app via port 8000. By the way, you should delete the
+lines that copy html and static info over. Our Dockerfile should look similar to this
+
+### Go Dockerfile
 
 ```dockerfile
 FROM golang:1.12 AS build
@@ -99,7 +121,11 @@ ENTRYPOINT ["/quickstart"]
 
 ### Environment Configuration
 
-Create a `.env` file:
+If you ran the above docker-compose command you should expect
+to see warnings about your env variables or errors if you have
+not already deleted the html and static copy. Lets create an .env
+file in the same folder as the docker-compose file. This file will
+define your plaid credentials. The result should be something like:
 
 ```
 # Get your Plaid API keys from the dashboard: https://dashboard.plaid.com/account/keys
@@ -113,7 +139,16 @@ PLAID_REDIRECT_URI=http://localhost:80
 
 ### Server Configuration
 
-Edit `server.go`:
+The last thing we should do before moving on to the frontend is edit some portions
+of the code in server.go. This is because the quickstart repo does not behave as
+one would expect. This may be do to my own ignorance but following the steps in
+the official repo lead to an environment error.
+
+```bash
+Attaching to quickstart_go_1go_1 | Error loading .env file. Did you copy .env.example to .env and fill it out?
+```
+
+Edit the server.go file to look like this:
 
 ```go
 var (
@@ -133,20 +168,31 @@ var environments = map[string]plaid.Environment{
 }
 
 func init() {
-    // Set defaults and create Plaid client
-    // ... (rest of the initialization code)
+  func main() { r := gin.Default() r.POST("/api/info", info)
 }
 ```
 
-## React Frontend Setup
+Running the docker-compose command again will start the API. Now
+is a good time to step away for water or a quick walk. Next we will
+walk through our react setup. Our penultimate creation will result in a
+button that performs Oauth for thousands of bank accounts.
+
+## React Setup
 
 ### Create React App
+
+Alright, we’re back, refreshed, hydrated, and ready for the front end.
+Start the app by running npx create-react-app plaid in the parent
+directory our go folder is in
 
 ```
 npx create-react-app plaid
 ```
 
-### Update docker-compose.yml
+We’ll start by getting the Dockerfile set up for the frontend and adding
+the client service to our docker compose file. Lets start the latter part
+by opening the docker-compose file again. To add a service for the client,
+simply add it after the go section. The file will change to look something like this:
 
 ```yaml
 version: "3.8"
@@ -176,6 +222,10 @@ services:
 
 ### React Dockerfile
 
+Next we wanna add a Dockerfile to the plaid directory.
+In it we define steps for building the production react
+app and placing it on an nginx webserver. The Dockerfile for this will be:
+
 ```dockerfile
 # STAGE 1 - build the react app
 FROM node:alpine as build
@@ -196,6 +246,10 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ### Nginx Configuration
 
+Next, we need to create a folder for nginx that configures the server.
+Name the folder nginx and add a a file named conf.d. This configures our
+server to serve the static build(html, js, cs, etc) on port 80 in the container.
+
 Create `nginx/nginx.conf`:
 
 ```dockerfile
@@ -213,13 +267,31 @@ server {
 }
 ```
 
+Try running `docker-compose up -d --build` now to see if the hello world react app is
+being hosted on port 80. Something to note is the port our app is served on.
+Since the redirect uri is needed for browser navigation after login, you will
+need to resolve the uri for dev vs container environments. That may be making
+a separate docker-compose and Dockerfile setup, or by changing the uri in the
+env from 80 to 3000. I will leave it to you
+
 ### Install Dependencies
+
+We now need to add axios and the react-plaid library to handle state and client/server
+communication. Make sure you are in the plaid directory created and run:
 
 ```
 yarn add axios react-plaid-link
 ```
 
 ### Create Link.js
+
+Let’s now open the src folder and add a file named Link.js. Here is where the logic
+for making the link will be created. The link process in the react plaid hooks library makes it
+pretty easy to perform auth. With it, we will call /api/create_link_token to get a link token
+from Plaid. This will initialize the Plaid auth link flow for a users bank account. If the user
+successfully links, an access token will be generated. The access token needs to be persisted
+permanently in your DB of choice for access to different Plaid endpoints. For now it is stored as
+a value on the server. Copy the code below to your Link.js file
 
 ```jsx
 import React, { useState, useCallback, useEffect } from "react";
@@ -287,6 +359,6 @@ export default Link;
 docker-compose up
 ```
 
-Your app should now be running at `localhost:80`.
+After running docker-compose up -d --build you should be able to go to localhost:80 and connect a dummy account.
 
-Congrats! You are now on your way to implementing a fintech banking as a service application. Kinda like...BaaS...Ok ok. Thank you for viewing. Feel free to reach out to me on my social, or connect via LinkedIn. Have a wonderful day!
+Congrats! You are now on your way to implementing a fintech banking as a service application. Kinda like...BaaS...Ok ok. Thank you for viewing. Have a wonderful day!
