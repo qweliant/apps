@@ -17,9 +17,7 @@ export default async function Page({ params }: { params: PostParams }) {
     return (
       <article className="prose lg:prose-xl mx-auto px-4 min-h-[calc(100vh-200px)] overflow-hidden">
         <div className="space-y-6">
-          <article className="border-l-4 pl-4 lg:transition-all lg:transform lg:hover:scale-105 lg:origin-top-left">
-            {content}
-          </article>
+          <article className="border-l-4 pl-4">{content}</article>
         </div>
       </article>
     );
