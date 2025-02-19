@@ -24,6 +24,7 @@ export async function GET() {
       title: `${post.title ?? ""}`,
       link: `https://qwelian.com/posts/${post.slug}`,
       date: new Date(post.date),
+      description: `${post.content}`,
     });
   });
   return new Response(feed.rss2(), {
