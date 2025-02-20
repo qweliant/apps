@@ -11,7 +11,7 @@ export default async function Home() {
           Welcome to My Blog
         </h1>
         <p className="text-center mb-12">
-          For when you can&apos;t tell if it&apos;s a good idea or a rant.
+          You can&apos;t tell if it&apos;s a good idea or a rant.
         </p>
         <h2 className="text-2xl font-semibold mb-6">Posts</h2>
         <ul className="grid gap-6">
