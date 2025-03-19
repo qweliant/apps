@@ -37,12 +37,15 @@ export default function Page() {
 
       <AboutSection title="Early Years">
         <p>
-          In 8th grade, I received a &quot;Don&apos;t Hide Your Smarts
-          Award&quot; after a school transfer - an ironic achievement for being
-          a mediocre student. This began a journey of self-discovery and
-          questioning societal norms. My love for storytelling was ignited in
-          11th grade when I discovered One Piece.
+          In fourth grade I guessed the right amount of hershy kisses in a
+          jar... It was about 350. In 8th grade, I received a &quot;Don&apos;t
+          Hide Your Smarts Award&quot after a school transfer - an ironic
+          achievement for being a mediocre student.
         </p>
+      </AboutSection>
+      <AboutSection title="One Piece">
+        <p>11th grade is when I discovered One Piece.</p>
+        <p>Oda is love. Oda is life.</p>
       </AboutSection>
 
       <AboutSection title="Educational Journey">
@@ -50,7 +53,7 @@ export default function Page() {
           After high school, my path took unexpected turns. Initially dreaming
           of becoming an audio engineer in Spartanburg, South Carolina,
           financial constraints led me to community college. This detour
-          introduced me to computer engineering through my friend Anthony Munoz.
+          introduced me to computer engineering through my friend Anthony.
         </p>
         <p className="mt-4">
           At Clemson, despite academic struggles and loneliness, I found a
@@ -62,12 +65,22 @@ export default function Page() {
       <AboutSection title="Professional Evolution">
         <p>
           My career path included stints at a startup, research at
-          Clemson&apos;s TRACE Lab, and attendance at a coding bootcamp. When
-          traditional paths proved challenging, I turned to Twitter, where I
-          discovered Black Tech Pipeline. This led me to explore open source
-          technologies and decentralized systems, where I found my passion for
+          Clemson&apos;s TRACE Lab, and attendance at a coding bootcamp,
+          formerly known as Lamda School. I am not sure what it known as
+          today.Eeventually I was able to contribute tp open source technologies
+          and decentralized knowledge frameworks, where I found my passion for
           building tools that make technology more accessible and knowledge more
           open.
+        </p>
+      </AboutSection>
+      <AboutSection title="Adulting">
+        <p>
+          I find flowers and trees to be the only things that keep from that
+          abyss staring back at me we call the future. Yes, the stemen keeps the
+          panic away. The panic of knowing my life will end is baited by the
+          fresh hibiscus and lavendar i grew hanging in my room. Ahhh, what
+          horror it is to know time passes me. So thankful for angiosperms for
+          keeping me sane.
         </p>
       </AboutSection>
     </div>
