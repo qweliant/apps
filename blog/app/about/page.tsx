@@ -38,8 +38,8 @@ export default function Page() {
       <AboutSection title="Early Years">
         <p>
           In fourth grade I guessed the right amount of hershy kisses in a
-          jar... It was about 350. In 8th grade, I received a "Dont Hide Your
-          Smarts" Award after a school transfer - an ironic achievement for
+          jar... It was about 350. In 8th grade, I received a &quot;Dont Hide Your
+          Smarts&quot; Award after a school transfer - an ironic achievement for
           being a mediocre student.
         </p>
       </AboutSection>
