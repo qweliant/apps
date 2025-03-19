@@ -66,9 +66,9 @@ export default function Page() {
         <p>
           My career path included stints at a startup, research at
           Clemson&apos;s TRACE Lab, and attendance at a coding bootcamp,
-          formerly known as Lamda School. I am not sure what it known as
-          today.Eeventually I was able to contribute tp open source technologies
-          and decentralized knowledge frameworks, where I found my passion for
+          formerly known as Lamda School. I am not sure what it known as today.
+          Eeventually I was able to contribute tp open source technologies and
+          decentralized knowledge frameworks, where I found my passion for
           building tools that make technology more accessible and knowledge more
           open.
         </p>
