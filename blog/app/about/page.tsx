@@ -80,7 +80,11 @@ export default function Page() {
           panic away. The panic of knowing my life will end is baited by the
           fresh hibiscus and lavendar i grew hanging in my room. Ahhh, what
           horror it is to know time passes me. So thankful for angiosperms for
-          keeping me sane.
+          keeping me sane. Send me an email on how you get by. Don&apos;t be
+          wierd about it though. Unless I knwo you. Then be wierd. But I will
+          snitch. So not too wierd. Like if you eat mash potatoes with your
+          hands sans fufu or like wrapping yourself in saran wrap every now and
+          then. I don&apos;t like those things. You might though. Wierdo.
         </p>
       </AboutSection>
     </div>
