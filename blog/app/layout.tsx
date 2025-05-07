@@ -43,9 +43,6 @@ export default function RootLayout({
             <Link href="/" className="text-2xl font-bold ">
               Optimal Frequencies
             </Link>
-            <div>
-              Portfolio
-            </div>
             <div className="flex space-x-8">
               <Link
                 href="/fotos"
