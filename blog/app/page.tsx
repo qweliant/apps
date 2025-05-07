@@ -20,7 +20,7 @@ const projects = [
   {
     title: "Ankaa",
     description:
-      "Real-time monitoring system for home dialysis and blood pressure devices using Phoenix LiveView and MQTT.",
+      "Real-time monitoring system for home dialysis and blood pressure devices using Phoenix LiveView.",
     url: "https://github.com/qweliant/ankaa",
     stack: [SiElixir, SiPhoenixframework, SiPostgresql, SiRust, SiMqtt],
   },
@@ -41,14 +41,14 @@ const projects = [
   {
     title: "Tapfunds",
     description:
-      "Experimental platform for direct funding and democratic collective finance.",
+      "Experimental platform for account info and democratic collective finance.",
     url: "https://github.com/tapfunds/tf",
     stack: [SiNextdotjs, SiTypescript, FaGolang, SiPostgresql],
   },
   {
     title: "Where Am I Next?",
     description:
-      "Simple travel planner and tracker to keep tabs on future locations.",
+      "VS code extension that tells you when you are ina server component or client component",
     url: "https://github.com/qweliant/where-am-i-next",
     stack: [SiTypescript],
   },
