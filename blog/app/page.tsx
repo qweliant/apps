@@ -8,11 +8,8 @@ import {
   SiNextdotjs,
   SiTailwindcss,
   SiTypescript,
-  SiReact,
   SiPostgresql,
-  SiSqlite,
   SiMqtt,
-  SiWails
 } from "react-icons/si";
 import { getAllPosts } from "@/lib/functions";
 
