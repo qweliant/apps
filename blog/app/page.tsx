@@ -32,13 +32,6 @@ const projects = [
     stack: [SiNextdotjs, SiTailwindcss, SiTypescript],
   },
   {
-    title: "2B (Second Brain)",
-    description:
-      "Personal knowledge system and research scratchpad. Written in TypeScript and forked from liha to enable markdown saves to my blog.",
-    url: "https://github.com/qweliant/2b",
-    stack: [SiTypescript, SiReact, SiSqlite, FaGolang, SiWails],
-  },
-  {
     title: "Tapfunds",
     description:
       "Experimental platform for account info and democratic collective finance.",
