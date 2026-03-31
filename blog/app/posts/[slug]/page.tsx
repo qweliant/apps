@@ -1,6 +1,13 @@
 import fs from "fs";
 import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
+import rehypePrettyCode from "rehype-pretty-code";
+
+const rehypePrettyCodeOptions = {
+  theme: "catppuccin-mocha",
+  keepBackground: true,
+  defaultLang: "plaintext",
+};
 
 type PostParams = Promise<{ slug: string }>;
 
@@ -12,7 +19,12 @@ export default async function Page({ params }: { params: PostParams }) {
     const fileContent = fs.readFileSync(filePath, "utf8");
     const { content } = await compileMDX<{ date: string }>({
       source: fileContent,
-      options: { parseFrontmatter: true },
+      options: {
+        parseFrontmatter: true,
+        mdxOptions: {
+          rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
+        },
+      },
     });
     return (
       <article className="prose lg:prose-xl mx-auto px-4 min-h-[calc(100vh-200px)] overflow-hidden">

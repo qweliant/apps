@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fredoka, Nunito, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
@@ -36,41 +42,44 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${fredoka.variable} ${nunito.variable} ${geistMono.variable} antialiased font-nunito`}
       >
-        <header>
+        <header className="sticky top-0 z-50 border-b border-[#FF85B3]/20 bg-[var(--background)]/80 backdrop-blur-md">
           <nav className="container mx-auto flex flex-wrap items-center justify-between p-4">
-            <Link href="/" className="text-2xl font-bold ">
+            <Link
+              href="/"
+              className="font-fredoka text-2xl font-semibold text-[#FF4D94] hover:text-[#FF85B3] transition-colors duration-200 drop-shadow-[0_0_12px_rgba(255,133,179,0.5)]"
+            >
               Optimal Frequencies
             </Link>
             <div className="flex space-x-8">
               <Link
                 href="/fotos"
-                className="text-lg font-medium hover:underline"
+                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
               >
                 Fotos
               </Link>
               <Link
                 href="mailto:qwelian@tutanota.com"
-                className="text-lg font-medium hover:underline "
+                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
               >
                 Contact
               </Link>
               <Link
                 href="/posts"
-                className="text-lg font-medium hover:underline "
+                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
               >
                 Archive
               </Link>
               <Link
                 href="/about"
-                className="text-lg font-medium hover:underline"
+                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
               >
                 About
               </Link>
               <Link
                 href="/posts/rss.xml"
-                className="text-lg font-medium hover:underline"
+                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,12 +102,14 @@ export default function RootLayout({
           </nav>
         </header>
         <main className="">{children}</main>
-        <footer className="mt-24 text-center relative z-10">
-          <p className="italic">
+        <footer className="mt-24 text-center relative z-10 pb-8">
+          <p className="italic text-[#C9A8FF]">
             Stay passionate, stay chill, and never stop exploring what life can
             be.
           </p>
-          © {new Date().getFullYear()} My Blog. All rights reserved.
+          <p className="text-[#FF85B3]/60 text-sm mt-1">
+            © {new Date().getFullYear()} My Blog. All rights reserved.
+          </p>
         </footer>
       </body>
     </html>
