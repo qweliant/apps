@@ -65,10 +65,18 @@ Other languages I evaluated were Go, TypeScript, and python. Any of
 these tools could be built to run concurrent, fault tolerant systems
 (see the [c10k](https://www.kegel.com/c10k.html) problem). Go was
 interesting because I had used it before and wanted to explore how its
-**concurrency primitives enable true parallelism**. Go, however,
-**lacks** a mature unified framework for embedded devices. I am also
-lazy so I would prefer a web framework that allows me to focus on the
-product rather than wiring up boilerplate.
+**[concurrency primitives enable true parallelism](https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang)**. Go is kirkenuinely
+strong for embedded work. It compiles to a single static binary,
+cross-compiles to ARM and has lower raw memory overhead than
+the BEAM. But those strengths are most valuable for CPU-bound,
+single-purpose tools. For a distributed IoT system that needs
+**"five nines" uptime**, preemptive scheduling across thousands of
+concurrent connections, and the ability to hot-patch a deployed device
+without a full restart, Go's shared-memory runtime and lack of a
+supervision tree become real liabilities. Elixir's **Nerves** project
+provides an integrated stack from hardware to web UI while
+the BEAM's `iex --remsh` lets me connect to a running device in
+production for live debugging. Go does not do that. Plus I am lazy and don't want to build a custom WebSocket server or background job processor.
 
 TypeScript was appealing because I am proficient with it, but the modern
 Next.js/React ecosystem treats WebSockets as a second-class citizen,
@@ -467,6 +475,42 @@ Phoenix, this is probably the pattern I would choose. Phoenix components
 built around LiveViews and streams for real time data and React/Svelte
 components via [Inertia JS](https://www.youtube.com/watch?v=uyfyFRvng3c&t=66s)
 for high-fidelity client interactivity.
+
+### **Terraform, HIPAA, and AWS**
+
+I am not a DevOps engineer. I don't want to be a DevOps engineer. I
+just want to build a cool health-tech project. The BEAM's concurrency
+and fault-tolerance features are amazing, but if I had to manually wire
+up servers, load balancers, and databases I would probably never have jumped off a bridge. 
+Thanks to Terraform, I was able to define my entire infrastructure as code in a single file and deploy it with one command.
+
+The stack is a standard three-tier VPC: public subnets for the ALB and
+NAT gateway, private subnets for the app, and fully isolated database
+subnets for RDS. A single `t4g.small` ARM64 EC2 instance runs the
+Phoenix app and Rust simulator as Docker Compose services, sitting
+behind an Application Load Balancer that terminates TLS and redirects
+HTTP to HTTPS. RDS Postgres runs on a `db.t3.micro` in the private
+database subnet with encryption at rest, forced SSL connections, and
+deletion protection on. IoT certificates for the Phoenix backend and
+Rust simulator are provisioned through AWS IoT Core and stored in
+Secrets Manager, with IAM roles granting the EC2 instance pull access
+to ECR and read access to those secrets. SSM replaces SSH entirely, so
+there are no key pairs to manage. A budget alert fires at 80% of a $50
+monthly cap before I get surprised.
+
+The infrastructure is HIPAA-influenced, not HIPAA-certified, meaning
+encryption at rest and in transit, private subnets, no public DB
+exposure, and forced SSL get you most of the way there for a prototype,along with a BAA, 
+but I have not gone through a formal audit or implemented all the administrative safeguards. 
+For a production health-tech product, I would absolutely invest in a full HIPAA audit and certification process, 
+but for a personal project, I focused on the technical controls that I could implement.
+
+The biggest deployment headache was the ARM64 architecture. Elixir does
+not cross-compile cleanly, so you cannot build the Docker image on an
+x86 machine and expect it to run on a `t4g`. You have to build the
+image on an ARM64 host. I also had to manually verify the EC2 and RDS security group
+rules were actually wired up after apply. Terraform said it was done
+but the connection wasn't live until I confirmed it in the console.
 
 ## **Wrapping up**
 
