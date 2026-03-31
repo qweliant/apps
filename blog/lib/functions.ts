@@ -14,15 +14,6 @@ export async function getAllPosts() {
     .readdirSync(postsDir)
     .filter((name) => name.endsWith(".mdx")); // Only include .mdx files
 
-  // Helper to format the date
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  };
 
   // Read and compile all posts
   const posts = await Promise.all(
@@ -31,8 +22,11 @@ export async function getAllPosts() {
       const filePath = path.join(postsDir, name); // Construct the file path
       const fileContent = fs.readFileSync(filePath, "utf8"); // Read the file content
 
-      const lines = fileContent.split("\n");
-      const contentWithoutFirst20Lines = lines.slice(22).join("\n");
+      const frontmatterEnd = fileContent.indexOf("---", 3);
+      const contentOnly =
+        frontmatterEnd !== -1
+          ? fileContent.slice(frontmatterEnd + 3).trim()
+          : fileContent;
 
       const file = await unified()
         .use(remarkParse)
@@ -40,7 +34,7 @@ export async function getAllPosts() {
         .use(rehypeDocument)
         .use(rehypeFormat)
         .use(rehypeStringify)
-        .process(contentWithoutFirst20Lines);
+        .process(contentOnly);
 
       const { frontmatter, content } = await compileMDX<{
         title: string;
@@ -54,7 +48,7 @@ export async function getAllPosts() {
         slug,
         content: String(file),
         title: frontmatter?.title || slug.replace(/-/g, " "),
-        date: frontmatter?.date ? formatDate(frontmatter.date) : "Unknown Date",
+        date: frontmatter?.date ?? "",
         mdxContent: content,
       };
     })

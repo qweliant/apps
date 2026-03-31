@@ -109,7 +109,9 @@ export default async function Home() {
                 >
                   <h3 className="text-lg font-semibold mb-1 font-fredoka text-[#FF85B3] hover:text-[#C9A8FF] transition-colors">{post.title}</h3>
                 </Link>
-                <p className="text-sm text-[#A8D8FF]/70 italic">{post.date}</p>
+                <p className="text-sm text-[#A8D8FF]/70 italic">
+                  {post.date ? new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : ""}
+                </p>
               </li>
             ))}
           </ul>

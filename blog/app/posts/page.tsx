@@ -14,7 +14,9 @@ export default async function PostsPage() {
             key={post.slug}
             className="rounded-lg shadow-lg p-6 space-y-4"
           >
-            <p className="italic text-lg">{post.date}</p>
+            <p className="italic text-lg">
+              {post.date ? new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : ""}
+            </p>
             <div className="prose max-w-none">{post.mdxContent}</div>
           </article>
         ))}
