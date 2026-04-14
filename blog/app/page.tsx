@@ -68,9 +68,9 @@ export default async function Home() {
         </p>
         <p className="text-center mb-12 text-xs font-mono text-[#C9A8FF]/60 tracking-widest">
           [{" "}
-          <a href="/posts" className="text-[#FF85B3] underline decoration-dotted">essays</a> ·{" "}
-          <a href="/garden" className="text-[#FF85B3] underline decoration-dotted">garden</a> ·{" "}
-          <a href="/fotos" className="text-[#FF85B3] underline decoration-dotted">fotos</a> ]
+          <Link href="/posts" className="text-[#FF85B3] underline decoration-dotted">essays</Link> ·{" "}
+          <Link href="/garden" className="text-[#FF85B3] underline decoration-dotted">garden</Link> ·{" "}
+          <Link href="/fotos" className="text-[#FF85B3] underline decoration-dotted">fotos</Link> ]
         </p>
         <div className="mb-16">
           <h2 className="text-3xl font-semibold mt-20 mb-8 font-fredoka">Portfolio</h2>
