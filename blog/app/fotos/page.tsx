@@ -1,23 +1,15 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-// Photo category types and data
 type PhotoCategory = "all" | "flora" | "travel";
 
 interface Photo {
   src: string;
   alt: string;
   category: PhotoCategory;
-  blurDataUrl?: string; // For blur placeholder
 }
 
 const floraImages = [
@@ -66,27 +58,103 @@ const travelImages = [
   "IMG_8572.jpeg",
 ];
 
-const createPhotoStructure = (
-  category: PhotoCategory,
-  images: string[]
-): Photo[] => {
-  return images.map((image) => ({
-    src: `/images/${category}/${image}`,
-    alt: `${
-      category.charAt(0).toUpperCase() + category.slice(1) + image
-    } Image`,
+const buildPhotos = (
+  category: Exclude<PhotoCategory, "all">,
+  filenames: string[]
+): Photo[] =>
+  filenames.map((name) => ({
+    src: `/images/${category}/${name}`,
+    alt: `${category} — ${name}`,
     category,
-    blurDataUrl: "data:image/jpeg;base64,/9j...", // Replace with actual blurDataUrl
   }));
-};
 
 const photos: Photo[] = [
-  ...createPhotoStructure("flora", floraImages),
-  ...createPhotoStructure("travel", travelImages),
+  ...buildPhotos("flora", floraImages),
+  ...buildPhotos("travel", travelImages),
 ];
 
-// Modal component
-const ImageModal = ({
+const CATEGORY_META: Record<PhotoCategory, { label: string; count: number }> = {
+  all: { label: "All", count: photos.length },
+  flora: { label: "Flora", count: floraImages.length },
+  travel: { label: "Travel", count: travelImages.length },
+};
+
+function CategoryFilter({
+  current,
+  onChange,
+}: {
+  current: PhotoCategory;
+  onChange: (c: PhotoCategory) => void;
+}) {
+  const categories: PhotoCategory[] = ["all", "flora", "travel"];
+  return (
+    <div className="flex justify-center gap-8 font-mono text-xs tracking-[0.25em] uppercase">
+      {categories.map((c) => {
+        const active = current === c;
+        const meta = CATEGORY_META[c];
+        return (
+          <button
+            key={c}
+            onClick={() => onChange(c)}
+            className={`relative pb-1 transition-colors ${
+              active
+                ? "text-[#FF4D94]"
+                : "text-[#C9A8FF]/70 hover:text-[#FF85B3]"
+            }`}
+          >
+            {meta.label}
+            <span className="ml-1 text-[0.65rem] opacity-60">({meta.count})</span>
+            {active && (
+              <motion.span
+                layoutId="foto-cat-underline"
+                className="absolute left-0 right-0 -bottom-0.5 h-px bg-[#FF4D94]"
+              />
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function PhotoColumn({
+  items,
+  onPhotoClick,
+}: {
+  items: Photo[];
+  onPhotoClick: (p: Photo) => void;
+}) {
+  return (
+    <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
+      {items.map((photo) => (
+        <motion.figure
+          key={photo.src}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="break-inside-avoid mb-4 relative overflow-hidden cursor-pointer group"
+          onClick={() => onPhotoClick(photo)}
+        >
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            width={0}
+            height={0}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="w-full h-auto"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
+          <figcaption className="absolute bottom-0 left-0 right-0 p-3 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/0 group-hover:text-white/80 transition-colors duration-300 bg-gradient-to-t from-black/60 to-transparent">
+            {photo.category}
+          </figcaption>
+        </motion.figure>
+      ))}
+    </div>
+  );
+}
+
+function ImageModal({
   photo,
   onClose,
   onNext,
@@ -96,27 +164,28 @@ const ImageModal = ({
   onClose: () => void;
   onNext: () => void;
   onPrevious: () => void;
-}) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
-    onClick={onClose}
-  >
-    <div className="relative w-full h-full flex items-center justify-center p-4">
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+      onClick={onClose}
+    >
       <button
         onClick={(e) => {
           e.stopPropagation();
           onPrevious();
         }}
-        className="absolute left-4 p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 text-white transition-all"
+        className="absolute left-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
+        aria-label="previous photo"
       >
         <ChevronLeft size={24} />
       </button>
 
       <div
-        className="relative w-full h-full max-w-6xl max-h-[90vh]"
+        className="relative w-full h-full max-w-6xl max-h-[90vh] mx-12"
         onClick={(e) => e.stopPropagation()}
       >
         <Image
@@ -134,302 +203,122 @@ const ImageModal = ({
           e.stopPropagation();
           onNext();
         }}
-        className="absolute right-4 p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 text-white transition-all"
+        className="absolute right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
+        aria-label="next photo"
       >
         <ChevronRight size={24} />
       </button>
 
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 text-white transition-all"
+        className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
+        aria-label="close"
       >
         <X size={24} />
       </button>
-    </div>
-  </motion.div>
-);
-
-// Category filter component
-const CategoryFilter = ({
-  currentCategory,
-  onCategoryChange,
-}: {
-  currentCategory: PhotoCategory;
-  onCategoryChange: (category: PhotoCategory) => void;
-}) => {
-  const categories: PhotoCategory[] = ["all", "flora", "travel"];
-
-  return (
-    <div className="flex justify-center gap-4 mb-8">
-      {categories.map((category) => (
-        <button
-          key={category}
-          onClick={() => onCategoryChange(category)}
-          className={`px-4 py-2 rounded-full transition-all ${
-            currentCategory === category
-              ? "bg-foreground text-background"
-              : "bg-background text-foreground border border-foreground hover:bg-foreground hover:text-background"
-          }`}
-        >
-          {category.charAt(0).toUpperCase() + category.slice(1)}
-        </button>
-      ))}
-    </div>
-  );
-};
-
-// Photo grid component with lazy loading and blur effect
-const PhotoGrid = ({
-  category,
-  onPhotoClick,
-}: {
-  category: PhotoCategory;
-  onPhotoClick: (photo: Photo) => void;
-}) => {
-  const filteredPhotos = photos.filter((photo) =>
-    category === "all" ? true : photo.category === category
-  );
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {filteredPhotos.map((photo, index) => (
-        <motion.div
-          key={photo.src}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.2 }}
-          className="relative aspect-square overflow-hidden group cursor-pointer"
-          onClick={() => onPhotoClick(photo)}
-        >
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            placeholder="blur"
-            blurDataURL={photo.blurDataUrl}
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-// Update FadeInSection to actually be used in the layout
-const FadeInSection = ({ children }: { children: React.ReactNode }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.8 }}
-    >
-      {children}
     </motion.div>
   );
-};
+}
 
-// Page transitions wrapper
-const PageTransition = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-  >
-    {children}
-  </motion.div>
-);
-
-export default function Home() {
-  const [showMore, setShowMore] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+export default function FotosPage() {
   const [currentCategory, setCurrentCategory] = useState<PhotoCategory>("all");
-  const heroRef = useRef(null);
-  const aboutRef = useRef<HTMLDivElement | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
+  const filteredPhotos =
+    currentCategory === "all"
+      ? photos
+      : photos.filter((p) => p.category === currentCategory);
 
-  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
-
-  // Add scroll indicator animation
-  const [scrollIndicatorRef, scrollIndicatorInView] = useInView({
-    threshold: 0.1,
-  });
-
-  const handlePhotoClick = (photo: Photo) => {
-    setSelectedPhoto(photo);
-  };
-
-  const handleNextPhoto = () => {
+  const handleNext = () => {
     if (!selectedPhoto) return;
-    const currentIndex = photos.findIndex((p) => p.src === selectedPhoto.src);
-    const nextIndex = (currentIndex + 1) % photos.length;
-    setSelectedPhoto(photos[nextIndex]);
+    const i = photos.findIndex((p) => p.src === selectedPhoto.src);
+    setSelectedPhoto(photos[(i + 1) % photos.length]);
   };
-
-  const handlePreviousPhoto = () => {
+  const handlePrevious = () => {
     if (!selectedPhoto) return;
-    const currentIndex = photos.findIndex((p) => p.src === selectedPhoto.src);
-    const previousIndex = (currentIndex - 1 + photos.length) % photos.length;
-    setSelectedPhoto(photos[previousIndex]);
-  };
-
-  const handleExploreMoreClick = () => {
-    if (aboutRef.current) {
-      aboutRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-    setShowMore(true);
+    const i = photos.findIndex((p) => p.src === selectedPhoto.src);
+    setSelectedPhoto(photos[(i - 1 + photos.length) % photos.length]);
   };
 
   return (
-    <PageTransition>
-      <main className="relative min-h-screen bg-background">
-        {/* Hero Section - Adjusted to 90vh to ensure scroll indicator visibility */}
-        <motion.section
-          ref={heroRef}
-          className="relative h-[90vh] overflow-hidden"
-          style={{ opacity: heroOpacity }}
-        >
-          <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
-            <Image
-              src="/images/_DSC2366.jpeg"
-              alt="Featured landscape"
-              fill
-              priority
-              className="object-cover"
-              placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j..."
-              fetchPriority="high"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30" />
-          </motion.div>
-
-          {/* Title and explore more in a container */}
-          <div className="absolute inset-0 flex flex-col items-center justify-between py-20">
-            <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-5xl md:text-6xl text-white text-center tracking-wide"
-            >
-              {""}
-            </motion.h1>
-
-            <div className="space-y-8 text-center">
-              {/* Scroll indicator */}
-              <motion.div
-                ref={scrollIndicatorRef}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: scrollIndicatorInView ? 1 : 0 }}
-                className="flex flex-col items-center space-y-2"
-              >
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  onClick={() => {
-                    handleExploreMoreClick();
-                  }}
-                  className="px-6 py-3 bg-white bg-opacity-20 text-white rounded-full backdrop-blur-sm hover:bg-opacity-30 transition-all duration-300"
-                >
-                  Explore More
-                </motion.button>
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center"
-                >
-                  <motion.div className="w-1 h-1 bg-white rounded-full" />
-                </motion.div>
-              </motion.div>
-            </div>
+    <main className="min-h-screen">
+      {/* Hero — a single image, title plate, minimal chrome */}
+      <section className="relative h-[70vh] min-h-[480px] overflow-hidden">
+        <Image
+          src="/images/_DSC2366.jpeg"
+          alt="cover"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/60" />
+        <div className="absolute inset-x-0 bottom-0 p-6 md:p-12">
+          <div className="max-w-5xl mx-auto">
+            <p className="font-mono text-xs uppercase tracking-[0.4em] text-white/70 mb-2">
+              — fotos —
+            </p>
+            <h1 className="font-fredoka text-4xl md:text-6xl text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
+              making sense, still and alone
+            </h1>
           </div>
-        </motion.section>
+        </div>
+      </section>
 
-        <AnimatePresence>
-          {showMore && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {/* About Photography Section - Now using FadeInSection */}
-              <section
-                ref={aboutRef}
-                className="px-4 py-24 md:px-16 bg-background"
-              >
-                <div className="max-w-4xl mx-auto">
-                  <FadeInSection>
-                    <h2 className="text-4xl font-bold mb-8 text-foreground">
-                      About My Photography
-                    </h2>
-                    <p className="text-lg leading-relaxed text-foreground opacity-90">
-                      I often find myself alone, immersed in the process of
-                      capturing images. Photography, for me, isn&apos;t just
-                      about technical skill; it&apos;s a way to make sense of
-                      things and search for meaning in moments that might
-                      otherwise go unnoticed. While photos may lack an immediate
-                      sense of place, over time they evoke a sense of
-                      familiarity, prompting reflection. Sometimes, I regret not
-                      capturing certain memories, but I&apos;ve learned that
-                      meaning often emerges later. Photography has taught me
-                      that being still and present, even in solitude, can reveal
-                      beauty in the simplest moments.
-                    </p>
-                  </FadeInSection>
-                </div>
-              </section>
+      {/* Artist statement */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#C9A8FF]/70 mb-4">
+          artist statement
+        </p>
+        <p className="text-base md:text-lg leading-relaxed text-foreground/90">
+          I often find myself alone, immersed in the process of capturing
+          images. Photography, for me, isn&apos;t about technical skill so
+          much as a way to make sense of things and search for meaning in
+          moments that might otherwise go unnoticed. Photos sometimes lack
+          an immediate sense of place, but over time they evoke a familiarity
+          that prompts reflection. I&apos;ve learned meaning often arrives
+          later. Being still and present, even in solitude, reveals beauty in
+          the simplest moments.
+        </p>
+      </section>
 
-              {/* Category Filter - Now using FadeInSection */}
-              <section className="py-8 bg-background">
-                <FadeInSection>
-                  <CategoryFilter
-                    currentCategory={currentCategory}
-                    onCategoryChange={setCurrentCategory}
-                  />
-                </FadeInSection>
-              </section>
+      {/* Category filter */}
+      <section className="max-w-5xl mx-auto px-6 pb-8">
+        <CategoryFilter
+          current={currentCategory}
+          onChange={setCurrentCategory}
+        />
+      </section>
 
-              {/* Photo Grid Section */}
-              <section className="py-16 bg-background">
-                <PhotoGrid
-                  category={currentCategory}
-                  onPhotoClick={handlePhotoClick}
-                />
-              </section>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Modal remains unchanged */}
-        <AnimatePresence>
-          {selectedPhoto && (
-            <ImageModal
-              photo={selectedPhoto}
-              onClose={() => setSelectedPhoto(null)}
-              onNext={handleNextPhoto}
-              onPrevious={handlePreviousPhoto}
+      {/* Masonry grid */}
+      <section className="max-w-7xl mx-auto px-4 pb-24">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <PhotoColumn
+              items={filteredPhotos}
+              onPhotoClick={setSelectedPhoto}
             />
-          )}
+          </motion.div>
         </AnimatePresence>
-      </main>
-    </PageTransition>
+      </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedPhoto && (
+          <ImageModal
+            photo={selectedPhoto}
+            onClose={() => setSelectedPhoto(null)}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        )}
+      </AnimatePresence>
+    </main>
   );
 }

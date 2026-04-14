@@ -55,10 +55,8 @@ export default async function Page({ params }: { params: PostParams }) {
       },
     });
     return (
-      <article className="prose lg:prose-xl mx-auto px-4 min-h-[calc(100vh-200px)] overflow-hidden">
-        <div className="space-y-6">
-          <article className="border-l-4 pl-4">{content}</article>
-        </div>
+      <article className="post-prose prose lg:prose-lg mx-auto px-6 py-12 max-w-2xl min-h-[calc(100vh-200px)]">
+        {content}
       </article>
     );
   } catch (error) {

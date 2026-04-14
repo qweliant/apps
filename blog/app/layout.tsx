@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fredoka, Nunito, Geist_Mono } from "next/font/google";
+import { Fredoka, Nunito, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
@@ -17,6 +17,13 @@ const nunito = Nunito({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -42,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fredoka.variable} ${nunito.variable} ${geistMono.variable} antialiased font-nunito`}
+        className={`${fredoka.variable} ${nunito.variable} ${geistMono.variable} ${lora.variable} antialiased font-nunito`}
       >
         <header className="sticky top-0 z-50 border-b border-[#FF85B3]/20 bg-[var(--background)]/80 backdrop-blur-md">
           <nav className="container mx-auto flex flex-wrap items-center justify-between p-4">
@@ -53,6 +60,12 @@ export default function RootLayout({
               Optimal Frequencies
             </Link>
             <div className="flex space-x-8">
+              <Link
+                href="/garden"
+                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+              >
+                Garden
+              </Link>
               <Link
                 href="/fotos"
                 className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"

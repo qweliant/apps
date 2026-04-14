@@ -34,6 +34,10 @@
     --background: var(--background-dark);
     --foreground: var(--foreground-dark);
     --gradient: var(--gradient-dark);
+    --link: #C084FC;
+    --link-hover: #FF85B3;
+    --muted-text: #B8A4E0;
+    --rule: rgba(192, 132, 252, 0.22);
   }
 }
 
@@ -42,6 +46,10 @@
     --background: var(--background-light);
     --foreground: var(--foreground-light);
     --gradient: var(--gradient-light);
+    --link: #7B3FC8;
+    --link-hover: #C7297B;
+    --muted-text: #6d34a0;
+    --rule: rgba(123, 63, 200, 0.18);
   }
 }
 
@@ -228,4 +236,204 @@ span[data-highlighted-line] {
     background-color: rgba(109, 52, 160, 0.07);
     border-left-color: #c9a8ff;
   }
+}
+
+/* ── Essay reading shell (scoped, quiet, readable) ────────────────── */
+/* Applied on post pages only. Overrides the decorative heading/link
+   treatment used elsewhere so long-form reading stays calm. */
+
+article.post-prose {
+  font-family: var(--font-lora), Georgia, "Times New Roman", serif;
+  color: var(--foreground);
+}
+
+article.post-prose h1,
+article.post-prose h2,
+article.post-prose h3,
+article.post-prose h4,
+article.post-prose h5,
+article.post-prose h6 {
+  text-shadow: none;
+  color: var(--foreground);
+  font-family: var(--font-fredoka), var(--font-nunito), sans-serif;
+  letter-spacing: -0.005em;
+}
+
+article.post-prose h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 0.5em;
+}
+article.post-prose h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 2.25em;
+  margin-bottom: 0.6em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--rule);
+}
+article.post-prose h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 1.75em;
+}
+article.post-prose h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+article.post-prose p,
+article.post-prose li {
+  color: var(--foreground);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+article.post-prose a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+article.post-prose a:hover {
+  color: var(--link-hover);
+  text-decoration-thickness: 2px;
+}
+
+article.post-prose strong {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+article.post-prose blockquote {
+  background-color: transparent;
+  border-left: 3px solid var(--rule);
+  border-radius: 0;
+  color: var(--muted-text);
+  font-style: italic;
+  padding: 0.25em 0 0.25em 1.25rem;
+}
+
+article.post-prose hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5em auto;
+  width: 40%;
+}
+
+/* ── Garden (sidequest zone, unapologetically weird) ─────────────── */
+
+.garden-root {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255, 133, 179, 0.12) 0, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(168, 216, 255, 0.10) 0, transparent 40%),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 18px,
+      rgba(201, 168, 255, 0.04) 18px,
+      rgba(201, 168, 255, 0.04) 19px
+    );
+}
+
+.garden-marquee {
+  overflow: hidden;
+  border-top: 2px dashed rgba(255, 133, 179, 0.5);
+  border-bottom: 2px dashed rgba(255, 133, 179, 0.5);
+  background: rgba(255, 133, 179, 0.06);
+  padding: 0.6rem 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  color: var(--sakura);
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+.garden-marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: garden-scroll 32s linear infinite;
+}
+
+.garden-marquee-track > span {
+  padding-right: 2rem;
+}
+
+@keyframes garden-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garden-marquee-track { animation: none; }
+}
+
+.garden-panel {
+  border: 1px solid rgba(255, 133, 179, 0.35);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow:
+    0 0 0 4px rgba(201, 168, 255, 0.06),
+    0 4px 24px rgba(255, 133, 179, 0.08);
+  overflow: hidden;
+}
+
+.garden-panel-header {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.6rem 1rem;
+  color: var(--lavender);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 133, 179, 0.12),
+    rgba(201, 168, 255, 0.08)
+  );
+  border-bottom: 1px dashed rgba(255, 133, 179, 0.35);
+}
+
+@media (prefers-color-scheme: light) {
+  .garden-panel {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* ── Home page sparkle (weird-web furniture) ─────────────────────── */
+
+.home-banner {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  text-align: center;
+  border-top: 1px dashed rgba(201, 168, 255, 0.4);
+  border-bottom: 1px dashed rgba(201, 168, 255, 0.4);
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  background: rgba(201, 168, 255, 0.05);
+}
+
+.home-blink {
+  animation: home-blink 1.4s steps(2, start) infinite;
+}
+
+@keyframes home-blink {
+  to { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-blink { animation: none; }
+}
+
+.home-ascii {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  line-height: 1.1;
+  color: var(--lavender);
+  opacity: 0.55;
+  white-space: pre;
+  text-align: center;
 }
