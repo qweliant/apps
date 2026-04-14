@@ -123,7 +123,7 @@ ENTRYPOINT ["/quickstart"]
 
 If you ran the above docker-compose command you should expect
 to see warnings about your env variables or errors if you have
-not already deleted the html and static copy. Lets create an .env
+not already deleted the html and static copy. Let's create an .env
 file in the same folder as the docker-compose file. This file will
 define your plaid credentials. The result should be something like:
 
@@ -141,7 +141,7 @@ PLAID_REDIRECT_URI=http://localhost:80
 
 The last thing we should do before moving on to the frontend is edit some portions
 of the code in server.go. This is because the quickstart repo does not behave as
-one would expect. This may be do to my own ignorance but following the steps in
+one would expect. This may be due to my own ignorance but following the steps in
 the official repo lead to an environment error.
 
 ```bash
@@ -190,7 +190,7 @@ npx create-react-app plaid
 ```
 
 We’ll start by getting the Dockerfile set up for the frontend and adding
-the client service to our docker compose file. Lets start the latter part
+the client service to our docker compose file. Let's start the latter part
 by opening the docker-compose file again. To add a service for the client,
 simply add it after the go section. The file will change to look something like this:
 
@@ -247,8 +247,8 @@ CMD ["nginx", "-g", "daemon off;"]
 ### Nginx Configuration
 
 Next, we need to create a folder for nginx that configures the server.
-Name the folder nginx and add a a file named conf.d. This configures our
-server to serve the static build(html, js, cs, etc) on port 80 in the container.
+Name the folder nginx and add a file named conf.d. This configures our
+server to serve the static build(html, js, css, etc) on port 80 in the container.
 
 Create `nginx/nginx.conf`:
 

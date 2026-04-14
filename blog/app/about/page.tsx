@@ -18,7 +18,7 @@ export default function Page() {
       <header className="mb-12">
         <h1 className="text-4xl font-bold mb-4">About Me</h1>
         <p className="text-xl ">
-          Technology enthusiast, perpetual learner, and aspiring gardner
+          Technology enthusiast, perpetual learner, and aspiring gardener
         </p>
       </header>
 
@@ -31,13 +31,13 @@ export default function Page() {
           Internet Archive are for the future what Voyager is to the unknown.
           Collective intelligence makes knowledge better by opening the process
           of knowledge creation to criticism and veracity, both creating space
-          and removing barriers for collective stewwardship.
+          and removing barriers for collective stewardship.
         </p>
       </AboutSection>
 
       <AboutSection title="Early Years">
         <p>
-          In fourth grade I guessed the right amount of hershy kisses in a
+          In fourth grade I guessed the right amount of hershey kisses in a
           jar... It was about 350. In 8th grade, I received a & quot;Dont Hide
           Your Smarts & quot; Award after a school transfer - an ironic
           achievement for being a mediocre student.
@@ -66,8 +66,8 @@ export default function Page() {
         <p>
           My career path included stints at a startup, research at
           Clemson&apos;s TRACE Lab, and attendance at a coding bootcamp,
-          formerly known as Lamda School. I am not sure what it known as today.
-          Eeventually I was able to contribute tp open source technologies and
+          formerly known as Lambda School. I am not sure what it is known as today.
+          Eventually I was able to contribute to open source technologies and
           decentralized knowledge frameworks, where I found my passion for
           building tools that make technology more accessible and knowledge more
           open.
@@ -76,15 +76,15 @@ export default function Page() {
       <AboutSection title="Adulting">
         <p>
           I find flowers and trees to be the only things that keep from that
-          abyss staring back at me we call the future. Yes, the stemen keeps the
+          abyss staring back at me we call the future. Yes, the stamen keeps the
           panic away. The panic of knowing my life will end is baited by the
-          fresh hibiscus and lavendar i grew hanging in my room. Ahhh, what
+          fresh hibiscus and lavender i grew hanging in my room. Ahhh, what
           horror it is to know time passes me. So thankful for angiosperms for
           keeping me sane. Send me an email on how you get by. Don&apos;t be
-          wierd about it though. Unless I knwo you. Then be wierd. But I will
-          snitch. So not too wierd. Like if you eat mash potatoes with your
+          weird about it though. Unless I know you. Then be weird. But I will
+          snitch. So not too weird. Like if you eat mash potatoes with your
           hands sans fufu or like wrapping yourself in saran wrap every now and
-          then. I don&apos;t like those things. You might though. Wierdo.
+          then. I don&apos;t like those things. You might though. Weirdo.
         </p>
       </AboutSection>
     </div>

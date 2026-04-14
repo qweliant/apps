@@ -50,7 +50,7 @@ to run tens of thousands of devices.
 
 I have been looking for any reason to use Elixir since seeing this talk
 on [LiveView](https://www.youtube.com/watch?v=f4kd-g3Evtw) by
-[Sophie DeBenedetto](https://sophiedebenedetto.com/). Elixir is
+[Sophie DeBenedetto](https://sophiedebenedetto.com/). Elixir is a
 functional programming language designed by **[José Valim](https://elixir-lang.org/development.html)** in 2012. It
 is built on top of the **[BEAM](https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine))** virtual machine originally engineered by
 Ericsson in the 1980s and 90s to run massive, highly reliable **telecom
@@ -65,7 +65,7 @@ Other languages I evaluated were Go, TypeScript, and python. Any of
 these tools could be built to run concurrent, fault tolerant systems
 (see the [c10k](https://www.kegel.com/c10k.html) problem). Go was
 interesting because I had used it before and wanted to explore how its
-**[concurrency primitives enable true parallelism](https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang)**. Go is kirkenuinely
+**[concurrency primitives enable true parallelism](https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang)**. Go is genuinely
 strong for embedded work. It compiles to a single static binary,
 cross-compiles to ARM and has lower raw memory overhead than
 the BEAM. But those strengths are most valuable for CPU-bound,
@@ -177,7 +177,7 @@ know _who_ is looking at a screen or _how_ to send an SMS. It simply
 broadcasts the event to Phoenix.PubSub.
 
 Because the BEAM's distribution layer allows nodes to communicate as if
-they were local processes., this message instantly ripples across the
+they were local processes, this message instantly ripples across the
 cluster without needing Redis. **LiveView** dashboards subscribed to
 that topic update instantly, and background workers catch the event to
 fire off SMS alerts to the patient's care network. This concurrently
@@ -187,7 +187,7 @@ SMS the Care Partner, and flashes an alert on the Clinic's workspace.
 #### **Registries & Supervisors**
 
 Fault tolerance , in the context of Elixir, is the ability for the
-system to heal from goin down without losing the state of a failed
+system to heal from going down without losing the state of a failed
 process. A medical device losing WI-FI, disconnecting, or throwing an
 error are all states that could crash a server. This is where
 **Registries** and **Supervisors** come in.
@@ -453,7 +453,7 @@ changes the URL bar without ever dropping the connection. (Though, as a
 developer, this means you do have to consciously decide when to keep the
 WebSocket open versus using a standard `href` to force a hard reset).
 
-Because WebSockets acts as the HTML transport layer, as opposed to
+Because WebSockets act as the HTML transport layer, as opposed to
 standard REST calls in React, we get realtime features for free at the
 cost of server resources. If each connected user holds an open socket we
 end up trading horizontal scalability for simplicity. However, the UI is

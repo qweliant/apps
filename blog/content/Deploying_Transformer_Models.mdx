@@ -83,7 +83,7 @@ Pipfile
 
 # NLP
 
-Hugging Face makes it really easy to implement and serve sota transformer models. Using their transformers library, we will implement an API capable of text generation and sentiment analysis. This code has been ripped straight from the site, so I will not be deep diving the transformer architecture in this article for times sake. This also means means our models are not fine tuned for a specific task. Please see my next article on fine tuning and deploying conversational agents in the future. With that disclaimer out of the way, lets look at a snippet of the code responsible for our NLP task.
+Hugging Face makes it really easy to implement and serve sota transformer models. Using their transformers library, we will implement an API capable of text generation and sentiment analysis. This code has been ripped straight from the site, so I will not be deep diving the transformer architecture in this article for time's sake. This also means our models are not fine tuned for a specific task. Please see my next article on fine tuning and deploying conversational agents in the future. With that disclaimer out of the way, let's look at a snippet of the code responsible for our NLP task.
 Code Snippet
 
 ```python
@@ -148,7 +148,7 @@ print(nlp.sentiments("A bee sting is not cool"))
 
 ## API using FastAPI
 
-FastAPI is one of the fastest API frameworks to build and serve API request in python. It can be scaled and deployed on a docker image they provide or you can create your own from a python image. If you have ever written a Flask API then this should not be difficult at all. I advise going through the FastAPI documentation for more info on how to extend functionality of your API.
+FastAPI is one of the fastest API frameworks to build and serve API requests in python. It can be scaled and deployed on a docker image they provide or you can create your own from a python image. If you have ever written a Flask API then this should not be difficult at all. I advise going through the FastAPI documentation for more info on how to extend functionality of your API.
 
 Our server will look like this:
 
@@ -257,8 +257,8 @@ Cloud Run Deployment
 2. Find your latest image
 3. Click Deploy
 4. Select Deploy to Cloud Run
-5. Allow unauthenticated request (if you want a publically consumable API)
-6. Click next then advance settings.
+5. Allow unauthenticated requests (if you want a publicly consumable API)
+6. Click next then advanced settings.
 7. Set container port to 8080 (or whatever port value you mapped in the docker-compose yml)
 8. Set memory to 4GB
 9. Click Create
@@ -267,4 +267,4 @@ Success!!!! You have now set up and deployed a state of the art NLP model.
 
 ## Conclusion
 
-This post demonstrates how to use state-of-the-art NLP models from Huggingface to power a fast, scalable API. Containerization enables distributed deployment across various services and easy local development. In the future I will try deploying larger models for higher accuracy, at least until GPT3 is publically consumable. For now, you have all the tools needed to rapidly scale a service backed by the latest in available NLP tooling.
+This post demonstrates how to use state-of-the-art NLP models from Huggingface to power a fast, scalable API. Containerization enables distributed deployment across various services and easy local development. In the future I will try deploying larger models for higher accuracy, at least until GPT3 is publicly consumable. For now, you have all the tools needed to rapidly scale a service backed by the latest in available NLP tooling.
