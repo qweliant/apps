@@ -1,0 +1,16 @@
+- [ ] The Web Does not Seem Mature | New #content_outline <!-- node-id: bet46g2_fx -->
+  - **Category**: [Computer Science #area](tana:5PiHYgJEd5)
+  - **Status**: [New](tana:dgk8ar1ds1)
+  - **Workflow Status**: [✅ Done](tana:dNPiOTv4Ki)
+  - **Draft**: 
+    - The Web Does Not Seem Mature Draft One #draft <!-- node-id: 2XrPnZPrh0D6 -->
+      - _These things cannot be stopped. An inherited strength of will. One's dreams. The ebb and flow of the ages. As long as people hunger for freedom, these things will exist._ <!-- node-id: KQ_ulx2FsD_Q -->
+        - *[... 1 children truncated due to depth limit]*
+  - **<b>🔮 </b>Term**: [📆 Medium](tana:ckNCwHaQJ9)
+  - **Thesis**: The web remains immature because it is fundamentally constrained by the systems that control its evolution. Browsers, OS fragmentation, and the economic incentives of tech giants create walled gardens rather than a truly universal, interconnected web. Im really just mad at the lack of interop between devices  <!-- node-id: U92rX_l-Q3xh -->
+  - **Builds On**:  <!-- node-id: Ep0wQC7Bdsji -->
+  - **Horizon**: [1. 🆕 Immediate](tana:XKWfZKNLIi)
+  - **Details**: 
+    - _Focus_: Critique the current state of the web, exploring its societal implications, limitations, and potential for growth. <!-- node-id: Za2r1KRCGYJ1 -->
+    - _Themes_: Digital evolution, internet culture, and technology critique. <!-- node-id: 1300l-suCAHn -->
+  - Consider the discontinuation of ATOM editor <!-- node-id: -JuxvU4PdLdb -->
