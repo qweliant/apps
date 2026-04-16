@@ -16,13 +16,13 @@ const currently = [
     label: "on loop",
     title: "Frieren: Beyond Journey's End",
     by: "Kanehito Yamada",
-    note: "grief at the pace of an elf — i could live in this show",
+    note: "an elf grieves across a thousand years im gonna cry",
   },
   {
     label: "on my mind",
-    title: "what the web should have been",
+    title: "the web is a garden, not a marketplace",
     by: "Engelbart / Bush / Nelson",
-    note: "augmenting intelligence, not selling boxes",
+    note: "augmenting intelligence and selling boxes",
   },
 ];
 
@@ -83,22 +83,40 @@ const shrine = [
   {
     icon: "✵",
     title: "Carl Jung",
-    line: "the undiscovered self — individuation against the mass",
+    line: "the undiscovered self. individuation against the mass!",
   },
   {
     icon: "♡",
     title: "for mom",
-    line: "the silent alarm. safehemo is for you.",
+    line: "passive alerts for dialysis. safehemo is for you.",
   },
   {
     icon: "☄︎",
     title: "Rocket League",
-    line: "cars with wings. i don't need a better reason.",
+    line: "cars with rockets!",
   },
   {
     icon: "⚘",
     title: "hibiscus + lavender",
-    line: "angiosperms keeping the abyss at bay",
+    line: "angiosperms be real floral with it",
+  },
+];
+
+const seedlings = [
+  {
+    icon: "🌻",
+    title: "Digital IP, Crypto, and the Human Factor",
+    note: "ownership, privacy, and governance beyond ideological extremes. i'm four drafts deep though so pray for me",
+  },
+  {
+    icon: "🌱",
+    title: "SATIRE: The Black Tubi Pipeline",
+    note: "when is satire satire? signifyin', Quan Millz, and black media archetypes",
+  },
+  {
+    icon: "🌱",
+    title: "The Commoditization of Health Data",
+    note: "23andMe went bankrupt making your genome  a liquid asset....",
   },
 ];
 
@@ -109,8 +127,10 @@ const marqueeItems = [
   "carl jung's shadow",
   "the beam & the actor model",
   "irrigation cities",
-  "what shines, burns",
+  "what shines, burns. so watch out",
   "hand-embroidered css",
+  "the black tubi pipeline",
+  "clip embeddings & vibes",
 ];
 
 function Marquee({ items }: { items: string[] }) {
@@ -159,6 +179,31 @@ export default function GardenPage() {
                 </p>
                 <p className="text-xs text-[#C9A8FF]">{c.by}</p>
                 <p className="text-xs italic text-[#C9A8FF]/70">{c.note}</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="garden-panel">
+          <header className="garden-panel-header">⌱ seedlings</header>
+          <p className="px-6 pt-4 text-xs italic text-[#C9A8FF]/70">
+            ideas composting — not essays yet, just things i keep turning over.
+          </p>
+          <ul className="p-6 space-y-4">
+            {seedlings.map((s) => (
+              <li
+                key={s.title}
+                className="flex items-start gap-3 border border-dashed border-[#FF85B3]/25 rounded-md p-3 bg-[#FF85B3]/[0.02]"
+              >
+                <span className="text-lg leading-none pt-0.5">{s.icon}</span>
+                <div>
+                  <p className="font-fredoka text-[#FF85B3] leading-snug">
+                    {s.title}
+                  </p>
+                  <p className="text-xs text-[#C9A8FF]/70 italic mt-1">
+                    {s.note}
+                  </p>
+                </div>
               </li>
             ))}
           </ul>

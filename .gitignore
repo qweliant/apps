@@ -47,3 +47,5 @@ dump.rdb
 
 # turbo
 .turbo
+
+.DS_Store

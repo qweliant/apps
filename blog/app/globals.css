@@ -19,13 +19,13 @@
     #EBF5FF 100%
   );
 
-  --background-dark: #09060F;
-  --foreground-dark: #F0EAFF;
+  --background-dark: #0A0A0A;
+  --foreground-dark: #F0ECF4;
   --gradient-dark: linear-gradient(
     135deg,
-    #09060F 0%,
-    #1C0835 45%,
-    #09060F 100%
+    #0A0A0A 0%,
+    #0F0A10 45%,
+    #0A0A0A 100%
   );
 }
 

@@ -1,12 +1,9 @@
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { FaGolang } from "react-icons/fa6";
+import { FaGithub, FaPython } from "react-icons/fa";
 import {
   SiElixir,
   SiPhoenixframework,
   SiRust,
-  SiNextdotjs,
-  SiTailwindcss,
   SiTypescript,
   SiPostgresql,
   SiMqtt,
@@ -22,23 +19,23 @@ const projects = [
     stack: [SiElixir, SiPhoenixframework, SiPostgresql, SiRust, SiMqtt],
   },
   {
-    title: "Blog Engine",
+    title: "Fine Shyt",
     description:
-      "Custom markdown-based blog platform with static rendering, built in Next.js.",
-    url: "https://github.com/qweliant/apps/tree/main/blog",
-    stack: [SiNextdotjs, SiTailwindcss, SiTypescript],
+      "Photo curation AI that learns your aesthetic taste — rates, clusters, and filters a photo archive using CLIP embeddings and a trained preference model.",
+    url: "https://github.com/qweliant/fineshyt",
+    stack: [SiElixir, SiPhoenixframework, SiPostgresql, FaPython],
   },
   {
-    title: "Tapfunds",
+    title: "prosemirror-pretext",
     description:
-      "Experimental platform for account info and democratic collective finance.",
-    url: "https://github.com/tapfunds/tf",
-    stack: [SiNextdotjs, SiTypescript, FaGolang, SiPostgresql],
+      "Canvas-based text editor combining ProseMirror's document model with Pretext's layout engine — no contenteditable, every glyph rendered via fillText.",
+    url: "https://github.com/qweliant/prosemirror-pretext",
+    stack: [SiTypescript],
   },
   {
     title: "Where Am I Next?",
     description:
-      "VS code extension that tells you when you are in a server component or client component",
+      "VS Code extension that tells you when you are in a server component or client component.",
     url: "https://github.com/qweliant/where-am-i-next",
     stack: [SiTypescript],
   },
