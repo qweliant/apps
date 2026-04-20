@@ -43,7 +43,7 @@ That approach was useful, but it exposed a few weaknesses:
 
 1. Visual taste is hard to encode in text. The model's understanding of the aesthetic I prompted for and the one it believed matched my aesthetic drifted far from one another.
 
-2. It was expensive! The amount of compute LLaVa takes to run the classification task was near 15 gigs of ram.
+2. It was expensive! The amount of compute LLaVa takes to run the classification task could spike total RAM usage to 15 gigs. It's literally easier to run bg3
 
 The larger problem was architectural. My ratings were not actually shaping the system. There was kinda no point to rating the images if they didn't affect what was being considered a match. The system was primed for being AI driven but the AI elements were being used poorly. To make use of a better architecture, the LLaVa model now handles descriptive metadata only, while taste is learned from your own rating history via CLIP embeddings and a preference model. This better matched the core idea in the project's "vibe / affinity" direction. The system could now learn what fine shyt was based on my behavior instead of a one-time prompt.
 
