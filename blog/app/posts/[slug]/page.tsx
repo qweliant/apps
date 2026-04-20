@@ -5,8 +5,8 @@ import rehypePrettyCode from "rehype-pretty-code";
 import type { Metadata } from "next";
 
 const rehypePrettyCodeOptions = {
-  theme: "catppuccin-mocha",
-  keepBackground: true,
+  theme: { light: "catppuccin-latte", dark: "catppuccin-mocha" },
+  keepBackground: false,
   defaultLang: "plaintext",
 };
 

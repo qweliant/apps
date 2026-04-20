@@ -200,7 +200,7 @@ figure[data-rehype-pretty-code-figure] pre {
   padding: 1.25rem 1.5rem;
   font-size: 0.875rem;
   line-height: 1.7;
-  background-color: #130d20 !important;
+  background-color: #130d20;
 }
 
 figcaption[data-rehype-pretty-code-title] {
@@ -221,20 +221,30 @@ span[data-highlighted-line] {
   width: calc(100% + 3rem);
 }
 
+figure[data-rehype-pretty-code-figure] code,
+figure[data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-dark);
+}
+
 @media (prefers-color-scheme: light) {
   figure[data-rehype-pretty-code-figure] pre {
-    background-color: #f5eeff !important;
-    border: 1px solid rgba(201, 168, 255, 0.3);
+    background-color: #eff1f5;
+    border: 1px solid rgba(109, 52, 160, 0.18);
   }
 
   figcaption[data-rehype-pretty-code-title] {
-    background-color: #ede0ff;
-    color: #6d34a0;
+    background-color: #e6e0ef;
+    color: #5b3a86;
+  }
+
+  figure[data-rehype-pretty-code-figure] code,
+  figure[data-rehype-pretty-code-figure] code span {
+    color: var(--shiki-light);
   }
 
   span[data-highlighted-line] {
-    background-color: rgba(109, 52, 160, 0.07);
-    border-left-color: #c9a8ff;
+    background-color: rgba(109, 52, 160, 0.08);
+    border-left-color: #8839ef;
   }
 }
 

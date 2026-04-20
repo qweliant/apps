@@ -7,7 +7,24 @@
       "Bash(node -e \"const fs = require\\(''fs''\\); const lines = fs.readFileSync\\(''content/a_gift.mdx'', ''utf8''\\).split\\(''\\\\n''\\); console.log\\(''Lines 0-25:''\\); lines.slice\\(0, 25\\).forEach\\(\\(l, i\\) => console.log\\(i + '':'', l\\)\\); console.log\\(''...\\\\nLine 22 \\(index where slice starts\\):'', lines[22]\\);\")",
       "Bash(gh api:*)",
       "Bash(for f:*)",
-      "Bash(do echo:*)"
+      "Bash(do echo:*)",
+      "Bash(git -C /Users/qwelian/Programs/apps log --oneline -30 -- 2b stnocn)",
+      "Bash(git -C /Users/qwelian/Programs/apps log --oneline -20)",
+      "Bash(wc -l /Users/qwelian/Programs/apps/2b/ai/*.go /Users/qwelian/Programs/apps/2b/main.go /Users/qwelian/Programs/apps/2b/app.go)",
+      "Bash(pnpm dev:*)",
+      "Bash(curl -s -o /dev/null -w \"home:%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"garden:%{http_code}\\\\n\" http://localhost:3000/garden)",
+      "Bash(curl -s -o /dev/null -w \"post:%{http_code}\\\\n\" http://localhost:3000/posts/What_Shines)",
+      "Bash(kill bq15erc65:*)",
+      "Bash(pkill -f \"next dev\")",
+      "mcp__tana-local__search_nodes",
+      "mcp__tana-local__read_node",
+      "Bash(node /Users/qwelian/Programs/apps/blog/scripts/tana-import.mjs /Users/qwelian/Programs/apps/blog/scripts/.tana-cache/bet46g2_fx.md)",
+      "mcp__tana-local__list_workspaces",
+      "Bash(npx tsc *)",
+      "Bash(node_modules/.bin/tsc --noEmit -p tsconfig.json)",
+      "Bash(echo \"---EXIT:$?\")",
+      "Bash(npx next *)"
     ]
   }
 }

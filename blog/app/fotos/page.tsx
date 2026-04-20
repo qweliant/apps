@@ -89,7 +89,7 @@ function CategoryFilter({
   const categories: PhotoCategory[] = ["all", "flora", "travel"];
   return (
     <div className="flex justify-center gap-8 font-mono text-xs tracking-[0.25em] uppercase">
-      {categories.map((c) => {
+      {categories.map((c: PhotoCategory) => {
         const active = current === c;
         const meta = CATEGORY_META[c];
         return (
@@ -253,16 +253,6 @@ export default function FotosPage() {
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/60" />
-        <div className="absolute inset-x-0 bottom-0 p-6 md:p-12">
-          <div className="max-w-5xl mx-auto">
-            <p className="font-mono text-xs uppercase tracking-[0.4em] text-white/70 mb-2">
-              — fotos —
-            </p>
-            <h1 className="font-fredoka text-4xl md:text-6xl text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
-              making sense, still and alone
-            </h1>
-          </div>
-        </div>
       </section>
 
       {/* Artist statement */}
