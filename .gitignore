@@ -49,3 +49,5 @@ dump.rdb
 .turbo
 
 .DS_Store
+
+blog/scripts/.claude/settings.local.json
