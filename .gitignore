@@ -50,4 +50,4 @@ dump.rdb
 
 .DS_Store
 
-blog/scripts/.claude/settings.local.json
+.claude/
