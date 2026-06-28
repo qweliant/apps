@@ -1,0 +1,37 @@
+{
+  "https://example.com/rocket-league-distribution": {
+    "title": "Rocket League Rank Distribution",
+    "siteName": "Tracker Network",
+    "url": "https://example.com/rocket-league-distribution"
+  },
+  "https://www.w3.org/History/1989/proposal.html": {
+    "title": "The original proposal of the WWW, HTMLized",
+    "siteName": null,
+    "url": "https://www.w3.org/History/1989/proposal.html"
+  },
+  "https://www.w3.org/People/Berners-Lee/": {
+    "title": "Tim Berners-Lee",
+    "siteName": null,
+    "url": "https://www.w3.org/People/Berners-Lee/"
+  },
+  "https://en.wikipedia.org/wiki/Protocol_Wars": {
+    "title": "Protocol Wars - Wikipedia",
+    "siteName": null,
+    "url": "https://en.wikipedia.org/wiki/Protocol_Wars"
+  },
+  "https://en.wikipedia.org/wiki/AppleTalk": {
+    "title": "AppleTalk - Wikipedia",
+    "siteName": null,
+    "url": "https://en.wikipedia.org/wiki/AppleTalk"
+  },
+  "https://threadreaderapp.com/thread/1241619297576710145.html": {
+    "title": "Thread by @aka_pugs on Thread Reader App",
+    "siteName": null,
+    "url": "https://threadreaderapp.com/thread/1241619297576710145.html"
+  },
+  "http://youtube.com/watch?v=yJDv-zdhzMY": {
+    "title": "The Mother of All Demos, presented by Douglas Engelbart (1968)",
+    "siteName": "YouTube",
+    "url": "http://youtube.com/watch?v=yJDv-zdhzMY"
+  }
+}

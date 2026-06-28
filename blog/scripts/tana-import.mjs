@@ -3,10 +3,15 @@
  * Tana `#content outline` → blog MDX transformer.
  *
  * Usage:
- *   pnpm blog:import <path-to-tana-markdown-dump>
+ *   pnpm blog:import <path-to-tana-markdown-dump> [--no-footnotes] [--refresh-meta]
  *
  * The caller produces the dump via MCP:
  *   mcp__tana-local__read_node(nodeId, maxDepth=10) → scripts/.tana-cache/<id>.md
+ *
+ * Optional sidecar: if `<dump>.refs.json` exists, inline `[text](tana:nodeId)`
+ * references are rewritten to `[text](https://...)` before parsing, using the
+ * sidecar's `{ nodeId: url }` map. Unresolved refs are stripped to plain text
+ * (existing behavior) and reported at the end so they can be filled in later.
  *
  * Prose source: direct non-field children of the outline node.
  * Frontmatter matches the legacy 2b schema already used by content/*.mdx.
@@ -14,10 +19,86 @@
 import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { fetchMeta } from "./lib/url-meta.mjs";
 
 const POST_TYPE_ID = "5c421d8f-fbf0-44a3-9a05-dfe9eb164c76";
 const PROP_ID_A = "63535e81-2300-473f-bc15-f55b50eb7e60";
 const PROP_ID_B = "8649a72f-a448-44f5-bc9e-395ac8057364";
+
+const TANA_REF_RE = /\[([^\]]+?)\]\(tana:([^)]+)\)/g;
+
+const loadSidecar = (inputPath) => {
+  const sidecarPath = inputPath.replace(/\.md$/, "") + ".refs.json";
+  if (!fs.existsSync(sidecarPath)) return { map: {}, path: sidecarPath, exists: false };
+  try {
+    return { map: JSON.parse(fs.readFileSync(sidecarPath, "utf8")), path: sidecarPath, exists: true };
+  } catch (err) {
+    console.warn(`Failed to parse sidecar ${sidecarPath}: ${err.message}`);
+    return { map: {}, path: sidecarPath, exists: false };
+  }
+};
+
+const resolveTanaRefs = (md, sidecar) => {
+  const unresolved = new Set();
+  const out = md.replace(TANA_REF_RE, (match, text, nodeId) => {
+    const id = nodeId.trim();
+    const url = sidecar.map[id];
+    if (url) return `[${text.replace(/\s*#\S+\s*$/, "")}](${url})`;
+    unresolved.add(id);
+    return match;
+  });
+  return { md: out, unresolved: [...unresolved] };
+};
+
+const makeFootnotes = (refreshMeta = false) => {
+  const byUrl = new Map();
+  const order = [];
+  return {
+    async resolve(url) {
+      if (byUrl.has(url)) return byUrl.get(url);
+      const n = order.length + 1;
+      const meta = await fetchMeta(url, refreshMeta);
+      const entry = { n, url, meta };
+      byUrl.set(url, entry);
+      order.push(url);
+      return entry;
+    },
+    peek(url) {
+      return byUrl.get(url);
+    },
+    entries: () => order.map((u) => byUrl.get(u)),
+  };
+};
+
+const escapeMdx = (t) => t.replace(/([{}])/g, "\\$1");
+
+const applyFootnotes = async (body, footnotes) => {
+  const mdLinkRe = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
+  const urls = new Set();
+  for (const m of body.matchAll(mdLinkRe)) urls.add(m[2]);
+
+  await Promise.all([...urls].map((u) => footnotes.resolve(u)));
+
+  return body.replace(mdLinkRe, (match, text, url) => {
+    const entry = footnotes.peek(url);
+    if (!entry) return match;
+    return `[${text}](${url})<sup><a href="#fn-${entry.n}">${entry.n}</a></sup>`;
+  });
+};
+
+const renderNotes = (footnotes) => {
+  const items = footnotes.entries();
+  if (!items.length) return "";
+  const lis = items
+    .map(({ n, url, meta }) => {
+      const label = meta?.title
+        ? `${meta.title}${meta.siteName ? ` — ${meta.siteName}` : ""}`
+        : url;
+      return `  <li id="fn-${n}">${escapeMdx(label)}. <a href="${url}">${url}</a></li>`;
+    })
+    .join("\n");
+  return `## Notes\n\n<ol>\n${lis}\n</ol>`;
+};
 
 const parseLines = (md) => {
   const lines = md.split("\n");
@@ -265,14 +346,22 @@ const renderFrontmatter = ({ title, dateIso, objectId }) =>
     "---",
   ].join("\n");
 
-const main = () => {
-  const inputPath = process.argv[2];
+const main = async () => {
+  const args = process.argv.slice(2);
+  const inputPath = args.find((a) => !a.startsWith("--"));
+  const skipFootnotes = args.includes("--no-footnotes");
+  const refreshMeta = args.includes("--refresh-meta");
+
   if (!inputPath) {
-    console.error("Usage: pnpm blog:import <path-to-tana-markdown-dump>");
+    console.error("Usage: pnpm blog:import <path-to-tana-markdown-dump> [--no-footnotes] [--refresh-meta]");
     process.exit(1);
   }
 
-  const md = fs.readFileSync(path.resolve(inputPath), "utf8");
+  const resolvedInput = path.resolve(inputPath);
+  const rawMd = fs.readFileSync(resolvedInput, "utf8");
+  const sidecar = loadSidecar(resolvedInput);
+  const { md, unresolved } = resolveTanaRefs(rawMd, sidecar);
+
   const tree = toTree(parseLines(md));
   if (!tree) {
     console.error("Empty input.");
@@ -298,16 +387,24 @@ const main = () => {
   const dateIso = parseDateToIso(scheduled ? fieldContent(scheduled) : "");
   const objectId = randomUUID();
 
-  const body = prose
+  let body = prose
     .map((n) => renderNode(n, 0))
     .filter(Boolean)
     .join("\n\n");
+
+  let notesSection = "";
+  if (!skipFootnotes) {
+    const footnotes = makeFootnotes(refreshMeta);
+    body = await applyFootnotes(body, footnotes);
+    notesSection = renderNotes(footnotes);
+  }
 
   const output =
     renderFrontmatter({ title, dateIso, objectId }) +
     "\n\n" +
     `# ${title}\n\n` +
     body +
+    (notesSection ? "\n\n" + notesSection : "") +
     "\n";
 
   const slug = slugify(title);
@@ -321,6 +418,13 @@ const main = () => {
         "This pipeline reads direct children only — it ignores the Draft field. " +
         "Move prose up to the outline's top level or adjust the script."
     );
+  }
+  if (unresolved.length) {
+    console.warn(
+      `\n${unresolved.length} unresolved tana ref(s). To turn these into footnotes, ` +
+        `populate ${sidecar.path} with { nodeId: "https://..." } entries:`,
+    );
+    for (const id of unresolved) console.warn(`  - ${id}`);
   }
 };
 
