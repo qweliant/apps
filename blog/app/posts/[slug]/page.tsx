@@ -3,6 +3,11 @@ import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import type { Metadata } from "next";
+import PretextEditor from "@/app/components/PretextEditor";
+import LatencyBench from "@/app/components/LatencyBench";
+
+// Components available to every post's MDX.
+const mdxComponents = { PretextEditor, LatencyBench };
 
 const rehypePrettyCodeOptions = {
   theme: { light: "catppuccin-latte", dark: "catppuccin-mocha" },
@@ -47,6 +52,7 @@ export default async function Page({ params }: { params: PostParams }) {
     const fileContent = fs.readFileSync(filePath, "utf8");
     const { content } = await compileMDX<{ date: string }>({
       source: fileContent,
+      components: mdxComponents,
       options: {
         parseFrontmatter: true,
         mdxOptions: {

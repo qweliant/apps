@@ -33,5 +33,30 @@
     "title": "The Mother of All Demos, presented by Douglas Engelbart (1968)",
     "siteName": "YouTube",
     "url": "http://youtube.com/watch?v=yJDv-zdhzMY"
+  },
+  "https://solidproject.org/": {
+    "title": "Solid: Your data, your choice - Solid Project",
+    "siteName": "Solid Project",
+    "url": "https://solidproject.org/"
+  },
+  "https://www.lesswrong.com/s/ynMFrq9K5iNMfSZNg/p/9o3Cjjem7AbmmZfBs": {
+    "title": "Living Luminously — LessWrong",
+    "siteName": null,
+    "url": "https://www.lesswrong.com/s/ynMFrq9K5iNMfSZNg/p/9o3Cjjem7AbmmZfBs"
+  },
+  "https://luminosityledger.netlify.app/": {
+    "title": "Needs & Values",
+    "siteName": null,
+    "url": "https://luminosityledger.netlify.app/"
+  },
+  "https://luminosityledger.netlify.app/#/methods": {
+    "title": "Needs & Values",
+    "siteName": null,
+    "url": "https://luminosityledger.netlify.app/#/methods"
+  },
+  "https://www.lesswrong.com/posts/xnPFYBuaGhpq869mY/ureshiku-naritai": {
+    "title": "Ureshiku Naritai — LessWrong",
+    "siteName": null,
+    "url": "https://www.lesswrong.com/posts/xnPFYBuaGhpq869mY/ureshiku-naritai"
   }
 }

@@ -54,14 +54,21 @@ const makeFootnotes = (refreshMeta = false) => {
   const byUrl = new Map();
   const order = [];
   return {
-    async resolve(url) {
+    // Assign the footnote number synchronously, in document order, so
+    // concurrent metadata fetches can't race on order.length.
+    register(url) {
       if (byUrl.has(url)) return byUrl.get(url);
-      const n = order.length + 1;
-      const meta = await fetchMeta(url, refreshMeta);
-      const entry = { n, url, meta };
+      const entry = { n: order.length + 1, url, meta: null };
       byUrl.set(url, entry);
       order.push(url);
       return entry;
+    },
+    async fetchAll() {
+      await Promise.all(
+        order.map(async (url) => {
+          byUrl.get(url).meta = await fetchMeta(url, refreshMeta);
+        })
+      );
     },
     peek(url) {
       return byUrl.get(url);
@@ -74,10 +81,9 @@ const escapeMdx = (t) => t.replace(/([{}])/g, "\\$1");
 
 const applyFootnotes = async (body, footnotes) => {
   const mdLinkRe = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
-  const urls = new Set();
-  for (const m of body.matchAll(mdLinkRe)) urls.add(m[2]);
+  for (const m of body.matchAll(mdLinkRe)) footnotes.register(m[2]);
 
-  await Promise.all([...urls].map((u) => footnotes.resolve(u)));
+  await footnotes.fetchAll();
 
   return body.replace(mdLinkRe, (match, text, url) => {
     const entry = footnotes.peek(url);

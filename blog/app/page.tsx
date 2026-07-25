@@ -103,9 +103,6 @@ export default async function Home() {
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-2 font-fredoka">Posts</h2>
-          <p className="text-xs font-mono text-[#C9A8FF]/60 mb-6 tracking-wide">
-            ~ in reverse chronological order, like memory ~
-          </p>
           <ul className="grid gap-4">
             {posts.map((post, i) => (
               <li key={post.slug} className="border border-[#C9A8FF]/25 rounded-3xl p-6 bg-[#C9A8FF]/[0.03] hover:border-[#FF85B3]/40 hover:bg-[#FF85B3]/[0.04] hover:shadow-[0_4px_20px_rgba(201,168,255,0.1)] transition-all duration-300">
