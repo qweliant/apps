@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fredoka, Nunito, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import MusicPlayer from "./components/MusicPlayer";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -28,7 +29,9 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: "Optimal Frequencies",
-  description: "A personal blog powered by Next.js",
+  description:
+    "Essays, projects, and a garden — ad-free, no trackers, CC BY 4.0.",
+  referrer: "no-referrer",
   alternates: {
     types: {
       "application/rss+xml": [
@@ -51,48 +54,48 @@ export default function RootLayout({
       <body
         className={`${fredoka.variable} ${nunito.variable} ${geistMono.variable} ${lora.variable} antialiased font-nunito`}
       >
-        <header className="sticky top-0 z-50 border-b border-[#FF85B3]/20 bg-[var(--background)]/80 backdrop-blur-md">
-          <nav className="container mx-auto flex flex-wrap items-center justify-between p-4">
+        <header className="lb-topbar">
+          <nav className="container mx-auto flex flex-wrap items-center justify-between gap-y-2 px-4 py-2.5">
             <Link
               href="/"
-              className="font-fredoka text-2xl font-semibold text-[#FF4D94] hover:text-[#FF85B3] transition-colors duration-200 drop-shadow-[0_0_12px_rgba(255,133,179,0.5)]"
+              className="font-fredoka text-xl sm:text-2xl font-semibold text-[var(--bar-ink)] hover:text-[var(--deep-pink)] transition-colors duration-200"
             >
-              Optimal Frequencies
+              ✦ Optimal Frequencies
             </Link>
-            <div className="flex space-x-8">
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
               <Link
-                href="/garden"
-                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+                href="/#garden"
+                className="lb-navlink"
               >
                 Garden
               </Link>
               <Link
                 href="/fotos"
-                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+                className="lb-navlink"
               >
                 Fotos
               </Link>
               <Link
                 href="mailto:qwelian@tutanota.com"
-                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+                className="lb-navlink"
               >
                 Contact
               </Link>
               <Link
                 href="/posts"
-                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+                className="lb-navlink"
               >
                 Archive
               </Link>
               <Link
                 href="/about"
-                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+                className="lb-navlink"
               >
                 About
               </Link>
               <Link
                 href="/posts/rss.xml"
-                className="text-lg font-semibold text-[#C9A8FF] hover:text-[#FF85B3] transition-colors duration-200"
+                className="lb-navlink"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -114,14 +117,23 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-        <main className="">{children}</main>
+        <main className="lb-desktop">{children}</main>
+        <MusicPlayer />
         <footer className="mt-24 text-center relative z-10 pb-8">
-          <p className="italic text-[#C9A8FF]">
+          <p className="italic text-[var(--lavender)]">
             Stay passionate, stay chill, and never stop exploring what life can
             be.
           </p>
-          <p className="text-[#FF85B3]/60 text-sm mt-1">
-            © {new Date().getFullYear()} My Blog. All rights reserved.
+          <p className="text-[var(--muted-text)] text-sm mt-1">
+            © {new Date().getFullYear()} Qwelian Tanner ·{" "}
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CC BY 4.0
+            </a>{" "}
+            — share &amp; adapt with credit.
           </p>
         </footer>
       </body>

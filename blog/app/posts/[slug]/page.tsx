@@ -3,8 +3,10 @@ import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import type { Metadata } from "next";
+import Link from "next/link";
 import PretextEditor from "@/app/components/PretextEditor";
 import LatencyBench from "@/app/components/LatencyBench";
+import Win from "@/app/components/Win";
 
 // Components available to every post's MDX.
 const mdxComponents = { PretextEditor, LatencyBench };
@@ -61,9 +63,30 @@ export default async function Page({ params }: { params: PostParams }) {
       },
     });
     return (
-      <article className="post-prose prose lg:prose-lg mx-auto px-6 py-12 max-w-2xl min-h-[calc(100vh-200px)]">
-        {content}
-      </article>
+      <div className="max-w-2xl mx-auto px-3.5 py-10 min-h-[calc(100vh-200px)]">
+        <Win title={<>✦ {slug}.mdx</>}>
+          <article className="post-prose prose lg:prose-lg max-w-none">
+            {content}
+          </article>
+          <p
+            className="win-note mt-8 pt-4 mb-0"
+            style={{ borderTop: "1px dashed var(--rule)" }}
+          >
+            © {new Date().getFullYear()} Qwelian Tanner · Licensed{" "}
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CC BY 4.0
+            </a>{" "}
+            — share &amp; adapt with credit.
+          </p>
+        </Win>
+        <p className="text-center mt-6 font-mono text-xs text-[var(--muted-text)] tracking-widest">
+          <Link href="/posts">← archive</Link> · <Link href="/">home</Link>
+        </p>
+      </div>
     );
   } catch (error) {
     return (

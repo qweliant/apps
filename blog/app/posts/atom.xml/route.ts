@@ -9,7 +9,7 @@ export async function GET() {
     description: "This is my personal feed get fed!",
     id: "https://qwelian.com",
     link: "https://qwelian.com/posts/atom.xml",
-    copyright: "All rights reserved 2024, Qwelian Tanner",
+    copyright: `Licensed CC BY 4.0 — Qwelian Tanner, ${new Date().getFullYear()}. Share and adapt with credit: https://creativecommons.org/licenses/by/4.0/`,
     feedLinks: {
       rss: "https://qwelian.com/posts/rss.xml",
     },

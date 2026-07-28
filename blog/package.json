@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "blog:import": "node scripts/tana-import.mjs"
+    "blog:import": "node scripts/tana-import.mjs",
+    "blog:newsletter": "node scripts/newsletter.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
