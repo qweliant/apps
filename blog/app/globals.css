@@ -8,6 +8,7 @@
   --lavender: #C9A8FF;
   --bluebell: #A8D8FF;
   --mint: #A8F0DC;
+  --peach: #FFC79A;
   --plum: #3D1A5C;
 
   --background-light: #FFF8FC;
@@ -707,6 +708,41 @@ a, a *, button, [role="button"], summary, label {
   font-family: var(--mono2); font-size: 0.55rem; letter-spacing: 0.03em; text-transform: lowercase;
   padding: 3px 6px; border-radius: 2px; border: 1px solid var(--panel-brd);
   background: var(--slot-bg); color: var(--foreground); text-decoration: none;
+}
+
+/* ── fave panels (anime / manga / movies / sanrio / plants / snacks) ──
+   each panel sets --accent; chips tint themselves off it so the six boxes
+   read as six distinct collections. */
+/* the palette is pastel, so on the light titlebar the raw accent disappears —
+   blend it toward the ink there, and save the glow for dark mode. */
+.fave-emblem {
+  font-size: 1.05em; line-height: 1;
+  color: color-mix(in srgb, var(--accent) 45%, var(--bar-ink));
+}
+@media (prefers-color-scheme: dark) {
+  .fave-emblem { color: var(--accent); text-shadow: 0 0 7px currentColor; }
+}
+.fave-name { letter-spacing: 0.22em; }
+.fave-count {
+  font-size: 0.82em; font-weight: 400; opacity: 0.65;
+  padding-left: 0.1em; font-variant-numeric: tabular-nums;
+}
+.fave-cliques { gap: 6px; }
+.fave-cliques .clq {
+  font-size: 0.58rem; padding: 4px 7px 4px 6px; border-radius: 3px;
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--panel-brd));
+  border-left: 3px solid color-mix(in srgb, var(--accent) 78%, transparent);
+  background: color-mix(in srgb, var(--accent) 11%, var(--slot-bg));
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+}
+.fave-cliques .clq:hover {
+  transform: translateY(-1.5px);
+  background: color-mix(in srgb, var(--accent) 24%, var(--slot-bg));
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 50%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fave-cliques .clq { transition: none; }
+  .fave-cliques .clq:hover { transform: none; }
 }
 
 /* ── webring ── */

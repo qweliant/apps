@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- self-hosted decorative old-web graphics */
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { IconType } from "react-icons";
 import { FaGithub, FaPython } from "react-icons/fa";
 import {
@@ -224,10 +225,42 @@ const movies = ["Spirited Away", "The Color Purple", "The Face of Another", "Wom
 const snacks = ["truffle chips", "cornflake chocolate", "spinach dip", "Reese's", "M&Ms", "cookies", "ice cream"];
 const plants = ["bee balm", "st john's wort", "thai hibiscus", "seneca sunflowers", "magnolia grandiflora"];
 
-function FaveWin({ title, items }: { title: string; items: string[] }) {
+/**
+ * A "stuff i like" panel. Each category carries its own accent from the site
+ * palette, threaded to the chips as --accent so the six boxes read as six
+ * distinct collections instead of six identical grey lists.
+ */
+function FaveWin({
+  emblem,
+  name,
+  accent,
+  items,
+}: {
+  emblem: string;
+  name: string;
+  accent: string;
+  items: string[];
+}) {
   return (
-    <Win title={title}>
-      <div className="lb-cliques">
+    <Win
+      title={
+        <>
+          <span
+            className="fave-emblem"
+            style={{ "--accent": accent } as CSSProperties}
+            aria-hidden
+          >
+            {emblem}
+          </span>
+          <span className="fave-name">{name}</span>
+          <span className="fave-count">{items.length}</span>
+        </>
+      }
+    >
+      <div
+        className="lb-cliques fave-cliques"
+        style={{ "--accent": accent } as CSSProperties}
+      >
         {items.map((it) => (
           <span key={it} className="clq">
             {it}
@@ -362,11 +395,11 @@ export default async function Home() {
             </ul>
           </Win>
 
-          <FaveWin title="◐ anime" items={anime} />
+          <FaveWin emblem="◐" name="anime" accent="var(--bluebell)" items={anime} />
 
-          <FaveWin title="▤ manga" items={manga} />
+          <FaveWin emblem="▤" name="manga" accent="var(--lavender)" items={manga} />
 
-          <FaveWin title="▷ movies" items={movies} />
+          <FaveWin emblem="▷" name="movies" accent="var(--deep-pink)" items={movies} />
 
           <Win title={<>⌱ seedlings</>}>
             <p className="win-note">
@@ -494,9 +527,9 @@ export default async function Home() {
             <p className="win-note mt-2 mb-0">hover to see where they go ♥</p>
           </Win>
 
-          <FaveWin title="♡ sanrio" items={sanrio} />
+          <FaveWin emblem="♡" name="sanrio" accent="var(--sakura)" items={sanrio} />
 
-          <FaveWin title="❀ plants" items={plants} />
+          <FaveWin emblem="❀" name="plants" accent="var(--mint)" items={plants} />
         </div>
 
         {/* right rail — old-web furniture */}
@@ -505,7 +538,7 @@ export default async function Home() {
             <Newsletter />
           </Win>
 
-          <FaveWin title="✦ snacks" items={snacks} />
+          <FaveWin emblem="◍" name="snacks" accent="var(--peach)" items={snacks} />
 
           <Win title={<>✎ updates</>}>
             <ul className="lb-log">
