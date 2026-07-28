@@ -25,13 +25,13 @@ _I have found using more than 2 models is too large for most deployed containers
 
 ## Initial Set Up
 
-This stack will use FastAPI to serve an endpoint to our model. FastAPI requires uvicorn for serving, and pydantic to handle typing of the request messages. The [Huggingface Transformers library](https://huggingface.co/docs/transformers/index) specializes in bundling state of the art NLP models in a Python library that can be fine-tuned for many NLP tasks like Google's BERT model for named entity recognition or the OpenAI GPT2 model for text generation.
+This stack will use FastAPI to serve an endpoint to our model. FastAPI requires uvicorn for serving, and pydantic to handle typing of the request messages. The [Huggingface Transformers library](https://huggingface.co/docs/transformers/index)<sup><a href="#fn-1">1</a></sup> specializes in bundling state of the art NLP models in a Python library that can be fine-tuned for many NLP tasks like Google's BERT model for named entity recognition or the OpenAI GPT2 model for text generation.
 
 Using your preferred package manager, install:
 
-- [transformers](https://github.com/huggingface/transformers)
+- [transformers](https://github.com/huggingface/transformers)<sup><a href="#fn-2">2</a></sup>
 
-- [FastAPI](https://fastapi.tiangolo.com/)
+- [FastAPI](https://fastapi.tiangolo.com/)<sup><a href="#fn-3">3</a></sup>
 
 - uvicorn
 
@@ -55,11 +55,11 @@ pipenv run pip freeze > requirements/requirements.txt
 
 You will need this folder later for building the Docker container. While we are on the topic, be sure you have installed docker and check to be sure the following are installed.
 
-- [Install Docker](https://docs.docker.com/get-docker/)
+- [Install Docker](https://docs.docker.com/get-docker/)<sup><a href="#fn-4">4</a></sup>
 
-- [Install Docker Compose](https://docs.docker.com/compose/install/)
+- [Install Docker Compose](https://docs.docker.com/compose/install/)<sup><a href="#fn-5">5</a></sup>
 
-- [Install Google Cloud SDK](https://cloud.google.com/sdk/install)
+- [Install Google Cloud SDK](https://cloud.google.com/sdk/install)<sup><a href="#fn-6">6</a></sup>
 
 The project structure should look like this:
 
@@ -268,3 +268,14 @@ Success!!!! You have now set up and deployed a state of the art NLP model.
 ## Conclusion
 
 This post demonstrates how to use state-of-the-art NLP models from Huggingface to power a fast, scalable API. Containerization enables distributed deployment across various services and easy local development. In the future I will try deploying larger models for higher accuracy, at least until GPT3 is publicly consumable. For now, you have all the tools needed to rapidly scale a service backed by the latest in available NLP tooling.
+
+## Notes
+
+<ol>
+  <li id="fn-1">Transformers · Hugging Face. <a href="https://huggingface.co/docs/transformers/index">https://huggingface.co/docs/transformers/index</a></li>
+  <li id="fn-2">GitHub - huggingface/transformers: 🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. — GitHub. <a href="https://github.com/huggingface/transformers">https://github.com/huggingface/transformers</a></li>
+  <li id="fn-3">FastAPI - FastAPI. <a href="https://fastapi.tiangolo.com/">https://fastapi.tiangolo.com/</a></li>
+  <li id="fn-4">Get Docker — Docker Documentation. <a href="https://docs.docker.com/get-docker/">https://docs.docker.com/get-docker/</a></li>
+  <li id="fn-5">Overview of installing Docker Compose — Docker Documentation. <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></li>
+  <li id="fn-6">Quickstart: Install the Google Cloud CLI  |  Google Cloud SDK  |  Google Cloud Documentation — Google Cloud Documentation. <a href="https://cloud.google.com/sdk/install">https://cloud.google.com/sdk/install</a></li>
+</ol>

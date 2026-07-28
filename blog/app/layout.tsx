@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fredoka, Nunito, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import MusicPlayer from "./components/MusicPlayer";
+// player parked for now — the OST file is too big for git; re-mount when hosted elsewhere
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -118,7 +118,6 @@ export default function RootLayout({
           </nav>
         </header>
         <main className="lb-desktop">{children}</main>
-        <MusicPlayer />
         <footer className="mt-24 text-center relative z-10 pb-8">
           <p className="italic text-[var(--lavender)]">
             Stay passionate, stay chill, and never stop exploring what life can

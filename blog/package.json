@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "blog:import": "node scripts/tana-import.mjs",
-    "blog:newsletter": "node scripts/newsletter.mjs"
+    "blog:newsletter": "node scripts/newsletter.mjs",
+    "blog:footnote": "node scripts/add-footnotes.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",

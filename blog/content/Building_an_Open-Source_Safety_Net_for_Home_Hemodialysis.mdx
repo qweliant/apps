@@ -43,16 +43,16 @@ can eventually run the same stack (via frameworks like Nerves). This
 allows us to push data, offload processing, and even debug hardware
 remotely without relying on a single, fragile point of interaction.
 I chose **Elixir and Phoenix LiveView** because the
-[BEAM was created](https://medium.com/flatiron-labs/elixir-and-the-beam-how-concurrency-really-works-3cc151cddd61)
+[BEAM was created](https://medium.com/flatiron-labs/elixir-and-the-beam-how-concurrency-really-works-3cc151cddd61)<sup><a href="#fn-1">1</a></sup>
 to run tens of thousands of devices.
 
 ## **BEAM**
 
 I have been looking for any reason to use Elixir since seeing this talk
-on [LiveView](https://www.youtube.com/watch?v=f4kd-g3Evtw) by
-[Sophie DeBenedetto](https://sophiedebenedetto.com/). Elixir is a
-functional programming language designed by **[José Valim](https://elixir-lang.org/development.html)** in 2012. It
-is built on top of the **[BEAM](https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine))** virtual machine originally engineered by
+on [LiveView](https://www.youtube.com/watch?v=f4kd-g3Evtw)<sup><a href="#fn-2">2</a></sup> by
+[Sophie DeBenedetto](https://sophiedebenedetto.com/)<sup><a href="#fn-3">3</a></sup>. Elixir is a
+functional programming language designed by **[José Valim](https://elixir-lang.org/development.html)<sup><a href="#fn-4">4</a></sup>** in 2012. It
+is built on top of the **[BEAM](https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine)<sup><a href="#fn-5">5</a></sup>)** virtual machine originally engineered by
 Ericsson in the 1980s and 90s to run massive, highly reliable **telecom
 networks**. The work on the BEAM VM required fault tolerance and
 concurrency. Dropping calls is not cool. The language I wanted also
@@ -63,9 +63,9 @@ be offloaded from a single point of interaction.
 
 Other languages I evaluated were Go, TypeScript, and python. Any of
 these tools could be built to run concurrent, fault tolerant systems
-(see the [c10k](https://www.kegel.com/c10k.html) problem). Go was
+(see the [c10k](https://www.kegel.com/c10k.html)<sup><a href="#fn-6">6</a></sup> problem). Go was
 interesting because I had used it before and wanted to explore how its
-**[concurrency primitives enable true parallelism](https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang)**. Go is genuinely
+**[concurrency primitives enable true parallelism](https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang)<sup><a href="#fn-7">7</a></sup>**. Go is genuinely
 strong for embedded work. It compiles to a single static binary,
 cross-compiles to ARM and has lower raw memory overhead than
 the BEAM. But those strengths are most valuable for CPU-bound,
@@ -88,7 +88,7 @@ background tasks working in a Django/**ASGI** environment, we'd need to
 add Redis, **Celery**, and potentially **RabbitMQ**.
 
 By choosing Elixir, I get concurrent real-time connections via the
-BEAM's [actor model](https://www.instagram.com/reel/DS2GWB3jCHY/?igsh=b2ttbHZzdDV1a3Vp)
+BEAM's [actor model](https://www.instagram.com/reel/DS2GWB3jCHY/?igsh=b2ttbHZzdDV1a3Vp)<sup><a href="#fn-8">8</a></sup>
 with `PubSub` between processes, stateful servers, and background
 processors built in.
 
@@ -114,7 +114,7 @@ patient's custom thresholds for each vital sign. This allows us to compare incom
 
 Here is a simplified look at how the (you should be wondering
 what makes a process spawn)
-[device GenServer](https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/monitoring/device_server.ex)
+[device GenServer](https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/monitoring/device_server.ex)<sup><a href="#fn-9">9</a></sup>
 handles a new telemetry payload in real-time:
 
 ```elixir 
@@ -204,7 +204,7 @@ crash" philosophy kicks in, instantly restarting the process to a clean,
 known state.
 
 Here is the
-[MQTT handler](https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/workers/mqtt_consumer.ex)
+[MQTT handler](https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/workers/mqtt_consumer.ex)<sup><a href="#fn-10">10</a></sup>
 that routes incoming traffic, checking the Registry and relying on the
 Supervisor to boot new sessions:
 
@@ -416,7 +416,7 @@ wikipedia. Every time you click a link, your browser loses all context
 of what it knows and sends a new HTTP `GET` request to the server. The
 server computes the page then sends the new HTML to the browser. This
 architecture is very simple, secure, scalable, and SEO friendly.
-[Painting](https://dev.to/ayush_maurya_/how-browsers-parse-and-render-html-from-request-to-paint-1ogp)
+[Painting](https://dev.to/ayush_maurya_/how-browsers-parse-and-render-html-from-request-to-paint-1ogp)<sup><a href="#fn-11">11</a></sup>
 the browser this way however can feel slow, as you need to load the
 entire HTML document from scratch, and you will often see a white flash
 between page loads.
@@ -473,7 +473,7 @@ To make up for their weaknesses, pairing Phoenix and InertiaJS makes a
 lot of sense. Going forward, if I am building large applications in
 Phoenix, this is probably the pattern I would choose. Phoenix components
 built around LiveViews and streams for real time data and React/Svelte
-components via [Inertia JS](https://www.youtube.com/watch?v=uyfyFRvng3c&t=66s)
+components via [Inertia JS](https://www.youtube.com/watch?v=uyfyFRvng3c&t=66s)<sup><a href="#fn-12">12</a></sup>
 for high-fidelity client interactivity.
 
 ### **Terraform, HIPAA, and AWS**
@@ -542,6 +542,31 @@ would love to connect and hear your thoughts.
 
 You can check out the source code here:
 
-*   **GitHub:** [Repo](https://github.com/qweliant/ankaa)
+*   **GitHub:** [Repo](https://github.com/qweliant/ankaa)<sup><a href="#fn-13">13</a></sup>
     
-*   **Live Demo:** [Safehemo](https://safehemo.com)
+*   **Live Demo:** [Safehemo](https://safehemo.com)<sup><a href="#fn-14">14</a></sup>
+
+## Notes
+
+<ol>
+  <li id="fn-1">https://medium.com/flatiron-labs/elixir-and-the-beam-how-concurrency-really-works-3cc151cddd61. <a href="https://medium.com/flatiron-labs/elixir-and-the-beam-how-concurrency-really-works-3cc151cddd61">https://medium.com/flatiron-labs/elixir-and-the-beam-how-concurrency-really-works-3cc151cddd61</a></li>
+  <li id="fn-2">How Phoenix LiveView Optimizes Real-Time Web Apps with Streams • Sophie DeBenedetto • GOTO 2023 — YouTube. <a href="https://www.youtube.com/watch?v=f4kd-g3Evtw">https://www.youtube.com/watch?v=f4kd-g3Evtw</a></li>
+  <li id="fn-3">Sophie DeBenedetto &#8211; Sophie DeBenedetto. <a href="https://sophiedebenedetto.com/">https://sophiedebenedetto.com/</a></li>
+  <li id="fn-4">Redirecting to: /development/. <a href="https://elixir-lang.org/development.html">https://elixir-lang.org/development.html</a></li>
+  <li id="fn-5">https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine. <a href="https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine">https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine</a></li>
+  <li id="fn-6">The C10K problem. <a href="https://www.kegel.com/c10k.html">https://www.kegel.com/c10k.html</a></li>
+  <li id="fn-7">The Dance of Concurrency and Parallelism in Golang | Leapcell. <a href="https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang">https://leapcell.io/blog/the-dance-of-concurrency-and-parallelism-in-golang</a></li>
+  <li id="fn-8">Bahaa Tantaoui on Instagram: "Foundational Papers (must read imo)
+	&#x2022;	Carl Hewitt, Peter Bishop, and Richard Steiger (1973): &#x201c;A Universal Modular ACTOR Formalism for Artificial Intelligence&#x201d;. Proceedings of the 3rd International Joint Conference on Artificial Intelligence (IJCAI&#x2019;73), pp. 235-245. This is the original paper introducing the Actor Model. PDF available: https://www.ijcai.org/Proceedings/73/Papers/027B.pdf Or: https://www.eighty-twenty.org/files/Hewitt,%20Bishop,%20Steiger%20-%201973%20-%20A%20universal%20modular%20ACTOR%20formalism%20for%20artificial%20intelligence.pdf
+	&#x2022;	Gul Agha (1986): &#x201c;Actors: A Model of Concurrent Computation in Distributed Systems&#x201d;. MIT Press (Agha&#x2019;s doctoral dissertation, formalized and extended the model). Often cited as the book-length treatment.
+	&#x2022;	Carl Hewitt (2010, with updates): &#x201c;Actor Model of Computation: Scalable Robust Information Systems&#x201d;. arXiv:1008.1459. A later survey/overview by Hewitt himself on the model&#x2019;s evolution and applications. https://arxiv.org/abs/1008.1459
+Erlang/OTP Sources (Practical Implementation of Actor Ideas)
+	&#x2022;	Joe Armstrong (2003): &#x201c;Making reliable distributed systems in the presence of software errors&#x201d;. PhD thesis, Royal Institute of Technology, Stockholm. This is the definitive document on Erlang&#x2019;s design, concurrency model, fault tolerance (&#x201c;let it crash&#x201d;), supervision trees, and how it embodies actor principles. PDF: https://erlang.org/download/armstrong_thesis_2003.pdf
+	&#x2022;	Official Erlang/OTP Documentation: &#x201c;OTP Design Principles&#x201d;. Describes supervision trees, behaviours (gen_server, supervisor, etc.), applications, and release handling&#x2014;core to building actor-like systems in Erlang. Current version: https://www.erlang.org/doc/design_principles/users_guide.html Or overview: https://www.erlang.org/doc/system/design_principles.html" — Instagram. <a href="https://www.instagram.com/reel/DS2GWB3jCHY/?igsh=b2ttbHZzdDV1a3Vp">https://www.instagram.com/reel/DS2GWB3jCHY/?igsh=b2ttbHZzdDV1a3Vp</a></li>
+  <li id="fn-9">ankaa/ankaa_beacon/lib/ankaa/monitoring/device_server.ex at main · qweliant/ankaa — GitHub. <a href="https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/monitoring/device_server.ex">https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/monitoring/device_server.ex</a></li>
+  <li id="fn-10">ankaa/ankaa_beacon/lib/ankaa/workers/mqtt_consumer.ex at main · qweliant/ankaa — GitHub. <a href="https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/workers/mqtt_consumer.ex">https://github.com/qweliant/ankaa/blob/main/ankaa_beacon/lib/ankaa/workers/mqtt_consumer.ex</a></li>
+  <li id="fn-11">How Browsers Parse and Render HTML: From Request to Paint — DEV Community. <a href="https://dev.to/ayush_maurya_/how-browsers-parse-and-render-html-from-request-to-paint-1ogp">https://dev.to/ayush_maurya_/how-browsers-parse-and-render-html-from-request-to-paint-1ogp</a></li>
+  <li id="fn-12">Simplify React and Phoenix using Inertia JS: A quick look — YouTube. <a href="https://www.youtube.com/watch?v=uyfyFRvng3c&t=66s">https://www.youtube.com/watch?v=uyfyFRvng3c&t=66s</a></li>
+  <li id="fn-13">GitHub - qweliant/ankaa: POC for real-time monitoring and alert system for home hemodialysis, detecting critical risks like severe hypotension and blood loss. That would Integrate with NxStage setups to provide automated emergency detection, caregiver alerts, and AI-driven anomaly detection ensuring patient safety even without immediate medical assistance. — GitHub. <a href="https://github.com/qweliant/ankaa">https://github.com/qweliant/ankaa</a></li>
+  <li id="fn-14">Home · Safehemo. <a href="https://safehemo.com">https://safehemo.com</a></li>
+</ol>
