@@ -1,0 +1,109 @@
+---
+title: "Canvas, All the Way Down: a ProseMirror editor with no contenteditable"
+date: "2026-06-30T00:00:00.000Z"
+---
+
+# Canvas, All the Way Down
+
+Every rich-text editor on the web — Slate, TipTap, Lexical, even ProseMirror, even (mostly) the thing you're reading this in — rides on `contenteditable`. I built one that doesn't. It keeps ProseMirror's document model and transactions, throws away `prosemirror-view`, lays text out with pure arithmetic ([Pretext](https://github.com/chenglou/pretext)<sup><a href="#fn-1">1</a></sup>), and paints every glyph with `ctx.fillText`.
+
+Here it is, running right inside this post. It's a real ProseMirror document — only the view layer is different:
+
+<PretextEditor />
+
+## The bet
+
+`contenteditable` is a thirty-year-old API for editing documents, bent into the shape of an app platform. It works, but the selection model, IME handling, and paste behavior differ across browsers, and every measurement you take (where's the caret? how tall is this block?) forces the browser to recompute layout.
+
+So: keep the parts of ProseMirror that are genuinely good — the document model, schema, transactions, history — and replace the renderer. The pipeline becomes **ProseMirror → Pretext → Canvas**: ProseMirror owns the *what*, Pretext owns the *where* (sub-millisecond line breaking with no DOM), and Canvas owns the *how*.
+
+## The hard parts
+
+- **Caret & selection with no DOM text.** There are no text nodes to call `getBoundingClientRect()` on. Positions map to *pixels* (`coordsAtPos`/`posAtCoords`), not DOM. The caret is grapheme-aware and has a soft-wrap "bias" model so it lands on the line you expect.
+- **Marks are per-run fonts.** Bold/italic/code become measured runs the canvas paints in their own font.
+- **A war story.** `pre-wrap` drops the hard `\n` from a line's text — so for one glorious afternoon every code block's caret was off by one per newline. Pure-arithmetic layout means pure-arithmetic bugs.
+
+## The payoff CSS can't give you
+
+**Magazine float-wrap.** Drag an image anywhere and text reflows around it — on *both* sides of the obstacle, recomputed every drag frame. CSS Shapes can't do that (float-only, one side, no line geometry).
+
+There's a second payoff — flat input latency — but that's a claim, and claims need a benchmark. Hold that thought; it's the back half of this post.
+
+## The surprise-hard problem: accessibility
+
+A canvas is pixels — invisible to screen readers. The fix is a hidden, screen-reader-visible **DOM mirror** of the document, kept in sync, with the canvas marked `aria-hidden`. It's the honest tradeoff of going canvas-native, and it's solvable because the ProseMirror doc is right there to serialize.
+
+## I benchmarked it to prove it was faster. It wasn't — at first.
+
+I made a claim up there about latency, so I did the thing you're supposed to be suspicious of: I benchmarked the canvas editor against the DOM to prove it was faster.
+
+The first run proved the opposite. The canvas editor *lost* — and the benchmark found two real bugs in my own code. This is the honest version of that story, and the graph I earned at the end of it.
+
+### Keeping it fair
+
+The fastest way to lose Hacker News' trust is a cherry-picked benchmark. So the control is not Notion or Google Docs — it's the *exact same engine*:
+
+- **Editor A** — `prosemirror-view`, the standard renderer, into `contenteditable` DOM.
+- **Editor B** — `prosemirror-pretext`, into `<canvas>`.
+
+Both share the identical `prosemirror-state` and `prosemirror-model` — the same document, the same transactions. Only the view layer differs. The whole thing is [in the repo](https://github.com/qweliant/prosemirror-pretext/tree/main/bench)<sup><a href="#fn-2">2</a></sup>; clone it and run it on your own machine.
+
+The metric is **input-to-caret latency**: on every keystroke, apply the edit and then ask "where is the caret, in pixels?" Every real editor does this constantly — a floating toolbar, a slash menu, a collaborator's cursor all need the caret's screen position. In the DOM that means `getBoundingClientRect()` right after mutating the DOM; on canvas it means `coordsAtPos()`. We run it under a 4–6× CPU throttle, because a fast laptop brute-forces past the architectural differences that a mid-range phone would feel.
+
+### A short document: it's a tie. Say so.
+
+For a few hundred paragraphs, both editors answer in well under a millisecond — often below the timer's resolution. **The browser's incremental layout is genuinely excellent.** Inserting a character rarely changes a line's height, so there's almost nothing to relay out, and a single caret read flushes a tiny dirty region for free.
+
+If you are building a notepad, you do not need a canvas editor. I'm not going to pretend otherwise.
+
+### The document gets big
+
+Now type in the *middle* of a long document and read the caret each keystroke. Here is read-after-write latency as the document grows, at 6× throttle:
+
+| blocks | prosemirror-view (DOM) | prosemirror-pretext (canvas) |
+| --: | --: | --: |
+| 200 | 0.1 ms | 0.1 ms |
+| 800 | 1.1 ms | 0.1 ms |
+| 3,200 | 3.8 ms | 0.5 ms |
+| 8,000 | 9.8 ms | 0.9 ms |
+
+The DOM line grows **linearly**. The canvas line is **flat**. At 8,000 blocks the canvas is roughly **11× faster**, and the gap keeps widening. (The tail is even starker: the DOM's *worst*-case keystroke hits ~24 ms at 8k blocks — a visible stutter — while the canvas stays near 1 ms.)
+
+This is the read-after-write tax. Calling `getBoundingClientRect()` after a DOM mutation forces *synchronous layout* — the browser stops and recomputes geometry before it can answer, and that cost tracks the size of the document. The canvas editor never asks the browser anything: `coordsAtPos()` is arithmetic against a cache it maintains itself. Its cost is decoupled from the document.
+
+Try it yourself — type in both, drag the size up, and watch the DOM's sparkline climb while the canvas stays flat:
+
+<LatencyBench />
+
+### The part I'm not too proud to tell you
+
+That flat line is not what the first run looked like. The canvas editor started out **10× slower** than the DOM, and making it fast meant fixing six things — two of which were embarrassing bugs the benchmark walked right into:
+
+1. **`coordsAtPos` forced a reflow on every read.** It was calling `getBoundingClientRect()` on the canvas element — the exact sin I was accusing the DOM of. Cached the rect instead.
+2. **Reading the caret forced a full repaint.** Layout and paint were coupled. Split them: layout is recomputed lazily on read, paint stays on the animation frame. (This also fixed a latent bug where the caret position was stale between a keystroke and the next frame.)
+3. **Every keystroke re-allocated the whole document's layout.** Now unchanged blocks are reused.
+4. **Every keystroke re-walked the whole document.** Now a single-block edit rebuilds *one* block and shifts the rest's positions — incremental layout.
+5. **Finding the caret's block was a linear scan.** Now it's a binary search.
+6. **The accessibility mirror re-serialized the entire document to the DOM on every keystroke.** Now it diffs and re-serializes only the block that changed.
+
+Each fix is guarded by a test that re-derives the layout from scratch and asserts it matches the incremental one at every cursor position, plus a fuzzer that hammers it with random edits. I trust the flat line because I tried hard to break it. (I also went looking for a seventh optimization — and the benchmark told me it wasn't worth it. That's the same honesty working in the other direction.)
+
+### So is canvas faster?
+
+No — and yes, and the distinction is the whole point. **The browser is great at typing.** What canvas buys you is that its per-keystroke cost is *decoupled from document size and CSS complexity*. I didn't replace `contenteditable` to win a microbenchmark on a short note; I did it to keep input latency flat in a large, fully-featured document — and because the benchmark, once I stopped trying to make it flatter me, told me the truth about both.
+
+## Where it stands vs. prosemirror-view
+
+Matched on the read/measure/input axis (now including decorations and overridable handlers), ahead on canvas-native features (float-wrap, the a11y mirror), with the DOM-position APIs (`domAtPos`) N/A by design. Block-level atom node views already work (that's how images embed). The honest remaining gaps: interactive *inline* node views (mention chips, inline widgets) and content-holding node views (callouts, tables) — neither blocked on the layout engine, just editor wiring left to do. It works on touch, too: tap to place the caret, long-press to select a word with draggable handles, swipe to scroll (the editors above are live on your phone).
+
+## Try it
+
+`npm i prosemirror-pretext` — it's a peer of the ProseMirror stack, so bring your own schema. Source, the benchmark, and the (very Keroppi) docs site are [on GitHub](https://github.com/qweliant/prosemirror-pretext)<sup><a href="#fn-3">3</a></sup>. The editor at the top is the whole pitch: scroll back up and type in it — then go [disagree with the benchmark](https://github.com/qweliant/prosemirror-pretext/tree/main/bench)<sup><a href="#fn-2">2</a></sup> on your own hardware.
+
+## Notes
+
+<ol>
+  <li id="fn-1">GitHub - chenglou/pretext: Fast, accurate & comprehensive text measurement & layout — GitHub. <a href="https://github.com/chenglou/pretext">https://github.com/chenglou/pretext</a></li>
+  <li id="fn-2">prosemirror-pretext/bench at main · qweliant/prosemirror-pretext — GitHub. <a href="https://github.com/qweliant/prosemirror-pretext/tree/main/bench">https://github.com/qweliant/prosemirror-pretext/tree/main/bench</a></li>
+  <li id="fn-3">GitHub - qweliant/prosemirror-pretext — GitHub. <a href="https://github.com/qweliant/prosemirror-pretext">https://github.com/qweliant/prosemirror-pretext</a></li>
+</ol>

@@ -13,49 +13,49 @@ interface Photo {
 }
 
 const floraImages = [
-  "_DSC2657.jpeg",
-  "_DSC3453.jpeg",
-  "_DSC3455.jpeg",
-  "_DSC3814.jpg",
-  "000015390011.jpeg",
-  "DSC_0724.jpeg",
-  "DSC_0815.jpeg",
-  "DSC_0866.jpeg",
-  "DSC_1790.jpeg",
-  "DSC_1824.jpeg",
-  "DSC_1834.jpeg",
-  "DSC_1990.jpeg",
-  "DSC_2039.jpeg",
-  "DSC_2072.jpeg",
-  "DSCF0332.jpeg",
-  "Hibiscus.jpeg",
-  "orchids.jpeg",
-  "Untitled.jpeg",
-  "zelia_export.jpeg",
-  "zelia.jpeg",
+  "dsc2657.webp",
+  "dsc3453.webp",
+  "dsc3455.webp",
+  "dsc3814.webp",
+  "000015390011.webp",
+  "dsc-0724.webp",
+  "dsc-0815.webp",
+  "dsc-0866.webp",
+  "dsc-1790.webp",
+  "dsc-1824.webp",
+  "dsc-1834.webp",
+  "dsc-1990.webp",
+  "dsc-2039.webp",
+  "dsc-2072.webp",
+  "dscf0332.webp",
+  "hibiscus.webp",
+  "orchids.webp",
+  "untitled.webp",
+  "zelia-export.webp",
+  "zelia.webp",
 ];
 
 const travelImages = [
-  "000366550011.jpeg",
-  "000554650007.jpeg",
-  "000701500014.jpeg",
-  "000701500035.jpeg",
-  "035330006511-R1-017-7.jpeg",
-  "IMG_0515.jpeg",
-  "IMG_0615.jpeg",
-  "IMG_1968.jpeg",
-  "IMG_2114.jpeg",
-  "IMG_2160.jpeg",
-  "IMG_2168.jpeg",
-  "IMG_2251.jpeg",
-  "IMG_2278.jpeg",
-  "IMG_2317.jpeg",
-  "IMG_2326.jpeg",
-  "IMG_2345.jpeg",
-  "IMG_3556.jpeg",
-  "IMG_3559.jpeg",
-  "IMG_8178.jpeg",
-  "IMG_8572.jpeg",
+  "000366550011.webp",
+  "000554650007.webp",
+  "000701500014.webp",
+  "000701500035.webp",
+  "035330006511-r1-017-7.webp",
+  "img-0515.webp",
+  "img-0615.webp",
+  "img-1968.webp",
+  "img-2114.webp",
+  "img-2160.webp",
+  "img-2168.webp",
+  "img-2251.webp",
+  "img-2278.webp",
+  "img-2317.webp",
+  "img-2326.webp",
+  "img-2345.webp",
+  "img-3556.webp",
+  "img-3559.webp",
+  "img-8178.webp",
+  "img-8572.webp",
 ];
 
 const buildPhotos = (
@@ -245,7 +245,7 @@ export default function FotosPage() {
       {/* Hero — a single image, title plate, minimal chrome */}
       <section className="relative h-[70vh] min-h-[480px] overflow-hidden">
         <Image
-          src="/images/_DSC2366.jpeg"
+          src="/images/dsc2366.webp"
           alt="cover"
           fill
           priority
