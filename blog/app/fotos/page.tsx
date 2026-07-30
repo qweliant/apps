@@ -1,74 +1,46 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import floraManifest from "@/content/photos/flora.json";
-import travelManifest from "@/content/photos/travel.json";
+import Win from "../components/Win";
+import { photos, TABS, type Category, type Photo } from "./collections";
 
-type PhotoCategory = "all" | "flora" | "travel";
-
-interface Photo {
-  src: string;
-  alt: string;
-  category: PhotoCategory;
-  width: number;
-  height: number;
-  thumb?: string;
+/** Star row for the fineshyt rating that rode across in the manifest. */
+function Stars({ n }: { n: number }) {
+  return (
+    <span className="foto-stars" aria-label={`rated ${n} of 5`}>
+      {"★★★★★".slice(0, n)}
+      <span aria-hidden>{"☆☆☆☆☆".slice(0, 5 - n)}</span>
+    </span>
+  );
 }
 
-/**
- * Collections come from content/photos/<collection>.json, written by
- * `pnpm blog:photos` from a fineshyt export (see docs/fineshyt-bridge.md).
- * Imported as JSON modules so they inline at build time — no runtime fs read,
- * which is what keeps public/ out of the serverless bundle.
- */
-const fromManifest = (
-  manifest: { photos: { src: string; alt: string; width: number; height: number; thumb?: string }[] },
-  category: Exclude<PhotoCategory, "all">
-): Photo[] => manifest.photos.map((p) => ({ ...p, category }));
-
-const floraPhotos = fromManifest(floraManifest, "flora");
-const travelPhotos = fromManifest(travelManifest, "travel");
-const photos: Photo[] = [...floraPhotos, ...travelPhotos];
-
-const CATEGORY_META: Record<PhotoCategory, { label: string; count: number }> = {
-  all: { label: "All", count: photos.length },
-  flora: { label: "Flora", count: floraPhotos.length },
-  travel: { label: "Travel", count: travelPhotos.length },
-};
-
-function CategoryFilter({
+function CollectionTabs({
   current,
   onChange,
 }: {
-  current: PhotoCategory;
-  onChange: (c: PhotoCategory) => void;
+  current: Category;
+  onChange: (c: Category) => void;
 }) {
-  const categories: PhotoCategory[] = ["all", "flora", "travel"];
   return (
-    <div className="flex justify-center gap-8 font-mono text-xs tracking-[0.25em] uppercase">
-      {categories.map((c: PhotoCategory) => {
-        const active = current === c;
-        const meta = CATEGORY_META[c];
+    <div className="foto-tabs">
+      {TABS.map((t) => {
+        const active = current === t.slug;
         return (
           <button
-            key={c}
-            onClick={() => onChange(c)}
-            className={`relative pb-1 transition-colors ${
-              active
-                ? "text-[#FF4D94]"
-                : "text-[#C9A8FF]/70 hover:text-[#FF85B3]"
-            }`}
+            key={t.slug}
+            onClick={() => onChange(t.slug)}
+            aria-pressed={active}
+            className={`foto-tab${active ? " is-active" : ""}`}
+            style={{ "--accent": t.accent } as CSSProperties}
           >
-            {meta.label}
-            <span className="ml-1 text-[0.65rem] opacity-60">({meta.count})</span>
-            {active && (
-              <motion.span
-                layoutId="foto-cat-underline"
-                className="absolute left-0 right-0 -bottom-0.5 h-px bg-[#FF4D94]"
-              />
-            )}
+            <span className="foto-tab-emblem" aria-hidden>
+              {t.emblem}
+            </span>
+            {t.label}
+            <span className="foto-tab-count">{t.count}</span>
           </button>
         );
       })}
@@ -76,7 +48,7 @@ function CategoryFilter({
   );
 }
 
-function PhotoColumn({
+function PhotoGrid({
   items,
   onPhotoClick,
 }: {
@@ -90,30 +62,41 @@ function PhotoColumn({
           key={photo.src}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="break-inside-avoid mb-4 relative overflow-hidden cursor-pointer group"
-          onClick={() => onPhotoClick(photo)}
+          transition={{ duration: 0.5 }}
+          className="foto-cell"
+          style={{ "--accent": photo.accent } as CSSProperties}
         >
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="w-full h-auto"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
-          <figcaption className="absolute bottom-0 left-0 right-0 p-3 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/0 group-hover:text-white/80 transition-colors duration-300 bg-gradient-to-t from-black/60 to-transparent">
-            {photo.category}
-          </figcaption>
+          {/* a real button: the grid was previously unreachable by keyboard */}
+          <button
+            type="button"
+            className="foto-frame"
+            onClick={() => onPhotoClick(photo)}
+            aria-label={`Open larger: ${photo.alt}`}
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="w-full h-auto block"
+              loading="lazy"
+            />
+            <span className="foto-veil" aria-hidden />
+            {photo.chefs_pick ? (
+              <span className="foto-pick" aria-hidden>
+                ★ pick
+              </span>
+            ) : null}
+            <figcaption className="foto-cap">{photo.alt}</figcaption>
+          </button>
         </motion.figure>
       ))}
     </div>
   );
 }
 
-function ImageModal({
+function Lightbox({
   photo,
   onClose,
   onNext,
@@ -124,150 +107,166 @@ function ImageModal({
   onNext: () => void;
   onPrevious: () => void;
 }) {
+  // The lightbox previously trapped users with no keyboard exit at all.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") onNext();
+      if (e.key === "ArrowLeft") onPrevious();
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose, onNext, onPrevious]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+      className="foto-lb"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={photo.alt}
     >
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onPrevious();
-        }}
-        className="absolute left-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
-        aria-label="previous photo"
-      >
-        <ChevronLeft size={24} />
-      </button>
+      <div className="foto-lb-win" onClick={(e) => e.stopPropagation()}>
+        <div className="win-bar">
+          <span className="win-title">
+            <span style={{ color: photo.accent }} aria-hidden>
+              ▣
+            </span>
+            <span className="foto-lb-name">{photo.categoryLabel}</span>
+          </span>
+          <span className="win-btns">
+            <i aria-hidden>_</i>
+            <i aria-hidden>□</i>
+            <button type="button" onClick={onClose} aria-label="Close" className="foto-lb-x">
+              <X size={11} />
+            </button>
+          </span>
+        </div>
 
-      <div
-        className="relative w-full h-full max-w-6xl max-h-[90vh] mx-12"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Image
-          src={photo.src}
-          alt={photo.alt}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-          priority
-        />
+        <div className="foto-lb-body">
+          <button type="button" className="foto-nav left" onClick={onPrevious} aria-label="Previous photo">
+            <ChevronLeft size={22} />
+          </button>
+
+          <div className="foto-lb-stage">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              className="foto-lb-img"
+              sizes="(max-width: 768px) 100vw, 80vw"
+              priority
+            />
+          </div>
+
+          <button type="button" className="foto-nav right" onClick={onNext} aria-label="Next photo">
+            <ChevronRight size={22} />
+          </button>
+        </div>
+
+        <div className="foto-lb-meta">
+          <p className="foto-lb-alt">{photo.alt}</p>
+          <div className="foto-lb-facts">
+            {typeof photo.rating === "number" ? <Stars n={photo.rating} /> : null}
+            {photo.taken_at ? <span className="k">{photo.taken_at}</span> : null}
+            {photo.tags?.length ? (
+              <span className="foto-lb-tags">
+                {photo.tags.slice(0, 5).map((t) => (
+                  <span key={t} className="clq">
+                    {t}
+                  </span>
+                ))}
+              </span>
+            ) : null}
+          </div>
+        </div>
       </div>
-
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onNext();
-        }}
-        className="absolute right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
-        aria-label="next photo"
-      >
-        <ChevronRight size={24} />
-      </button>
-
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
-        aria-label="close"
-      >
-        <X size={24} />
-      </button>
     </motion.div>
   );
 }
 
 export default function FotosPage() {
-  const [currentCategory, setCurrentCategory] = useState<PhotoCategory>("all");
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<Category>("all");
+  const [selected, setSelected] = useState<Photo | null>(null);
 
-  const filteredPhotos =
-    currentCategory === "all"
-      ? photos
-      : photos.filter((p) => p.category === currentCategory);
+  const visible =
+    currentCategory === "all" ? photos : photos.filter((p) => p.category === currentCategory);
 
-  const handleNext = () => {
-    if (!selectedPhoto) return;
-    const i = photos.findIndex((p) => p.src === selectedPhoto.src);
-    setSelectedPhoto(photos[(i + 1) % photos.length]);
-  };
-  const handlePrevious = () => {
-    if (!selectedPhoto) return;
-    const i = photos.findIndex((p) => p.src === selectedPhoto.src);
-    setSelectedPhoto(photos[(i - 1 + photos.length) % photos.length]);
-  };
+  // Navigate within the filtered set — stepping into hidden photos was disorienting.
+  const step = useCallback(
+    (delta: number) => {
+      if (!selected) return;
+      const i = visible.findIndex((p) => p.src === selected.src);
+      if (i === -1) return;
+      setSelected(visible[(i + delta + visible.length) % visible.length]);
+    },
+    [selected, visible]
+  );
 
   return (
-    <main className="min-h-screen">
-      {/* Hero — a single image, title plate, minimal chrome */}
-      <section className="relative h-[70vh] min-h-[480px] overflow-hidden">
-        <Image
-          src="/images/dsc2366.webp"
-          alt="silhouette of a shaved head in profile against a screen of blurred red and green foliage"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/60" />
+    <div className="max-w-[1180px] mx-auto px-3.5 pb-14">
+      <section className="pt-4 pb-3">
+        <Win title={<>◈ fotos.exe</>} bodyClassName="win-body foto-intro-body">
+          <div className="foto-hero">
+            <Image
+              src="/images/dsc2366.webp"
+              alt="silhouette of a shaved head in profile against a screen of blurred red and green foliage"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          <p className="foto-statement">
+            I often find myself alone, immersed in the process of capturing images. Photography, for
+            me, isn&apos;t about technical skill so much as a way to make sense of things and search
+            for meaning in moments that might otherwise go unnoticed. Photos sometimes lack an
+            immediate sense of place, but over time they evoke a familiarity that prompts reflection.
+            I&apos;ve learned meaning often arrives later. Being still and present, even in solitude,
+            reveals beauty in the simplest moments.
+          </p>
+        </Win>
       </section>
 
-      {/* Artist statement */}
-      <section className="max-w-3xl mx-auto px-6 py-16">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#C9A8FF]/70 mb-4">
-          artist statement
-        </p>
-        <p className="text-base md:text-lg leading-relaxed text-foreground/90">
-          I often find myself alone, immersed in the process of capturing
-          images. Photography, for me, isn&apos;t about technical skill so
-          much as a way to make sense of things and search for meaning in
-          moments that might otherwise go unnoticed. Photos sometimes lack
-          an immediate sense of place, but over time they evoke a familiarity
-          that prompts reflection. I&apos;ve learned meaning often arrives
-          later. Being still and present, even in solitude, reveals beauty in
-          the simplest moments.
-        </p>
+      <section className="pb-4">
+        <Win title={<>▤ collections</>}>
+          <CollectionTabs current={currentCategory} onChange={setCurrentCategory} />
+        </Win>
       </section>
 
-      {/* Category filter */}
-      <section className="max-w-5xl mx-auto px-6 pb-8">
-        <CategoryFilter
-          current={currentCategory}
-          onChange={setCurrentCategory}
-        />
-      </section>
-
-      {/* Masonry grid */}
-      <section className="max-w-7xl mx-auto px-4 pb-24">
+      <section className="pb-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentCategory}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
-            <PhotoColumn
-              items={filteredPhotos}
-              onPhotoClick={setSelectedPhoto}
-            />
+            <PhotoGrid items={visible} onPhotoClick={setSelected} />
           </motion.div>
         </AnimatePresence>
       </section>
 
-      {/* Lightbox */}
       <AnimatePresence>
-        {selectedPhoto && (
-          <ImageModal
-            photo={selectedPhoto}
-            onClose={() => setSelectedPhoto(null)}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
+        {selected && (
+          <Lightbox
+            photo={selected}
+            onClose={() => setSelected(null)}
+            onNext={() => step(1)}
+            onPrevious={() => step(-1)}
           />
         )}
       </AnimatePresence>
-    </main>
+    </div>
   );
 }

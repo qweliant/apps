@@ -89,9 +89,17 @@ URLs that came in through the Tana/fineshyt import were rehosted on 2026-07-30 �
 they carried a `?token=` that would have broken permanently on rotation. They were
 re-encoded to WebP at q82/1600px on the way in (4.7MB → 402KB).
 
-If a future import reintroduces external image URLs, the same treatment applies:
-download, `cwebp -q 82 -resize 1600 0`, drop in `public/images/`, repoint the MDX.
-`--dry-run` warns when it sees a Firebase token URL.
+`pnpm blog:import` now does this automatically (`scripts/lib/rehost-images.mjs`):
+any `![alt](https://…)` in an imported post is downloaded, re-encoded to WebP at
+q82/1600px, written to `public/images/<post-slug>-<n>.webp`, and repointed —
+before the footnote pass runs. Anything it can't fetch is left remote and
+reported loudly at the end of the import, so you know to deal with it.
+
+If `cwebp` isn't on PATH it stores the original bytes rather than failing, and a
+`User-Agent` is sent because plenty of hosts (Wikimedia among them) reject
+requests without one.
+
+`pnpm blog:buttondown --dry-run` still warns if a Firebase token URL slips through.
 
 WebP is the house format and we do not care about Outlook on Windows, which is the
 only mainstream client that won't decode it.

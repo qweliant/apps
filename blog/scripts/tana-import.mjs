@@ -20,6 +20,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { fetchMeta } from "./lib/url-meta.mjs";
+import { rehostImages } from "./lib/rehost-images.mjs";
 
 const POST_TYPE_ID = "5c421d8f-fbf0-44a3-9a05-dfe9eb164c76";
 const PROP_ID_A = "63535e81-2300-473f-bc15-f55b50eb7e60";
@@ -80,7 +81,9 @@ const makeFootnotes = (refreshMeta = false) => {
 const escapeMdx = (t) => t.replace(/([{}])/g, "\\$1");
 
 const applyFootnotes = async (body, footnotes) => {
-  const mdLinkRe = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
+  // (?<!!) so `![alt](url)` is treated as an image, not a citation — otherwise
+  // any alt-texted image picks up a footnote superscript and lands in Notes.
+  const mdLinkRe = /(?<!!)\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
   for (const m of body.matchAll(mdLinkRe)) footnotes.register(m[2]);
 
   await footnotes.fetchAll();
@@ -398,6 +401,16 @@ const main = async () => {
     .filter(Boolean)
     .join("\n\n");
 
+  const slug = slugify(title);
+
+  // Before footnotes: rehosting turns remote image URLs into local paths, which
+  // also keeps them out of the citation pass.
+  const images = await rehostImages(body, {
+    slug,
+    imagesDir: path.join(process.cwd(), "public", "images"),
+  });
+  body = images.body;
+
   let notesSection = "";
   if (!skipFootnotes) {
     const footnotes = makeFootnotes(refreshMeta);
@@ -413,11 +426,18 @@ const main = async () => {
     (notesSection ? "\n\n" + notesSection : "") +
     "\n";
 
-  const slug = slugify(title);
   const outPath = path.join(process.cwd(), "content", `${slug}.mdx`);
   fs.writeFileSync(outPath, output, "utf8");
 
   console.log(`Wrote ${outPath}`);
+  for (const name of images.rehosted) console.log(`  rehosted image: ${name}`);
+  if (images.failed.length) {
+    console.warn(
+      `\n${images.failed.length} image(s) could not be rehosted and are still ` +
+        `pointing at a remote host. They will break if that host rotates or expires:`
+    );
+    for (const f of images.failed) console.warn(`  - ${f.why}: ${f.url.slice(0, 100)}`);
+  }
   if (!prose.length) {
     console.warn(
       "No prose found as direct children of the outline. " +

@@ -824,3 +824,116 @@ a, a *, button, [role="button"], summary, label {
   .blinky { border-color: var(--sakura); }
   .lb-eq span { height: 8px; }
 }
+
+/* ── /fotos ──────────────────────────────────────────────────────────────
+   The gallery was the one page that missed the windowed-panel pivot, and its
+   chrome text sat pastel-on-pastel (illegible in light mode). Frames and type
+   here reuse the --panel-* / --bar-* tokens so it reads as the same system. */
+
+.foto-intro-body { padding: 0; }
+.foto-hero {
+  position: relative; width: 100%; height: clamp(240px, 42vh, 420px);
+  border-bottom: 1px dashed var(--rule); overflow: hidden;
+}
+.foto-statement {
+  margin: 0; padding: 16px 18px; max-width: 62ch;
+  font-size: 0.9rem; line-height: 1.65; color: var(--foreground);
+}
+
+/* ── collection tabs ── */
+.foto-tabs { display: flex; flex-wrap: wrap; gap: 7px; }
+.foto-tab {
+  display: inline-flex; align-items: center; gap: 0.45em;
+  font-family: var(--mono2); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 6px 10px; border-radius: 4px; cursor: pointer;
+  color: var(--foreground);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--panel-brd));
+  border-left: 3px solid color-mix(in srgb, var(--accent) 78%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--slot-bg));
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+}
+.foto-tab:hover { transform: translateY(-1.5px); background: color-mix(in srgb, var(--accent) 22%, var(--slot-bg)); }
+.foto-tab.is-active {
+  background: color-mix(in srgb, var(--accent) 34%, var(--slot-bg));
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  font-weight: 700;
+}
+.foto-tab-emblem { font-size: 1.05em; line-height: 1; color: color-mix(in srgb, var(--accent) 45%, var(--ink)); }
+.foto-tab-count { font-variant-numeric: tabular-nums; opacity: 0.6; }
+@media (prefers-color-scheme: dark) {
+  .foto-tab-emblem { color: var(--accent); }
+}
+
+/* ── grid cells ── */
+.foto-cell { margin: 0 0 14px; break-inside: avoid; }
+.foto-frame {
+  display: block; position: relative; width: 100%; padding: 0; cursor: pointer;
+  border: 1px solid var(--panel-brd); border-radius: 8px; overflow: hidden;
+  background: var(--panel-bg); box-shadow: var(--win-shadow);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.foto-frame:hover { transform: translateY(-2px); }
+.foto-frame:focus-visible {
+  outline: 2px solid var(--deep-pink); outline-offset: 3px;
+}
+.foto-veil {
+  position: absolute; inset: 0; background: rgba(0, 0, 0, 0);
+  transition: background 0.25s ease; pointer-events: none;
+}
+.foto-frame:hover .foto-veil { background: rgba(0, 0, 0, 0.16); }
+.foto-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px;
+  font-family: var(--mono2); font-size: 0.56rem; line-height: 1.45; text-align: left;
+  color: rgba(255, 255, 255, 0); background: linear-gradient(to top, rgba(0,0,0,0.72), transparent);
+  transition: color 0.25s ease; pointer-events: none;
+}
+.foto-frame:hover .foto-cap,
+.foto-frame:focus-visible .foto-cap { color: rgba(255, 255, 255, 0.92); }
+.foto-pick {
+  position: absolute; top: 7px; right: 7px; padding: 2px 6px; border-radius: 3px;
+  font-family: var(--mono2); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent) 80%, #000); color: #fff;
+}
+
+/* ── lightbox ── */
+.foto-lb {
+  position: fixed; inset: 0; z-index: 60; display: grid; place-items: center;
+  padding: 3vh 2vw; background: rgba(6, 3, 12, 0.9);
+}
+.foto-lb-win {
+  width: min(1180px, 96vw); max-height: 94vh; display: flex; flex-direction: column;
+  background: var(--panel-bg); border: 1px solid var(--panel-brd);
+  border-radius: 12px; box-shadow: var(--win-shadow); overflow: hidden;
+}
+.foto-lb-name { letter-spacing: 0.2em; }
+.foto-lb-x {
+  width: 15px; height: 14px; display: grid; place-items: center; cursor: pointer;
+  border: 1px solid var(--panel-brd); border-radius: 3px;
+  background: rgba(255, 255, 255, 0.28); color: var(--bar-ink);
+}
+.foto-lb-body { position: relative; display: flex; align-items: center; min-height: 0; flex: 1; }
+.foto-lb-stage { flex: 1; min-width: 0; min-height: 0; display: grid; place-items: center; padding: 10px; }
+.foto-lb-img { max-width: 100%; max-height: 74vh; width: auto; height: auto; object-fit: contain; }
+.foto-nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  display: grid; place-items: center; width: 34px; height: 34px; cursor: pointer;
+  border: 1px solid var(--panel-brd); border-radius: 50%;
+  background: var(--panel-bg); color: var(--foreground);
+}
+.foto-nav:hover { background: color-mix(in srgb, var(--sakura) 30%, var(--panel-bg)); }
+.foto-nav.left { left: 10px; }
+.foto-nav.right { right: 10px; }
+.foto-lb-meta { padding: 10px 14px 12px; border-top: 1px dashed var(--rule); }
+.foto-lb-alt { margin: 0 0 7px; font-size: 0.82rem; line-height: 1.5; color: var(--foreground); }
+.foto-lb-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.foto-lb-facts .k {
+  font-family: var(--mono2); font-size: 0.55rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted-text);
+}
+.foto-lb-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.foto-stars { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--deep-pink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .foto-tab, .foto-frame, .foto-veil, .foto-cap { transition: none; }
+  .foto-tab:hover, .foto-frame:hover { transform: none; }
+}
