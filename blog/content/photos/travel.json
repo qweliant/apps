@@ -1,0 +1,198 @@
+{
+  "schema": "fineshyt.export/v1",
+  "collection": "travel",
+  "exported_at": "2026-07-29T01:27:54.216Z",
+  "imported_at": "2026-07-29T01:28:03.313Z",
+  "source": {
+    "app": "manual-seed",
+    "note": "legacy blog photos, predate fineshyt curation"
+  },
+  "derivative": {
+    "format": "webp",
+    "max_edge": 2400,
+    "quality": 80,
+    "thumb_max_edge": 600
+  },
+  "photos": [
+    {
+      "id": "sha256:ca89558d4b45ea6491a1f6942d4261289f8a050268cac65eb814b87b4d9d2c91",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 853006,
+      "alt": "near-empty grey field, water and haze merging with no horizon",
+      "src": "/images/travel/000366550011.webp",
+      "thumb": "/images/travel/000366550011.thumb.webp"
+    },
+    {
+      "id": "sha256:4a79a521a678b502b52ed09eb8c765435b3e07a0df13956288a21c04ddd22f2e",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 96324,
+      "alt": "person in a dark coat leaning on a rail above a harbour, a gull in flight, port cranes beyond",
+      "src": "/images/travel/000554650007.webp",
+      "thumb": "/images/travel/000554650007.thumb.webp"
+    },
+    {
+      "id": "sha256:4f8d005cce1c4b04b4f0b5a7cdb573e2148941b9d7ae008b4ed030cd71bca059",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 1239458,
+      "alt": "abandoned brick building four storeys high, windows broken out, vines and graffiti across the facade",
+      "src": "/images/travel/000701500014.webp",
+      "thumb": "/images/travel/000701500014.thumb.webp"
+    },
+    {
+      "id": "sha256:9fd1bda88cb3acd0db58010e19f71cf89e901859146f893958244d700516f03f",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 547264,
+      "alt": "aquarium tank glowing turquoise, rays and fish silhouetted, dark room around it",
+      "src": "/images/travel/000701500035.webp",
+      "thumb": "/images/travel/000701500035.thumb.webp"
+    },
+    {
+      "id": "sha256:3a4248e6ab567958d344d6c720f2a0a11b26b4139062df005da582a0aacfe1fb",
+      "width": 2400,
+      "height": 1609,
+      "bytes": 1198156,
+      "alt": "crusted white ground beside a dark weathered structure",
+      "src": "/images/travel/035330006511-r1-017-7.webp",
+      "thumb": "/images/travel/035330006511-r1-017-7.thumb.webp"
+    },
+    {
+      "id": "sha256:e71e92eaa72ccf6ea12fc5135b9db8222fd9143703007cb44ce90dbe86835c9c",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 507468,
+      "alt": "two figures at the end of a concrete pier, turquoise sea breaking around them",
+      "src": "/images/travel/img-0515.webp",
+      "thumb": "/images/travel/img-0515.thumb.webp"
+    },
+    {
+      "id": "sha256:243d0183af85cb177ecb49fe990e5066e3d4650d95cee943b957e0c8478e7efb",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 556474,
+      "alt": "flat field of magenta wildflowers running to distant mountains under a pale sky",
+      "src": "/images/travel/img-0615.webp",
+      "thumb": "/images/travel/img-0615.thumb.webp"
+    },
+    {
+      "id": "sha256:caffeacc547c33f8138f283d00213075a2206305263eb89dde0642662f519689",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 513906,
+      "alt": "black and white carved stone medallion ringed by dark foliage",
+      "src": "/images/travel/img-1968.webp",
+      "thumb": "/images/travel/img-1968.thumb.webp"
+    },
+    {
+      "id": "sha256:8a22425f9b412a249a3fdbf6cd63beb6a03166d8649b1b1191c93778fa8c3ae2",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 472782,
+      "alt": "minimal seascape, pale turquoise water meeting soft blue sky",
+      "src": "/images/travel/img-2114.webp",
+      "thumb": "/images/travel/img-2114.thumb.webp"
+    },
+    {
+      "id": "sha256:b1503b9a25ddf6f66154dbd50a10d2c66d9fb43c05f9b85f3a34406fc4fc11df",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 770326,
+      "alt": "black and white Thai temple complex, ornate spires and stupas crowding the frame",
+      "src": "/images/travel/img-2160.webp",
+      "thumb": "/images/travel/img-2160.thumb.webp"
+    },
+    {
+      "id": "sha256:525c34e32ebf28422476ee2f56e80190788cdde05be3469763f9f4f966733069",
+      "width": 2400,
+      "height": 1958,
+      "bytes": 947582,
+      "alt": "ornate classical facade lit gold at night, arched windows in a row",
+      "src": "/images/travel/img-2168.webp",
+      "thumb": "/images/travel/img-2168.thumb.webp"
+    },
+    {
+      "id": "sha256:0b237e169a11402b32bc8f85420a5c1777cc10f8bed2bac9e52db60781885b4c",
+      "width": 2400,
+      "height": 1958,
+      "bytes": 87078,
+      "alt": "extreme close-up of a face in red light, nose and lips, everything else dark",
+      "src": "/images/travel/img-2251.webp",
+      "thumb": "/images/travel/img-2251.thumb.webp"
+    },
+    {
+      "id": "sha256:49bdea8e4c36dbe09822a9cd7b686dccd6d936dfc8d2f8710e1322faa88a9a47",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 780332,
+      "alt": "interior with a teal and gold patterned tablecloth, a covered dish, wooden chairs",
+      "src": "/images/travel/img-2278.webp",
+      "thumb": "/images/travel/img-2278.thumb.webp"
+    },
+    {
+      "id": "sha256:38089efdd2d0ee62f604baf9b35cd859614600e5f9fa197aa8feabd16f373b3b",
+      "width": 2400,
+      "height": 1958,
+      "bytes": 772350,
+      "alt": "black and white blur of a draped figure caught mid-motion, dreamlike",
+      "src": "/images/travel/img-2317.webp",
+      "thumb": "/images/travel/img-2317.thumb.webp"
+    },
+    {
+      "id": "sha256:6ac29679a9c4b5cc722e684e569eec894662e5c7da7e56c5ce2db2e8e059432a",
+      "width": 2400,
+      "height": 1958,
+      "bytes": 1381386,
+      "alt": "grainy black and white classical statue with arms raised overhead",
+      "src": "/images/travel/img-2326.webp",
+      "thumb": "/images/travel/img-2326.thumb.webp"
+    },
+    {
+      "id": "sha256:731e3dd5c8ac8b052c2af6480fa35828ccc29684ab903f48b918bae9741c21a0",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 382668,
+      "alt": "Thai temple gable against a pale sky, gold trim along the roofline",
+      "src": "/images/travel/img-2345.webp",
+      "thumb": "/images/travel/img-2345.thumb.webp"
+    },
+    {
+      "id": "sha256:c8dda703f2cd8586daba191edca489200ba8ee5ccd9a9a4afcd707508a2135ac",
+      "width": 2400,
+      "height": 2159,
+      "bytes": 402814,
+      "alt": "black and white mountain ridge sinking into mist",
+      "src": "/images/travel/img-3556.webp",
+      "thumb": "/images/travel/img-3556.thumb.webp"
+    },
+    {
+      "id": "sha256:88e615ccb4081491d4b14bf7c86f98c6a76f7492d92ad0931d11df3c911a16c5",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 605630,
+      "alt": "black and white winged cherub statue, dark foliage behind it",
+      "src": "/images/travel/img-3559.webp",
+      "thumb": "/images/travel/img-3559.thumb.webp"
+    },
+    {
+      "id": "sha256:1095d75b0fca8ad05a56884edd3635a4545c7cd57fc940a706419db8eddfb383",
+      "width": 2400,
+      "height": 1609,
+      "bytes": 747684,
+      "alt": "empty road running straight to the horizon under heavy cloud, teal-tinted landscape",
+      "src": "/images/travel/img-8178.webp",
+      "thumb": "/images/travel/img-8178.thumb.webp"
+    },
+    {
+      "id": "sha256:ca6502a00688985b2b086ac6190bef2d00d4e70fe1eb8d3767a25097ef043bc8",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 203698,
+      "alt": "night frame scattered with small white lights against black",
+      "src": "/images/travel/img-8572.webp",
+      "thumb": "/images/travel/img-8572.thumb.webp"
+    }
+  ]
+}

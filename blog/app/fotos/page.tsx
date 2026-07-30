@@ -3,6 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import floraManifest from "@/content/photos/flora.json";
+import travelManifest from "@/content/photos/travel.json";
 
 type PhotoCategory = "all" | "flora" | "travel";
 
@@ -10,73 +12,30 @@ interface Photo {
   src: string;
   alt: string;
   category: PhotoCategory;
+  width: number;
+  height: number;
+  thumb?: string;
 }
 
-const floraImages = [
-  "dsc2657.webp",
-  "dsc3453.webp",
-  "dsc3455.webp",
-  "dsc3814.webp",
-  "000015390011.webp",
-  "dsc-0724.webp",
-  "dsc-0815.webp",
-  "dsc-0866.webp",
-  "dsc-1790.webp",
-  "dsc-1824.webp",
-  "dsc-1834.webp",
-  "dsc-1990.webp",
-  "dsc-2039.webp",
-  "dsc-2072.webp",
-  "dscf0332.webp",
-  "hibiscus.webp",
-  "orchids.webp",
-  "untitled.webp",
-  "zelia-export.webp",
-  "zelia.webp",
-];
+/**
+ * Collections come from content/photos/<collection>.json, written by
+ * `pnpm blog:photos` from a fineshyt export (see docs/fineshyt-bridge.md).
+ * Imported as JSON modules so they inline at build time — no runtime fs read,
+ * which is what keeps public/ out of the serverless bundle.
+ */
+const fromManifest = (
+  manifest: { photos: { src: string; alt: string; width: number; height: number; thumb?: string }[] },
+  category: Exclude<PhotoCategory, "all">
+): Photo[] => manifest.photos.map((p) => ({ ...p, category }));
 
-const travelImages = [
-  "000366550011.webp",
-  "000554650007.webp",
-  "000701500014.webp",
-  "000701500035.webp",
-  "035330006511-r1-017-7.webp",
-  "img-0515.webp",
-  "img-0615.webp",
-  "img-1968.webp",
-  "img-2114.webp",
-  "img-2160.webp",
-  "img-2168.webp",
-  "img-2251.webp",
-  "img-2278.webp",
-  "img-2317.webp",
-  "img-2326.webp",
-  "img-2345.webp",
-  "img-3556.webp",
-  "img-3559.webp",
-  "img-8178.webp",
-  "img-8572.webp",
-];
-
-const buildPhotos = (
-  category: Exclude<PhotoCategory, "all">,
-  filenames: string[]
-): Photo[] =>
-  filenames.map((name) => ({
-    src: `/images/${category}/${name}`,
-    alt: `${category} — ${name}`,
-    category,
-  }));
-
-const photos: Photo[] = [
-  ...buildPhotos("flora", floraImages),
-  ...buildPhotos("travel", travelImages),
-];
+const floraPhotos = fromManifest(floraManifest, "flora");
+const travelPhotos = fromManifest(travelManifest, "travel");
+const photos: Photo[] = [...floraPhotos, ...travelPhotos];
 
 const CATEGORY_META: Record<PhotoCategory, { label: string; count: number }> = {
   all: { label: "All", count: photos.length },
-  flora: { label: "Flora", count: floraImages.length },
-  travel: { label: "Travel", count: travelImages.length },
+  flora: { label: "Flora", count: floraPhotos.length },
+  travel: { label: "Travel", count: travelPhotos.length },
 };
 
 function CategoryFilter({
@@ -138,8 +97,8 @@ function PhotoColumn({
           <Image
             src={photo.src}
             alt={photo.alt}
-            width={0}
-            height={0}
+            width={photo.width}
+            height={photo.height}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-auto"
             loading="lazy"
@@ -246,7 +205,7 @@ export default function FotosPage() {
       <section className="relative h-[70vh] min-h-[480px] overflow-hidden">
         <Image
           src="/images/dsc2366.webp"
-          alt="cover"
+          alt="silhouette of a shaved head in profile against a screen of blurred red and green foliage"
           fill
           priority
           className="object-cover"

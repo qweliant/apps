@@ -12,95 +12,9 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { SITE, splitFrontmatter, fmValue, toPlaintext } from "./lib/render-email.mjs";
 
-const SITE = "https://qwelian.com";
 const CONTENT = path.join(process.cwd(), "content");
-
-const splitFrontmatter = (raw) => {
-  const m = raw.match(/^---\n([\s\S]*?)\n---\n?/);
-  if (!m) return { fm: "", body: raw };
-  return { fm: m[1], body: raw.slice(m[0].length) };
-};
-
-const fmValue = (fm, key) => {
-  const m = fm.match(new RegExp(`^${key}:\\s*"?(.*?)"?\\s*$`, "m"));
-  return m ? m[1].replace(/\\"/g, '"') : "";
-};
-
-const decodeEntities = (s) =>
-  s
-    .replace(/&nbsp;/g, " ")
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&");
-
-const toPlaintext = (body) => {
-  let t = body;
-
-  // drop the leading "# Title" (the subject carries it)
-  t = t.replace(/^\s*#\s+.*\n+/, "");
-
-  // remove web-only footnote reference superscripts:  <sup><a href="#fn-1">1</a></sup>
-  t = t.replace(/<sup>\s*<a[^>]*>[\s\S]*?<\/a>\s*<\/sup>/gi, "");
-
-  // list items → dashes (do before generic tag strip)
-  t = t.replace(/<li[^>]*>/gi, "\n- ").replace(/<\/li>/gi, "");
-
-  // real HTML links → bare:  <a href="URL">TEXT</a>
-  t = t.replace(/<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi, (_, url, text) => {
-    text = text.trim();
-    return !text || text === url ? url : `${text} (${url})`;
-  });
-
-  // MDX/JSX components (capitalized tags) → a pointer to the web version
-  t = t.replace(/<[A-Z][A-Za-z0-9]*(?:\s[^>]*)?\/>/g, "\n[interactive element — read it on the web]\n");
-  t = t.replace(/<[A-Z][A-Za-z0-9]*(?:\s[^>]*)?>[\s\S]*?<\/[A-Z][A-Za-z0-9]*>/g, "\n[interactive element — read it on the web]\n");
-
-  // images → drop (keep alt text if any as a note)
-  t = t.replace(/!\[([^\]]*)\]\([^)]+\)/g, (_, alt) => (alt ? `[image: ${alt}]` : ""));
-
-  // markdown links → bare:  [text](url)
-  t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) =>
-    text.trim() === url.trim() ? url : `${text} (${url})`
-  );
-
-  // fenced code: drop the ``` lines, keep the code
-  t = t.replace(/^```.*$/gm, "");
-
-  // headings → plain lines
-  t = t.replace(/^#{1,6}\s+/gm, "");
-
-  // emphasis / inline code markers
-  t = t
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/__([^_]+)__/g, "$1")
-    .replace(/\*([^*]+)\*/g, "$1")
-    .replace(/`([^`]+)`/g, "$1");
-
-  // blockquote markers → plain
-  t = t.replace(/^>\s?/gm, "");
-
-  // unescape MDX-escaped punctuation from the import pipeline
-  t = t.replace(/\\([{}[\]])/g, "$1");
-
-  // strip any remaining HTML tags
-  t = t.replace(/<\/?[a-zA-Z][^>]*>/g, "");
-
-  t = decodeEntities(t);
-
-  // tidy whitespace
-  t = t
-    .split("\n")
-    .map((l) => l.replace(/[ \t]+$/g, ""))
-    .join("\n")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-
-  return t;
-};
 
 const listSlugs = () =>
   fs
@@ -140,7 +54,7 @@ const main = () => {
   const { fm, body } = splitFrontmatter(raw);
   const title = fmValue(fm, "title") || slug.replace(/_/g, " ");
   const permalink = `${SITE}/posts/${slug}`;
-  const plain = toPlaintext(body);
+  const plain = toPlaintext(body, { permalink });
 
   const out = [
     `Subject: ${title}`,

@@ -16,7 +16,7 @@ export default function Newsletter() {
   return (
     <div className="lb-sub">
       <p className="text-sm text-[var(--foreground)] m-0">
-        plaintext posts in your inbox — full-text, ad-free, no tracking pixels. ♥
+        full posts in your inbox — ad-free, no tracking pixels. ♥
       </p>
       <form action={action} method="post" target="_blank">
         <input

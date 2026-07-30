@@ -1,0 +1,198 @@
+{
+  "schema": "fineshyt.export/v1",
+  "collection": "flora",
+  "exported_at": "2026-07-29T01:27:53.657Z",
+  "imported_at": "2026-07-29T01:51:52.802Z",
+  "source": {
+    "app": "manual-seed",
+    "note": "legacy blog photos, predate fineshyt curation"
+  },
+  "derivative": {
+    "format": "webp",
+    "max_edge": 2400,
+    "quality": 80,
+    "thumb_max_edge": 600
+  },
+  "photos": [
+    {
+      "id": "sha256:94be160480ced1a1b797bd55c77ad1972d9f79a00843538fa6f8d82ef32e3db5",
+      "width": 2400,
+      "height": 1592,
+      "bytes": 603820,
+      "alt": "cascading sprays of tiny pale-pink blossoms hanging against dark green foliage",
+      "src": "/images/flora/000015390011.webp",
+      "thumb": "/images/flora/000015390011.thumb.webp"
+    },
+    {
+      "id": "sha256:3d78bb4d1d4b923ea4977bf52388bb3630e6a55efa89dfdd3f3cd362894809c3",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 135486,
+      "alt": "macro of a scarlet tubular flower cluster, dew on the petals, magenta anthers",
+      "src": "/images/flora/dsc-0724.webp",
+      "thumb": "/images/flora/dsc-0724.thumb.webp"
+    },
+    {
+      "id": "sha256:310119a7c5cb9dbb10f435a75ae07ca94a7ed951ae62e72b892ab43526ea4235",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 38962,
+      "alt": "pale yellow rose dissolving into soft focus, blue-grey wash across the frame",
+      "src": "/images/flora/dsc-0815.webp",
+      "thumb": "/images/flora/dsc-0815.thumb.webp"
+    },
+    {
+      "id": "sha256:d9a835be113a1ff7fb65210c60fcfb080a7b8654699cb8dab442c90960d10f96",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 350294,
+      "alt": "bright yellow bloom filling the frame, dense ray florets radiating from the centre",
+      "src": "/images/flora/dsc-0866.webp",
+      "thumb": "/images/flora/dsc-0866.thumb.webp"
+    },
+    {
+      "id": "sha256:e2fe5dc6f92bcbd180c28bf12b83e8c1a15c2cc2e4054e19b8e15a80ef60194c",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 47866,
+      "alt": "black and white rose, petals furled tight, soft directional light",
+      "src": "/images/flora/dsc-1790.webp",
+      "thumb": "/images/flora/dsc-1790.thumb.webp"
+    },
+    {
+      "id": "sha256:aec78385508e3e586e055339ab5977cea50c7d1037356aadb3cdd96de8845bb1",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 65850,
+      "alt": "black and white dahlia, concentric rings of pointed petals against black",
+      "src": "/images/flora/dsc-1824.webp",
+      "thumb": "/images/flora/dsc-1824.thumb.webp"
+    },
+    {
+      "id": "sha256:b576480055460ff54904f463ffdf8e9e591e6653648e25a113c4bee5c221f35c",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 113642,
+      "alt": "deep crimson rose with golden stamens at its centre, dark leaves behind",
+      "src": "/images/flora/dsc-1834.webp",
+      "thumb": "/images/flora/dsc-1834.thumb.webp"
+    },
+    {
+      "id": "sha256:e38f3eeb91c0e33a4f41af057003bb964e4c5ab2463f3e3ad230a7f2aa04479a",
+      "width": 1600,
+      "height": 2400,
+      "bytes": 81674,
+      "alt": "pale yellow and green striped petal in soft focus, green ground",
+      "src": "/images/flora/dsc-1990.webp",
+      "thumb": "/images/flora/dsc-1990.thumb.webp"
+    },
+    {
+      "id": "sha256:2d3d6ca942265b556f101a5319d804aa40c2fbb179cf57b37a317ca867ddc7d1",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 73166,
+      "alt": "extreme macro of yellow stamens heavy with pollen, dark surround",
+      "src": "/images/flora/dsc-2039.webp",
+      "thumb": "/images/flora/dsc-2039.thumb.webp"
+    },
+    {
+      "id": "sha256:31b883411936ed832449fdc2522f04ddd076232f1ca191ff6f1f8a3d6edc60c6",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 118944,
+      "alt": "magenta orchid with two broad lobed petals, green foliage behind",
+      "src": "/images/flora/dsc-2072.webp",
+      "thumb": "/images/flora/dsc-2072.thumb.webp"
+    },
+    {
+      "id": "sha256:4ac3c8b330df93f0fb4de894c6093177c895b0941c49d47d91dc350909f0c08d",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 19794,
+      "alt": "near-black frame with a faint pale form emerging from the dark, low-key and ghostly",
+      "src": "/images/flora/dsc2657.webp",
+      "thumb": "/images/flora/dsc2657.thumb.webp"
+    },
+    {
+      "id": "sha256:7f99e1399f446e95341624d45fa646eef522624fc97c23b6b693ffbfe53a14e1",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 38100,
+      "alt": "close macro along the edge of a yellow petal, high key and luminous",
+      "src": "/images/flora/dsc3453.webp",
+      "thumb": "/images/flora/dsc3453.thumb.webp"
+    },
+    {
+      "id": "sha256:12023fe55b90ccb179888aa4252720a5b1b8d7facd23082d6dd50594b2170e07",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 54594,
+      "alt": "black and white daffodil in profile, trumpet lit against a dark ground",
+      "src": "/images/flora/dsc3455.webp",
+      "thumb": "/images/flora/dsc3455.thumb.webp"
+    },
+    {
+      "id": "sha256:7210c0096b730e92781a4569abc9804f2934cd8ea4f95bedbd96fbf788640632",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 376896,
+      "alt": "abstract blue crystalline surface, frost-like texture, a single red mark at the top",
+      "src": "/images/flora/dsc3814.webp",
+      "thumb": "/images/flora/dsc3814.thumb.webp"
+    },
+    {
+      "id": "sha256:b6ad346bb0cb12aad6cfc783d3db82ac424880aa0f21ea7c0c18f5ba24eb6108",
+      "width": 2400,
+      "height": 1601,
+      "bytes": 151106,
+      "alt": "orange and yellow sunflower head, dark green leaves crowding the frame",
+      "src": "/images/flora/dscf0332.webp",
+      "thumb": "/images/flora/dscf0332.thumb.webp"
+    },
+    {
+      "id": "sha256:1312410dbb05267b3db631caf112ea33ad622a74c071808f2704b8faf1c1c03b",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 53208,
+      "alt": "white hibiscus opened flat, deep maroon eye at the centre",
+      "src": "/images/flora/hibiscus.webp",
+      "thumb": "/images/flora/hibiscus.thumb.webp"
+    },
+    {
+      "id": "sha256:ed69c15c63571ec6c856088245dedf870e558f0d805e775fcf70059e50ae640e",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 152328,
+      "alt": "two cream and green orchids side by side, magenta markings on the lip",
+      "src": "/images/flora/orchids.webp",
+      "thumb": "/images/flora/orchids.thumb.webp"
+    },
+    {
+      "id": "sha256:2028b278b508bab028a336ea11be1e2c4aef865b486c8a33872e289af4284854",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 62156,
+      "alt": "glowing pale bloom centre radiating yellow-white light, lavender wash",
+      "src": "/images/flora/untitled.webp",
+      "thumb": "/images/flora/untitled.thumb.webp"
+    },
+    {
+      "id": "sha256:88dbcd7e095c03d62ede6a5555ff3bccd7167f53bdf88fa4b53a5ad9a4e874d4",
+      "width": 2400,
+      "height": 1600,
+      "bytes": 159870,
+      "alt": "cluster of frilled pink and white azalea blossoms",
+      "src": "/images/flora/zelia-export.webp",
+      "thumb": "/images/flora/zelia-export.thumb.webp"
+    },
+    {
+      "id": "sha256:36aea7b78b865edca98f7c084d2c8a8c5f3b8c0e7d6eba1b00fb8baa61f125cb",
+      "width": 2400,
+      "height": 1596,
+      "bytes": 94294,
+      "alt": "hot pink azalea in macro, magenta veining running through the petals",
+      "src": "/images/flora/zelia.webp",
+      "thumb": "/images/flora/zelia.thumb.webp"
+    }
+  ]
+}

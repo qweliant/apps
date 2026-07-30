@@ -37,10 +37,17 @@ fineshyt                    staging dir                     blog
 ────────                    ───────────                     ────
 mix fineshyt.export   ──▶   ~/Exports/fineshyt/<collection>/   ──▶   pnpm blog:photos <dir>
                               ├── manifest.json
-                              ├── flora/dsc_2072.webp
-                              ├── flora/dsc_2072.thumb.webp
+                              ├── flora/dsc-2072.webp
+                              ├── flora/dsc-2072.thumb.webp
                               └── …
 ```
+
+**Note the doubled segment.** `photos[].file` is always `<collection>/<slug>.webp`
+relative to the staging root, and the default staging root already ends in the
+collection name — so the full path is
+`~/Exports/fineshyt/flora/flora/dsc-2072.webp`. This is intentional: it keeps
+`file` self-describing so a manifest can be relocated or merged without
+rewriting paths. Both implementations rely on it. Do not "fix" one side alone.
 
 fineshyt **writes** to a neutral staging directory. The blog **pulls** from a
 path passed on the command line. fineshyt never learns the blog's filesystem
@@ -75,8 +82,8 @@ Path: `<staging>/manifest.json`
   "photos": [
     {
       "id": "sha256:9f2a1c…",
-      "file": "flora/dsc_2072.webp",
-      "thumb": "flora/dsc_2072.thumb.webp",
+      "file": "flora/dsc-2072.webp",
+      "thumb": "flora/dsc-2072.thumb.webp",
       "width": 2400,
       "height": 1600,
       "bytes": 284119,
@@ -149,7 +156,17 @@ The exporter produces web-ready files. **Originals never cross the boundary.**
 - **Strip metadata** except orientation. No GPS, no serial numbers — these go
   on a public site.
 - **Naming:** lowercase, non-alphanumerics → `-`, collapse repeats.
-  `_DSC3453.jpeg` → `dsc3453.webp`. Collisions get a `-2` suffix.
+  `_DSC3453.jpeg` → `dsc3453.webp`; `DSC_2072.jpeg` → `dsc-2072.webp`.
+  Collisions get a `-2` suffix. This rule is normative — where an example
+  elsewhere in this doc disagrees, the rule wins.
+
+> **Reality check (found during implementation, 2026-07-29):** the 2400px
+> ceiling is currently **unreachable**. `ai_worker/domain/convert.py` does
+> `resize_to_long_edge(img, 1440)` upstream, so by the time the exporter runs,
+> `file_path` is already a 1440px proxy — and "never upscale" correctly clamps
+> every derivative to ≤1440. To actually reach 2400 you must either raise the
+> converter's cap or export from `source_path`. Until then `max_edge: 2400` is
+> the ceiling, not the output. **Open decision, not a bug.**
 
 Rationale: the blog's `public/images/` reached 956 MB of full-resolution camera
 originals (largest single file 51 MB, 6774×4492) because originals were copied
@@ -167,7 +184,18 @@ exporter **fails that photo** and reports it rather than emitting a filename or
 an empty string. A missing alt is an accessibility regression that's invisible
 until someone hits it with a screen reader.
 
-Acceptable fallback chain: `subject` → `subject` + `content_type` → hard error.
+There is deliberately **no fallback chain**. An earlier draft allowed
+`subject` + `content_type` as a middle rung; that collapses to bare
+`content_type` when `subject` is blank, and the real values there are
+`"abstract"`, `"still_life"`, `"other"` — category labels, not descriptions.
+That would reintroduce exactly what this section exists to prevent. It is
+`subject`, or fail the photo.
+
+**Passing §5 is not the same as being good.** The importer additionally warns
+(non-fatal) when alt text is two words or fewer. Against the first real export,
+51 of 92 photos tripped this — `"Flower"` alone appeared 16 times. That is a
+data-quality problem in fineshyt's `subject` column, not something the bridge
+can fix, but it must not pass silently.
 
 ---
 
@@ -194,6 +222,15 @@ Acceptable fallback chain: `subject` → `subject` + `content_type` → hard err
 
 ---
 
+## 6a. Resolving `collection` against `project`
+
+`collection` is specced as a slug; fineshyt's `project` is free text
+(`"Flowers"`, `"KFG ppl"`). The exporter matches by slugifying `project` — so
+`--collection flowers` resolves to project `"Flowers"` — and errors on ambiguity
+rather than silently picking one.
+
+---
+
 ## 7. Idempotency
 
 Re-running an export must be safe. `id` is the sha256 of the *original*, so a
@@ -201,6 +238,20 @@ re-encode at different quality yields the same `id` and the importer treats it
 as an update, not a new photo. Removing a photo from a collection in fineshyt
 and re-exporting means its `id` vanishes from the manifest — the importer
 reports the orphan but **does not delete** the file without `--prune`.
+
+> **Hazard.** `id` currently hashes `file_path`, per §3's mapping table.
+> fineshyt also has a `source_path` column, empty on every row today. If it is
+> ever backfilled and someone "corrects" the hash to use it, **every `id`
+> changes** and the importer sees a full set of deletions plus a full set of
+> additions rather than an update. If that migration happens, it needs a
+> deliberate id-rewrite on both sides, not a one-line change.
+
+### Field conventions
+
+- Optional fields are emitted as explicit `null`, not omitted.
+- `derivative` publishes `quality` (primary) but not thumb quality; 75 is
+  applied per §4 and not currently round-tripped.
+- `taken_at` is a **date**, truncated from fineshyt's `captured_at` datetime.
 
 ---
 

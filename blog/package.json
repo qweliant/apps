@@ -11,7 +11,9 @@
     "start": "next start",
     "lint": "next lint",
     "blog:import": "node scripts/tana-import.mjs",
+    "blog:photos": "node scripts/photo-import.mjs",
     "blog:newsletter": "node scripts/newsletter.mjs",
+    "blog:buttondown": "node scripts/buttondown.mjs",
     "blog:footnote": "node scripts/add-footnotes.mjs"
   },
   "dependencies": {
