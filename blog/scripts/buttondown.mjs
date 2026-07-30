@@ -192,9 +192,27 @@ const cmdPush = async (fileSlugs, { status, plaintext, dryRun, force }) => {
   for (const fileSlug of fileSlugs) {
     const { payload, publishDate, meta } = buildEmail(fileSlug, { plaintext, status });
 
-    if (!force && bySlug.has(payload.slug)) {
+    const already = bySlug.get(payload.slug);
+    if (already && !force) {
       log(`${c.dim}skip${c.off}   ${payload.slug} ${c.dim}(already on Buttondown)${c.off}`);
       skipped += 1;
+      continue;
+    }
+
+    // Slugs are unique per newsletter, so --force has to update in place;
+    // a second POST would just collide.
+    if (already) {
+      if (dryRun) {
+        log(`${c.dim}would update${c.off} ${c.bold}${payload.slug}${c.off}  ${meta.chars} chars`);
+        created += 1;
+        continue;
+      }
+      const res = await api(`/emails/${already.id}`, {
+        method: "PATCH",
+        body: { subject: payload.subject, body: payload.body, description: payload.description },
+      });
+      log(`${c.green}updated${c.off} ${res.slug}  ${c.dim}status=${res.status}${c.off}`);
+      created += 1;
       continue;
     }
 

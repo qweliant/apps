@@ -78,15 +78,23 @@ turn it off. `--send` prints the current value before it fires.
 - Slugs are `^[a-zA-Z0-9_-]+$`, max 100 chars, so long filenames get truncated
   at a word boundary. The archive slug and the blog slug therefore differ.
 
-## Image caveats
+## Images
 
-`--backfill` and `--dry-run` warn about two classes of image:
+**Deploy before you syndicate.** Email bodies point at `https://qwelian.com/images/…`,
+so an image that hasn't shipped yet is a 404 in the archive and in every inbox.
+Step 2 (push, site builds) has to land before step 3.
 
-- **WebP** (`/images/rldistrib.webp`) — not rendered by Outlook on Windows.
-  Ship a JPG/PNG alongside if that matters.
-- **Firebase Storage URLs** with `?token=` (from the Tana/fineshyt import) —
-  these render today but break permanently if the token is rotated. Worth
-  rehosting under `public/images/` before they rot.
+All post images are now self-hosted under `public/images/`. The Firebase Storage
+URLs that came in through the Tana/fineshyt import were rehosted on 2026-07-30 —
+they carried a `?token=` that would have broken permanently on rotation. They were
+re-encoded to WebP at q82/1600px on the way in (4.7MB → 402KB).
+
+If a future import reintroduces external image URLs, the same treatment applies:
+download, `cwebp -q 82 -resize 1600 0`, drop in `public/images/`, repoint the MDX.
+`--dry-run` warns when it sees a Firebase token URL.
+
+WebP is the house format and we do not care about Outlook on Windows, which is the
+only mainstream client that won't decode it.
 
 ## Credentials
 
